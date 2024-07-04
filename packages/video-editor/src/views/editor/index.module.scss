@@ -1,0 +1,14 @@
+.wrap {
+  display: flex;
+  height: 100%;
+  width: 100%;
+
+  .wrap_left {
+    width: 240px;
+  }
+
+  .wrap_content {
+    flex: 1;
+    min-width: 0;
+  }
+}
