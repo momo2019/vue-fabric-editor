@@ -1,6 +1,8 @@
 import { defineComponent, ref } from 'vue';
 import styles from './index.module.scss';
-import { MaterialType } from '@/interfaces/material';
+import { MaterialGroup, MaterialType } from '@/interfaces/material';
+import MaterialList from '@/components/MaterialList';
+import { MOCK_MATERIALS } from '@/mocks/material';
 
 type TypeItem = { type: MaterialType; label: string };
 
@@ -21,11 +23,9 @@ export default defineComponent({
         type: MaterialType.video,
         label: '视频',
       },
-      {
-        type: MaterialType.text,
-        label: '文本',
-      },
     ];
+
+    const materials: Record<MaterialType, MaterialGroup[]> = MOCK_MATERIALS;
 
     const typeItemDom = (item: TypeItem) => (
       <div
@@ -36,10 +36,17 @@ export default defineComponent({
       </div>
     );
 
+    const addMaterial = (url: string) => {
+      // TODO 添加素材进入画布
+      console.log(activeType.value, url);
+    };
+
     return () => (
       <div class={styles.wrap}>
         <div class={styles.wrap_type}>{types.map(typeItemDom)}</div>
-        <div class={styles.wrap_material}>素材列表</div>
+        <div class={styles.wrap_material}>
+          <MaterialList data={materials[activeType.value]} onAdd={addMaterial}></MaterialList>
+        </div>
       </div>
     );
   },
