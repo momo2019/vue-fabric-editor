@@ -2,4 +2,41 @@
   display: flex;
   height: 100%;
   width: 100%;
+
+  .wrap_type {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 96px;
+    height: 100%;
+    padding: 8px 16px;
+    border-right: 1px solid #f5f5f5;
+
+    .type_item {
+      width: 64px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border-radius: 16px;
+      color: #45484b;
+
+      &:hover {
+        background-color: #f7f8fa;
+      }
+
+      &.type_item_active {
+        color: #1677ff;
+        background-color: #e6f4ff;
+      }
+    }
+  }
+
+  .wrap_material {
+    display: flex;
+    flex: 1;
+    padding: 8px;
+    min-width: 0;
+  }
 }
