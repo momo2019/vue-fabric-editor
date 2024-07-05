@@ -1,5 +1,7 @@
 import { defineComponent } from 'vue';
 import styles from './index.module.scss';
+import TimeLine from '@/components/TimeLine';
+import { MOCK_ELEMENETS } from '@/mocks/element';
 
 export default defineComponent({
   setup() {
@@ -9,7 +11,9 @@ export default defineComponent({
           <div class={styles.wrap_view}>预览</div>
           <div class={styles.wrap_editor}>元素编辑</div>
         </div>
-        <div class={styles.wrap_bottom}>时间轴</div>
+        <div class={styles.wrap_bottom}>
+          <TimeLine data={MOCK_ELEMENETS} duration={100}></TimeLine>
+        </div>
       </div>
     );
   },
