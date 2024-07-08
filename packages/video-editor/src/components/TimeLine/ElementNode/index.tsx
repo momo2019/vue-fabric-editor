@@ -1,16 +1,17 @@
 import { ElementItem } from '@/interfaces/element';
 import styles from './index.module.scss';
+import { elementStore } from '@/store/element';
 
 export const elementNodeDom = (
   item: ElementItem,
-  perSecGap: number,
-  duration: number,
   mouseDown: (ev: MouseEvent, item: ElementItem, pos: 'left' | 'right') => void
 ) => {
+  const store = elementStore();
+
   const startTime = item.startTime || 0;
-  const endTime = item.endTime || duration;
-  const left = perSecGap * startTime;
-  const width = (endTime - startTime) * perSecGap;
+  const endTime = item.endTime || store.duration;
+  const left = store.perSecGapWidth * startTime;
+  const width = (endTime - startTime) * store.perSecGapWidth;
   return (
     <div class={styles.node}>
       <div
@@ -19,7 +20,7 @@ export const elementNodeDom = (
           backgroundImage: item.cover ? `url(${item.cover})` : undefined,
         }}
       ></div>
-      <div class={styles.node_duration}>
+      <div class={[styles.node_duration, store.activeNode?.uid === item.uid && styles.node_active]}>
         <div
           class={styles.node_duration_bar}
           style={{

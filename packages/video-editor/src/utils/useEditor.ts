@@ -13,13 +13,18 @@ import Editor, {
   RulerPlugin,
 } from '@kuaitu/core';
 import { fabric } from 'fabric';
+import { v4 } from 'uuid';
 import { computed, ref } from 'vue';
 
-export const useEditor = <T>(cb: { afterAdd: (data: T) => void }) => {
+export const useEditor = <T>(cb: {
+  afterAdd: (data: T, uid: string) => void;
+  chooseOne: (uid: string) => void;
+}) => {
+  const fbrcNodes = new Map<string, fabric.Image>();
   const canvasEditor = new Editor();
 
-  const fCanvas = ref<fabric.Canvas | null>(null);
-  const initEditorEnd = computed(() => !!fCanvas.value);
+  const fbrcCanvas = ref<fabric.Canvas | null>(null);
+  const initEditorEnd = computed(() => !!fbrcCanvas.value);
 
   const initEditor = (cvs: HTMLCanvasElement) => {
     // 初始化fabric
@@ -28,6 +33,11 @@ export const useEditor = <T>(cb: { afterAdd: (data: T) => void }) => {
       stopContextMenu: true, // 禁止默认右键菜单
       controlsAboveOverlay: true, // 超出clipPath后仍然展示控制条
       preserveObjectStacking: true, // 当选择画布中的对象时，让对象不在顶层。
+    });
+
+    canvas.on('mouse:up', () => {
+      const uid = canvas.getActiveObject()?.data as string;
+      cb.chooseOne(uid);
     });
 
     // 初始化编辑器
@@ -46,7 +56,7 @@ export const useEditor = <T>(cb: { afterAdd: (data: T) => void }) => {
     canvasEditor.use(RulerPlugin);
     canvasEditor.rulerEnable();
 
-    fCanvas.value = canvas;
+    fbrcCanvas.value = canvas;
   };
 
   const afterAdd = (img: fabric.Image, data: T) => {
@@ -58,7 +68,11 @@ export const useEditor = <T>(cb: { afterAdd: (data: T) => void }) => {
       top: 100,
     });
     canvasEditor.dragAddItem(img);
-    cb.afterAdd(data);
+    const uid = v4();
+    fbrcNodes.set(uid, img);
+    img.data = uid;
+    cb.afterAdd(data, uid);
+    cb.chooseOne(uid);
   };
 
   const addImage = (url: string, data: T) => {
@@ -89,9 +103,24 @@ export const useEditor = <T>(cb: { afterAdd: (data: T) => void }) => {
     // };
   };
 
+  const setSelect = (uid: string) => {
+    const node = fbrcNodes.get(uid);
+    if (node) {
+      fbrcCanvas.value?.setActiveObject(node);
+      fbrcCanvas.value?.requestRenderAll();
+    }
+  };
+
+  const clearSelect = () => {
+    fbrcCanvas.value?.discardActiveObject();
+    fbrcCanvas.value?.requestRenderAll();
+  };
+
   return {
     initEditor,
     addImage,
     addVideo,
+    clearSelect,
+    setSelect,
   };
 };

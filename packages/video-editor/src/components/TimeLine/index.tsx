@@ -53,9 +53,11 @@ export default defineComponent({
               <canvas ref={cvsRef}></canvas>
             </div>
             <div class={styles.wrap_content}>
-              {store.nodes.map((item) =>
-                elementNodeDom(item, store.perSecGapWidth, store.duration, startMove)
-              )}
+              {store.nodes.map((item) => (
+                <div onClick={() => store.setActiveNode(item)}>
+                  {elementNodeDom(item, startMove)}
+                </div>
+              ))}
             </div>
           </div>
         </div>
