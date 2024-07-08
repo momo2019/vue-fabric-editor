@@ -1,40 +1,28 @@
-import { defineComponent, nextTick, PropType, ref, toRefs, watch } from 'vue';
+import { defineComponent, nextTick, ref, watch } from 'vue';
 import styles from './index.module.scss';
 import { Button } from 'ant-design-vue';
-import { ElementItem } from '@/interfaces/element';
 import { elementNodeDom } from './ElementNode';
 import { formatDuration } from '@/utils/format';
 import { cvsHeight, timeLineCanvas } from './utils/timeLineCanvas';
+import { elementStore } from '@/store/element';
+import { useMoveLine } from './utils/useMoveLine';
 
 export default defineComponent({
-  props: {
-    data: {
-      type: Array as PropType<ElementItem[]>,
-      required: true,
-    },
-    duration: {
-      type: Number,
-      required: true,
-    },
-  },
-  emits: {
-    delOne: (uuid: string) => uuid,
-  },
-  setup(props) {
-    const { data, duration } = toRefs(props);
+  setup() {
+    const store = elementStore();
+    const cvsRef = ref<HTMLCanvasElement>();
 
-    const curTime = ref(0);
-
-    const cvsRef = ref();
+    const { startMove, boxRef } = useMoveLine();
 
     watch(
-      () => duration.value,
+      () => store.duration,
       async () => {
         await nextTick();
         cvsRef.value &&
           timeLineCanvas({
             cvs: cvsRef.value,
-            duration: duration.value,
+            duration: store.duration,
+            gap: store.lineGapTime,
           });
       },
       {
@@ -47,14 +35,14 @@ export default defineComponent({
         <div class={styles.wrap_editor}>
           <div class={styles.wrap_editor_left}>
             <div>
-              {formatDuration(curTime.value)}/{formatDuration(duration.value)}
+              {formatDuration(store.curTime)}/{formatDuration(store.duration)}
             </div>
           </div>
           <div class={styles.wrap_editor_right}>
             <Button type="primary">预览视频</Button>
           </div>
         </div>
-        <div class={styles.time_box}>
+        <div ref={boxRef} class={styles.time_box}>
           <div class={styles.time_box_wrap}>
             <div
               class={styles.wrap_time}
@@ -64,7 +52,11 @@ export default defineComponent({
             >
               <canvas ref={cvsRef}></canvas>
             </div>
-            <div class={styles.wrap_content}>{data.value.map(elementNodeDom)}</div>
+            <div class={styles.wrap_content}>
+              {store.nodes.map((item) =>
+                elementNodeDom(item, store.perSecGapWidth, store.duration, startMove)
+              )}
+            </div>
           </div>
         </div>
       </div>

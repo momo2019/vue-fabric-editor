@@ -1,10 +1,11 @@
 import { formatDuration } from '@/utils/format';
 
 export const cvsHeight = 24;
+export const timeGap = 10; // 每格之间的距离
 
 const getCanvasSize = (number: number) => number * window.devicePixelRatio;
 
-const lineGap = getCanvasSize(10);
+const lineGap = getCanvasSize(timeGap);
 const lineWidth = getCanvasSize(1);
 const smallLineHeight = getCanvasSize(cvsHeight * 0.3);
 const bigLineHeight = getCanvasSize(cvsHeight * 0.6);
@@ -22,9 +23,11 @@ export const timeLineCanvas = (options: {
   if (!ctx) {
     return;
   }
+  const start = lineWidth / 2;
 
-  const linNum = 2 + duration / gap;
-  const width = linNum * lineGap;
+  const linNum = duration / gap;
+  const width = linNum * lineGap + start * 3;
+
   cvs.style.width = `${width / window.devicePixelRatio}px`;
 
   cvs.width = width;
@@ -34,13 +37,12 @@ export const timeLineCanvas = (options: {
   ctx.strokeStyle = lineColor;
   ctx.lineWidth = lineWidth;
 
-  const start = lineWidth / 2;
   ctx.beginPath();
 
   ctx.textAlign = 'center';
   ctx.font = `${fontSize}px serif`;
 
-  for (let i = 0; i < linNum; i++) {
+  for (let i = 0; i <= linNum; i++) {
     const isBig = i % 5 === 0;
     const x = start + i * lineGap;
     ctx.moveTo(x, 0);
