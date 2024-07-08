@@ -41,10 +41,11 @@ export default defineComponent({
     const addMaterial = (item: MaterialItem) => {
       switch (activeType.value) {
         case MaterialType.image:
-          store.addImage(item);
+          store.addImage(item.url, item);
           break;
         case MaterialType.video:
-          store.addVideo(item);
+          // TODO 视频url的问题
+          item.cover && store.addVideo(item.cover, item);
           break;
         default:
           break;

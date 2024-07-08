@@ -2,7 +2,7 @@ import { ElementItem } from '@/interfaces/element';
 import { elementStore } from '@/store/element';
 import { onMounted, onBeforeUnmount, ref } from 'vue';
 
-const gapTime = 2;
+const minDuration = 2;
 
 export const useMoveLine = () => {
   const store = elementStore();
@@ -53,7 +53,7 @@ export const useMoveLine = () => {
         activeItem.endTime = undefined;
       }
     }
-    if ((activeItem.startTime || 0) > (activeItem.endTime || store.duration) - gapTime) {
+    if ((activeItem.startTime || 0) > (activeItem.endTime || store.duration) - minDuration) {
       activeItem.startTime = lastStartTime;
       activeItem.endTime = lastEndTime;
     }

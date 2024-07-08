@@ -1,7 +1,7 @@
 import { formatDuration } from '@/utils/format';
+import { timeGap } from '@/utils/useTimeLine';
 
 export const cvsHeight = 24;
-export const timeGap = 10; // 每格之间的距离
 
 const getCanvasSize = (number: number) => number * window.devicePixelRatio;
 
