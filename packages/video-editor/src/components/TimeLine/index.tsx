@@ -56,8 +56,13 @@ export default defineComponent({
         </div>
         <div class={styles.time_box}>
           <div class={styles.time_box_wrap}>
-            <div class={styles.wrap_time} style={{ height: `${cvsHeight}px` }}>
-              <canvas ref={cvsRef} height={cvsHeight}></canvas>
+            <div
+              class={styles.wrap_time}
+              style={{
+                height: `${cvsHeight}px`,
+              }}
+            >
+              <canvas ref={cvsRef}></canvas>
             </div>
             <div class={styles.wrap_content}>{data.value.map(elementNodeDom)}</div>
           </div>
