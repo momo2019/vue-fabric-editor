@@ -1,14 +1,16 @@
 import { defineComponent, ref } from 'vue';
 import styles from './index.module.scss';
-import { MaterialGroup, MaterialType } from '@/interfaces/material';
+import { MaterialGroup, MaterialItem, MaterialType } from '@/interfaces/material';
 import MaterialList from '@/components/MaterialList';
 import { MOCK_MATERIALS } from '@/mocks/material';
+import { elementStore } from '@/store/element';
 
 type TypeItem = { type: MaterialType; label: string };
 
 export default defineComponent({
   setup() {
     const activeType = ref<MaterialType>(MaterialType.image);
+    const store = elementStore();
 
     const changeType = (type: MaterialType) => {
       activeType.value = type;
@@ -36,9 +38,17 @@ export default defineComponent({
       </div>
     );
 
-    const addMaterial = (url: string) => {
-      // TODO 添加素材进入画布
-      console.log(activeType.value, url);
+    const addMaterial = (item: MaterialItem) => {
+      switch (activeType.value) {
+        case MaterialType.image:
+          store.addImage(item);
+          break;
+        case MaterialType.video:
+          store.addVideo(item);
+          break;
+        default:
+          break;
+      }
     };
 
     return () => (

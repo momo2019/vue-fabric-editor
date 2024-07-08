@@ -1,6 +1,7 @@
+import { MaterialItem } from './material';
+
 export type ElementItem = {
   uid: string;
-  cover?: string;
   startTime?: number;
   endTime?: number;
-};
+} & MaterialItem;

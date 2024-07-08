@@ -11,7 +11,7 @@ export default defineComponent({
     },
   },
   emits: {
-    add: (url: string) => url,
+    add: (item: MaterialItem) => item,
   },
   setup(props, { emit }) {
     const { data } = toRefs(props);
@@ -44,8 +44,8 @@ export default defineComponent({
       }
     );
 
-    const addMaterial = (url) => {
-      emit('add', url);
+    const addMaterial = (item: MaterialItem) => {
+      emit('add', item);
     };
 
     const materialItemDom = (item: MaterialItem) => (
@@ -54,7 +54,7 @@ export default defineComponent({
         style={{
           backgroundImage: `url(${item.cover || item.url})`,
         }}
-        onClick={() => addMaterial(item.url)}
+        onClick={() => addMaterial(item)}
       ></div>
     );
 
