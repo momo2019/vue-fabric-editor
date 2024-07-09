@@ -1,3 +1,6 @@
+/**
+ * 该组件已与业务解藕
+ */
 import { computed, defineComponent, PropType, ref, toRefs, watch } from 'vue';
 import styles from './index.module.scss';
 import { MaterialGroup, MaterialItem } from '@/interfaces/material';

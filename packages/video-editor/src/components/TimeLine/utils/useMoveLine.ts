@@ -2,24 +2,22 @@ import { ElementItem } from '@/interfaces/element';
 import { elementStore } from '@/store/element';
 import { onMounted, onBeforeUnmount, ref } from 'vue';
 
-const minDuration = 2;
-
 export const useMoveLine = () => {
   const store = elementStore();
 
   const boxRef = ref<HTMLDivElement>();
 
-  let activeItem: ElementItem | null = null;
   let isStart = true;
-
   let startX = 0;
+  const isMoving = ref(false);
 
   const startMove = (ev: MouseEvent, item: ElementItem, pos: 'left' | 'right') => {
-    activeItem = item;
+    store.setActiveNode(item);
     isStart = pos === 'left';
     startX = ev.pageX;
     ev.stopPropagation();
     ev.preventDefault();
+    isMoving.value = true;
   };
 
   const setBoxScrollX = (pageX: number, xGap: number) => {
@@ -35,7 +33,7 @@ export const useMoveLine = () => {
   };
 
   const moving = (ev: MouseEvent) => {
-    if (!activeItem) {
+    if (!isMoving.value) {
       return;
     }
     const { pageX } = ev;
@@ -43,26 +41,19 @@ export const useMoveLine = () => {
     ev.stopPropagation();
     ev.preventDefault();
     const xGap = pageX - startX;
-    const lastStartTime = activeItem.startTime || 0;
-    const lastEndTime = activeItem.endTime || store.duration;
+    const lastStartTime = store.activeNodeStartTime;
+    const lastEndTime = store.activeNodeEndTime;
     if (isStart) {
-      activeItem.startTime = Math.max(0, lastStartTime + xGap / store.perSecGapWidth);
+      store.setStartTime(lastStartTime + xGap / store.perSecGapWidth);
     } else {
-      activeItem.endTime = lastEndTime + xGap / store.perSecGapWidth;
-      if (activeItem.endTime >= store.duration) {
-        activeItem.endTime = undefined;
-      }
-    }
-    if ((activeItem.startTime || 0) > (activeItem.endTime || store.duration) - minDuration) {
-      activeItem.startTime = lastStartTime;
-      activeItem.endTime = lastEndTime;
+      store.setEndTime(lastEndTime + xGap / store.perSecGapWidth);
     }
     setBoxScrollX(pageX, xGap);
     startX = pageX;
   };
 
   const endMove = (ev: MouseEvent) => {
-    activeItem = null;
+    isMoving.value = false;
     ev.stopPropagation();
     ev.preventDefault();
   };

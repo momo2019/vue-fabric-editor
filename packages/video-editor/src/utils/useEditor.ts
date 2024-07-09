@@ -36,6 +36,7 @@ export const useEditor = <T>(cb: {
     });
 
     canvas.on('mouse:up', () => {
+      // 只考虑单个
       const uid = canvas.getActiveObject()?.data as string;
       cb.chooseOne(uid);
     });

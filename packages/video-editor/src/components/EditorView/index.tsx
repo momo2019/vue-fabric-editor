@@ -1,3 +1,6 @@
+/**
+ * 该组件存在业务关系
+ */
 import { defineComponent, onMounted, ref } from 'vue';
 import styles from './index.module.scss';
 import { elementStore } from '@/store/element';

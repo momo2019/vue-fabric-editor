@@ -2,6 +2,7 @@ import { defineComponent } from 'vue';
 import styles from './index.module.scss';
 import TimeLine from '@/components/TimeLine';
 import EditorView from '@/components/EditorView';
+import OperatePane from '@/components/OperatePane';
 
 export default defineComponent({
   setup() {
@@ -11,7 +12,9 @@ export default defineComponent({
           <div class={styles.wrap_view}>
             <EditorView></EditorView>
           </div>
-          <div class={styles.wrap_editor}>元素编辑</div>
+          <div class={styles.wrap_editor}>
+            <OperatePane></OperatePane>
+          </div>
         </div>
         <div class={styles.wrap_bottom}>
           <TimeLine></TimeLine>
