@@ -10,6 +10,7 @@ import Editor, {
   GroupPlugin,
   DrawLinePlugin,
   WorkspacePlugin,
+  ResizePlugin,
   RulerPlugin,
 } from '@kuaitu/core';
 import { fabric } from 'fabric';
@@ -55,7 +56,9 @@ export const useEditor = <T>(cb: {
     canvasEditor.use(DrawLinePlugin);
     canvasEditor.use(WorkspacePlugin);
     canvasEditor.use(RulerPlugin);
+    canvasEditor.use(ResizePlugin);
     canvasEditor.rulerEnable();
+    (canvasEditor.getPlugin('WorkspacePlugin') as WorkspacePlugin).maskEnable();
 
     fbrcCanvas.value = canvas;
   };
