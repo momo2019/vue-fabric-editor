@@ -189,7 +189,7 @@ class WorkspacePlugin implements IPluginTempl {
     });
   }
 
-  maskEnable() {
+  maskEnable(needBindLoadJSON = true) {
     const coverMask = new fabric.Rect({
       fill: 'rgba(0,0,0,0.7)',
       id: 'coverMask',
@@ -206,6 +206,8 @@ class WorkspacePlugin implements IPluginTempl {
     this.canvas.add(coverMask);
     this.coverMask = coverMask;
     this.setCoverMask();
+    // 适配模板和psd的loadjson，在加载完成后再入mask
+    needBindLoadJSON && this.editor.on('loadJson', () => this.maskEnable(false));
   }
 
   setZoomAuto(scale: number, cb?: (left?: number, top?: number) => void) {
