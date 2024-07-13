@@ -93,10 +93,6 @@ export const useEditor = <T>(cb: {
     if (!initEditorEnd.value) {
       return;
     }
-    img.set({
-      left: 100,
-      top: 100,
-    });
     img.originX = 'center';
     img.originY = 'center';
     const uid = v4();
