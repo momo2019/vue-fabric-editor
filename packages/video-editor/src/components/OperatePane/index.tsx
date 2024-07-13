@@ -5,6 +5,7 @@ import { defineComponent } from 'vue';
 import styles from './index.module.scss';
 import Time from './operates/time';
 import { elementStore } from '@/store/element';
+import Base from './operates/base';
 
 export default defineComponent({
   setup() {
@@ -13,6 +14,7 @@ export default defineComponent({
       store.activeNode && (
         <div class={styles.wrap}>
           <Time></Time>
+          <Base></Base>
         </div>
       );
   },

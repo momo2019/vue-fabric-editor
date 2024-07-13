@@ -20,7 +20,9 @@ import { computed, ref } from 'vue';
 
 export const useEditor = <T>(cb: {
   afterAdd: (data: T, uid: string) => void;
-  chooseOne: (uid: string) => void;
+  chooseOne: (uid: string, activeObject: fabric.Object) => void;
+  clearChoose: () => void;
+  updateActiveInfo: (activeObject: fabric.Object) => void;
 }) => {
   const fbrcNodes = new Map<string, fabric.Image>();
   const canvasEditor = new Editor();
@@ -35,12 +37,6 @@ export const useEditor = <T>(cb: {
       stopContextMenu: true, // 禁止默认右键菜单
       controlsAboveOverlay: true, // 超出clipPath后仍然展示控制条
       preserveObjectStacking: true, // 当选择画布中的对象时，让对象不在顶层。
-    });
-
-    canvas.on('mouse:up', () => {
-      // 只考虑单个
-      const uid = canvas.getActiveObject()?.data as string;
-      cb.chooseOne(uid);
     });
 
     // 初始化编辑器
@@ -61,6 +57,27 @@ export const useEditor = <T>(cb: {
     canvasEditor.use(ResizePlugin);
     canvasEditor.rulerEnable();
 
+    canvasEditor.on('selectOne', () => {
+      const activeObject = canvas.getActiveObject();
+      if (!activeObject) {
+        cb.clearChoose();
+        return;
+      }
+      const uid = activeObject.data as string;
+      cb.chooseOne(uid, activeObject);
+      cb.updateActiveInfo(activeObject);
+    });
+
+    canvasEditor.on('selectCancel', () => {
+      cb.clearChoose();
+    });
+
+    canvas.on('object:moving', (e) => {
+      const activeObject = canvas.getActiveObject();
+      if (e && e.target && e.target !== activeObject) return;
+      cb.updateActiveInfo(activeObject!);
+    });
+
     fbrcCanvas.value = canvas;
   };
 
@@ -72,12 +89,11 @@ export const useEditor = <T>(cb: {
       left: 100,
       top: 100,
     });
-    canvasEditor.dragAddItem(img);
     const uid = v4();
     fbrcNodes.set(uid, img);
     img.data = uid;
     cb.afterAdd(data, uid);
-    cb.chooseOne(uid);
+    canvasEditor.dragAddItem(img);
   };
 
   const addImage = (url: string, data: T) => {
@@ -121,11 +137,21 @@ export const useEditor = <T>(cb: {
     fbrcCanvas.value?.requestRenderAll();
   };
 
+  const getActiveObject = () => {
+    return fbrcCanvas.value?.getActiveObject() || null;
+  };
+
+  const requestRenderAll = () => {
+    return fbrcCanvas.value?.requestRenderAll();
+  };
+
   return {
     initEditor,
     addImage,
     addVideo,
     clearSelect,
     setSelect,
+    getActiveObject,
+    requestRenderAll,
   };
 };

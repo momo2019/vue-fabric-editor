@@ -8,25 +8,25 @@ export default defineComponent({
     const store = elementStore();
     return () => (
       <div class={styles.pane}>
-        <div class={styles.pane_title}>显示时间</div>
+        <div class={styles.pane_title}>基础信息</div>
         <InputNumber
-          value={store.activeNodeShowValue!.startTime}
+          value={store.activeNodeShowValue?.x}
           formatter={(value) => Number(value).toFixed(2)}
           parser={(value) => Number(value)}
           v-slots={{
-            addonBefore: () => '开始时间',
+            addonBefore: () => '位置 X',
           }}
-          onChange={store.setStartTime}
+          onChange={store.setX}
         ></InputNumber>
 
         <InputNumber
-          value={store.activeNodeShowValue!.endTime}
+          value={store.activeNodeShowValue?.y}
           formatter={(value) => Number(value).toFixed(2)}
           parser={(value) => Number(value)}
           v-slots={{
-            addonBefore: () => '结束时间',
+            addonBefore: () => '位置 Y',
           }}
-          onChange={store.setEndTime}
+          onChange={store.setY}
         ></InputNumber>
       </div>
     );

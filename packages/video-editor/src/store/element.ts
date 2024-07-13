@@ -11,10 +11,17 @@ export const elementStore = defineStore('element', () => {
   const activeNode = ref<ElementItem | null>(null);
 
   const timeLine = useTimeLine();
-  const activeNodeStartTime = computed(() => activeNode.value?.startTime || 0);
-  const activeNodeEndTime = computed(() => activeNode.value?.endTime || timeLine.duration.value);
-
-  const operate = useOperate(activeNode, activeNodeStartTime, activeNodeEndTime, timeLine.duration);
+  const activeNodeShowValue = computed(() =>
+    activeNode.value
+      ? ({
+          ...activeNode.value,
+          startTime: activeNode.value?.startTime || 0,
+          endTime: activeNode.value?.endTime || timeLine.duration.value,
+          x: activeNode.value.x || 0,
+          y: activeNode.value.y || 0,
+        } as Required<ElementItem>)
+      : null
+  );
 
   const editor = useEditor<MaterialItem>({
     afterAdd: (data, uid) => {
@@ -26,10 +33,21 @@ export const elementStore = defineStore('element', () => {
     chooseOne: (uid: string) => {
       activeNode.value = nodes.value.find((item) => item.uid === uid) || null;
     },
+    clearChoose: () => {
+      activeNode.value = null;
+    },
+    updateActiveInfo: (data) => updateActiveInfo(data),
   });
 
+  const operate = useOperate(
+    activeNode,
+    activeNodeShowValue,
+    timeLine.duration,
+    editor.requestRenderAll,
+    editor.getActiveObject
+  );
+
   const setActiveNode = (item: ElementItem) => {
-    activeNode.value = item;
     editor.setSelect(item.uid);
   };
 
@@ -38,13 +56,19 @@ export const elementStore = defineStore('element', () => {
     editor.clearSelect();
   };
 
+  const updateActiveInfo = (data: fabric.Object) => {
+    if (activeNode.value) {
+      activeNode.value.x = data.left;
+      activeNode.value.y = data.top;
+    }
+  };
+
   return {
     nodes,
     activeNode,
     setActiveNode,
     clearActiveNode,
-    activeNodeStartTime,
-    activeNodeEndTime,
+    activeNodeShowValue,
     ...operate,
     ...timeLine,
     ...editor,

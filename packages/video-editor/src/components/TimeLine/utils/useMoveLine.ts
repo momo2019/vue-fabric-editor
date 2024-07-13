@@ -41,8 +41,8 @@ export const useMoveLine = () => {
     ev.stopPropagation();
     ev.preventDefault();
     const xGap = pageX - startX;
-    const lastStartTime = store.activeNodeStartTime;
-    const lastEndTime = store.activeNodeEndTime;
+    const lastStartTime = store.activeNodeShowValue!.startTime;
+    const lastEndTime = store.activeNodeShowValue!.endTime;
     if (isStart) {
       store.setStartTime(lastStartTime + xGap / store.perSecGapWidth);
     } else {

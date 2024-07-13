@@ -4,33 +4,60 @@ const minDuration = 1;
 
 export const useOperate = (
   activeNode: Ref<ElementItem | null>,
-  activeNodeStartTime: ComputedRef<number>,
-  activeNodeEndTime: ComputedRef<number>,
-  duration: Ref<number>
+  activeNodeShowValue: ComputedRef<Required<ElementItem> | null>,
+  duration: Ref<number>,
+  requestRenderAll: () => void,
+  getActiveNode: () => fabric.Object | null
 ) => {
   const setStartTime = (time: number) => {
-    if (activeNode.value) {
+    if (activeNodeShowValue.value && activeNode.value) {
       activeNode.value.startTime = Math.max(time, 0);
-      if (activeNodeStartTime.value + minDuration > activeNodeEndTime.value) {
-        activeNode.value.startTime = activeNodeEndTime.value - minDuration;
+      if (activeNodeShowValue.value.startTime + minDuration > activeNodeShowValue.value.endTime) {
+        activeNode.value.startTime = activeNodeShowValue.value.endTime - minDuration;
       }
     }
   };
 
   const setEndTime = (time: number) => {
-    if (activeNode.value) {
+    if (activeNodeShowValue.value && activeNode.value) {
       activeNode.value.endTime = time;
-      if (activeNodeStartTime.value + minDuration > activeNodeEndTime.value) {
-        activeNode.value.endTime = activeNodeStartTime.value + minDuration;
+      if (activeNodeShowValue.value.startTime + minDuration > activeNodeShowValue.value.endTime) {
+        activeNode.value.endTime = activeNodeShowValue.value.startTime + minDuration;
       }
-      if (activeNodeEndTime.value >= duration.value) {
+      if (activeNodeShowValue.value.endTime >= duration.value) {
         activeNode.value.endTime = undefined;
       }
+    }
+  };
+
+  const setFbNodeInfo = <T extends keyof fabric.Object>(key: T, value: fabric.Object[T]) => {
+    const activeFbNode = getActiveNode();
+    if (activeFbNode) {
+      activeFbNode[key] = value;
+      requestRenderAll();
+      return true;
+    }
+    return false;
+  };
+
+  const setX = (x: number) => {
+    // TODO 需要根据分辨率限制一下
+    if (setFbNodeInfo('left', x) && activeNode.value) {
+      activeNode.value.x = x;
+    }
+  };
+
+  const setY = (y: number) => {
+    // TODO 需要根据分辨率限制一下
+    if (setFbNodeInfo('top', y) && activeNode.value) {
+      activeNode.value.y = y;
     }
   };
 
   return {
     setStartTime,
     setEndTime,
+    setX,
+    setY,
   };
 };
