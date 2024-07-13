@@ -33,7 +33,18 @@ export const useOperate = (
   const setFbNodeInfo = <T extends keyof fabric.Object>(key: T, value: fabric.Object[T]) => {
     const activeFbNode = getActiveNode();
     if (activeFbNode) {
-      activeFbNode[key] = value;
+      switch (key) {
+        case 'width':
+          activeFbNode.scaleX = activeFbNode.width ? value / activeFbNode.width : 1;
+          break;
+        case 'height':
+          activeFbNode.scaleY = activeFbNode.height ? value / activeFbNode.height : 1;
+          break;
+        default:
+          activeFbNode[key] = value;
+          break;
+      }
+
       requestRenderAll();
       return true;
     }
@@ -54,10 +65,33 @@ export const useOperate = (
     }
   };
 
+  const setWidth = (width: number) => {
+    if (setFbNodeInfo('width', width) && activeNode.value) {
+      activeNode.value.width = width;
+    }
+  };
+
+  const setHeight = (height: number) => {
+    if (setFbNodeInfo('height', height) && activeNode.value) {
+      activeNode.value.height = height;
+    }
+  };
+
+  const setRotation = (rotation: number) => {
+    rotation = Math.min(rotation, 360);
+    rotation = Math.max(rotation, 0);
+    if (setFbNodeInfo('angle', rotation) && activeNode.value) {
+      activeNode.value.rotation = rotation;
+    }
+  };
+
   return {
     setStartTime,
     setEndTime,
     setX,
     setY,
+    setWidth,
+    setHeight,
+    setRotation,
   };
 };

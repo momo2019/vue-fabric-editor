@@ -19,6 +19,7 @@ export const elementStore = defineStore('element', () => {
           endTime: activeNode.value?.endTime || timeLine.duration.value,
           x: activeNode.value.x || 0,
           y: activeNode.value.y || 0,
+          rotation: activeNode.value.rotation || 0,
         } as Required<ElementItem>)
       : null
   );
@@ -28,6 +29,8 @@ export const elementStore = defineStore('element', () => {
       nodes.value.push({
         ...data,
         uid,
+        width: 0,
+        height: 0,
       });
     },
     chooseOne: (uid: string) => {
@@ -60,6 +63,9 @@ export const elementStore = defineStore('element', () => {
     if (activeNode.value) {
       activeNode.value.x = data.left;
       activeNode.value.y = data.top;
+      activeNode.value.width = data.getScaledWidth();
+      activeNode.value.height = data.getScaledHeight();
+      activeNode.value.rotation = data.angle;
     }
   };
 

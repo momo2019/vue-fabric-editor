@@ -28,6 +28,36 @@ export default defineComponent({
           }}
           onChange={store.setY}
         ></InputNumber>
+
+        <InputNumber
+          value={store.activeNodeShowValue?.width}
+          formatter={(value) => Number(value).toFixed(2)}
+          parser={(value) => Number(value)}
+          v-slots={{
+            addonBefore: () => '宽度',
+          }}
+          onChange={store.setWidth}
+        ></InputNumber>
+
+        <InputNumber
+          value={store.activeNodeShowValue?.height}
+          formatter={(value) => Number(value).toFixed(2)}
+          parser={(value) => Number(value)}
+          v-slots={{
+            addonBefore: () => '高度',
+          }}
+          onChange={store.setHeight}
+        ></InputNumber>
+
+        <InputNumber
+          value={store.activeNodeShowValue?.rotation}
+          formatter={(value) => Number(value).toFixed(2)}
+          parser={(value) => Number(value)}
+          v-slots={{
+            addonBefore: () => '旋转',
+          }}
+          onChange={store.setRotation}
+        ></InputNumber>
       </div>
     );
   },

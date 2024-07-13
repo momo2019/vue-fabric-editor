@@ -72,13 +72,16 @@ export const useEditor = <T>(cb: {
       cb.clearChoose();
     });
 
-    canvas.on('object:moving', (e) => {
-      const activeObject = canvas.getActiveObject();
-      if (e && e.target && e.target !== activeObject) return;
-      cb.updateActiveInfo(activeObject!);
-    });
-
+    canvas.on('object:moving', updateActiveInfo);
+    canvas.on('object:scaling', updateActiveInfo);
+    canvas.on('object:rotating', updateActiveInfo);
     fbrcCanvas.value = canvas;
+  };
+
+  const updateActiveInfo = (e: fabric.IEvent<MouseEvent>) => {
+    const activeObject = fbrcCanvas.value?.getActiveObject();
+    if (e?.target?.data !== activeObject?.data) return;
+    cb.updateActiveInfo(activeObject!);
   };
 
   const afterAdd = (img: fabric.Image, data: T) => {
@@ -89,6 +92,8 @@ export const useEditor = <T>(cb: {
       left: 100,
       top: 100,
     });
+    img.originX = 'center';
+    img.originY = 'center';
     const uid = v4();
     fbrcNodes.set(uid, img);
     img.data = uid;

@@ -6,4 +6,7 @@ export type ElementItem = {
   endTime?: number;
   x?: number;
   y?: number;
+  width: number;
+  height: number;
+  rotation?: number;
 } & MaterialItem;
