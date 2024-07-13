@@ -7,6 +7,7 @@ import Time from './operates/time';
 import { elementStore } from '@/store/element';
 import Base from './operates/base';
 import Global from './operates/global';
+import { Button } from 'ant-design-vue';
 
 export default defineComponent({
   setup() {
@@ -17,6 +18,7 @@ export default defineComponent({
           <>
             <Time></Time>
             <Base></Base>
+            <Button onClick={store.removeActive}>删除节点</Button>
           </>
         ) : (
           <Global></Global>

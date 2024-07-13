@@ -20,6 +20,7 @@ import { computed, ref } from 'vue';
 
 export const useEditor = <T>(cb: {
   afterAdd: (data: T, uid: string) => void;
+  afterRemove: (uid: string) => void;
   chooseOne: (uid: string, activeObject: fabric.Object) => void;
   clearChoose: () => void;
   updateActiveInfo: (activeObject: fabric.Object) => void;
@@ -75,6 +76,10 @@ export const useEditor = <T>(cb: {
 
     canvasEditor.on('sizeChange', (width, height) => {
       cb.updateGlobelInfo({ width, height });
+    });
+
+    canvas.on('object:removed', (e) => {
+      cb.afterRemove(e.target?.data);
     });
 
     canvas.on('object:moving', updateActiveInfo);
@@ -158,6 +163,11 @@ export const useEditor = <T>(cb: {
     canvasEditor.setSize(width, height, needAuto);
   };
 
+  const removeObject = (uid) => {
+    const object = fbrcCanvas.value?.getObjects().find((item) => item.data === uid);
+    object && fbrcCanvas.value?.remove(object);
+  };
+
   return {
     initEditor,
     addImage,
@@ -167,5 +177,6 @@ export const useEditor = <T>(cb: {
     getActiveObject,
     requestRenderAll,
     setWorkspaseSize,
+    removeObject,
   };
 };

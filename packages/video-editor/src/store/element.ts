@@ -28,15 +28,25 @@ export const elementStore = defineStore('element', () => {
       : null
   );
 
+  const removeNode = (uid: string) => {
+    nodes.value.splice(
+      nodes.value.findIndex((item) => item.uid === uid),
+      1
+    );
+  };
+
+  const addNode = (data: MaterialItem, uid: string) => {
+    nodes.value.push({
+      ...data,
+      uid,
+      width: 0,
+      height: 0,
+    });
+  };
+
   const editor = useEditor<MaterialItem>({
-    afterAdd: (data, uid) => {
-      nodes.value.push({
-        ...data,
-        uid,
-        width: 0,
-        height: 0,
-      });
-    },
+    afterAdd: addNode,
+    afterRemove: removeNode,
     chooseOne: (uid: string) => {
       activeNode.value = nodes.value.find((item) => item.uid === uid) || null;
     },
@@ -97,6 +107,10 @@ export const elementStore = defineStore('element', () => {
     editor.setWorkspaseSize(global.value.width, global.value.height, false);
   };
 
+  const removeActive = () => {
+    activeNode.value && editor.removeObject(activeNode.value.uid);
+  };
+
   return {
     nodes,
     activeNode,
@@ -106,6 +120,7 @@ export const elementStore = defineStore('element', () => {
     global,
     setGlobalHeight,
     setGlobalWidth,
+    removeActive,
     ...operate,
     ...timeLine,
     ...editor,
