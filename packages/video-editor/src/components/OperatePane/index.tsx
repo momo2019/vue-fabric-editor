@@ -6,16 +6,22 @@ import styles from './index.module.scss';
 import Time from './operates/time';
 import { elementStore } from '@/store/element';
 import Base from './operates/base';
+import Global from './operates/global';
 
 export default defineComponent({
   setup() {
     const store = elementStore();
-    return () =>
-      store.activeNode && (
-        <div class={styles.wrap}>
-          <Time></Time>
-          <Base></Base>
-        </div>
-      );
+    return () => (
+      <div class={styles.wrap}>
+        {store.activeNode ? (
+          <>
+            <Time></Time>
+            <Base></Base>
+          </>
+        ) : (
+          <Global></Global>
+        )}
+      </div>
+    );
   },
 });

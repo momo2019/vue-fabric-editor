@@ -23,6 +23,7 @@ export const useEditor = <T>(cb: {
   chooseOne: (uid: string, activeObject: fabric.Object) => void;
   clearChoose: () => void;
   updateActiveInfo: (activeObject: fabric.Object) => void;
+  updateGlobelInfo: (data: { height: number; width: number }) => void;
 }) => {
   const fbrcNodes = new Map<string, fabric.Image>();
   const canvasEditor = new Editor();
@@ -70,6 +71,10 @@ export const useEditor = <T>(cb: {
 
     canvasEditor.on('selectCancel', () => {
       cb.clearChoose();
+    });
+
+    canvasEditor.on('sizeChange', (width, height) => {
+      cb.updateGlobelInfo({ width, height });
     });
 
     canvas.on('object:moving', updateActiveInfo);
@@ -150,6 +155,13 @@ export const useEditor = <T>(cb: {
     return fbrcCanvas.value?.requestRenderAll();
   };
 
+  const setWorkspaseSize = (width: number, height: number, needAuto = true) => {
+    if (!initEditorEnd.value) {
+      return;
+    }
+    canvasEditor.setSize(width, height, needAuto);
+  };
+
   return {
     initEditor,
     addImage,
@@ -158,5 +170,6 @@ export const useEditor = <T>(cb: {
     setSelect,
     getActiveObject,
     requestRenderAll,
+    setWorkspaseSize,
   };
 };

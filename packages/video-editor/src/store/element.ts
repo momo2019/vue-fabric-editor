@@ -1,12 +1,16 @@
 import { ElementItem } from '@/interfaces/element';
 import { useEditor } from '@/utils/useEditor';
 import { defineStore } from 'pinia';
-import { computed, ref } from 'vue';
+import { computed, nextTick, ref } from 'vue';
 import { MaterialItem } from '@/interfaces/material';
 import { useTimeLine } from '@/utils/useTimeLine';
 import { useOperate } from '@/utils/useOperate';
 
 export const elementStore = defineStore('element', () => {
+  const global = ref({
+    height: 1920,
+    width: 1080,
+  });
   const nodes = ref<ElementItem[]>([]);
   const activeNode = ref<ElementItem | null>(null);
 
@@ -40,6 +44,14 @@ export const elementStore = defineStore('element', () => {
       activeNode.value = null;
     },
     updateActiveInfo: (data) => updateActiveInfo(data),
+    updateGlobelInfo: (data) => {
+      setGlobalWidth(data.width);
+      setGlobalHeight(data.height);
+    },
+  });
+
+  nextTick(() => {
+    editor.setWorkspaseSize(global.value.width, global.value.height);
   });
 
   const operate = useOperate(
@@ -69,12 +81,31 @@ export const elementStore = defineStore('element', () => {
     }
   };
 
+  const setGlobalWidth = (width: number) => {
+    if (global.value.width === width) {
+      return;
+    }
+    global.value.width = width;
+    editor.setWorkspaseSize(global.value.width, global.value.height, false);
+  };
+
+  const setGlobalHeight = (height: number) => {
+    if (global.value.height === height) {
+      return;
+    }
+    global.value.height = height;
+    editor.setWorkspaseSize(global.value.width, global.value.height, false);
+  };
+
   return {
     nodes,
     activeNode,
     setActiveNode,
     clearActiveNode,
     activeNodeShowValue,
+    global,
+    setGlobalHeight,
+    setGlobalWidth,
     ...operate,
     ...timeLine,
     ...editor,
