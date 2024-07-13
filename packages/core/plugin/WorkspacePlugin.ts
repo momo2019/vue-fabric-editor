@@ -91,6 +91,8 @@ class WorkspacePlugin implements IPluginTempl {
     });
     workspace.set('selectable', false);
     workspace.set('hasControls', false);
+    workspace.set('originX', 'center');
+    workspace.set('originY', 'center');
     workspace.hoverCursor = 'default';
     this.canvas.add(workspace);
     this.canvas.renderAll();
@@ -132,7 +134,7 @@ class WorkspacePlugin implements IPluginTempl {
     resizeObserver.observe(this.workspaceEl);
   }
 
-  setSize(width: number | undefined, height: number | undefined) {
+  setSize(width: number | undefined, height: number | undefined, needAuto = true) {
     this._initBackground();
     this.option.width = width;
     this.option.height = height;
@@ -143,7 +145,7 @@ class WorkspacePlugin implements IPluginTempl {
     this.workspace.set('width', width);
     this.workspace.set('height', height);
     this.editor.emit('sizeChange', this.workspace.width, this.workspace.height);
-    this.auto();
+    needAuto && this.auto();
   }
 
   setZoomAuto(scale: number, cb?: (left?: number, top?: number) => void) {

@@ -45,7 +45,7 @@ class MaskPlugin implements IPluginTempl {
     let zoomToPointNumber = zoom;
     if (hack) {
       // 比较hack的方法，判断为fabric内部的数据更新问题
-      zoomToPointNumber += 0.0000001 * (this.hackFlag ? 1 : -1);
+      zoomToPointNumber += Math.random() * 0.000001 * (this.hackFlag ? 1 : -1);
       this.hackFlag = !this.hackFlag;
     }
 
@@ -58,11 +58,8 @@ class MaskPlugin implements IPluginTempl {
       const cHeight = height / zoom;
       this.coverMask.width = cWidth;
       this.coverMask.height = cHeight;
-      this.coverMask.left = (this.workspace.left || 0) + (this.workspace.width! - cWidth) / 2;
-      this.coverMask.top = (this.workspace.top || 0) + (this.workspace.height! - cHeight) / 2;
+
       this.workspace.clone((clone: fabric.Rect) => {
-        clone.left = -clone.width! / 2;
-        clone.top = -clone.height! / 2;
         clone.inverted = true;
         this.coverMask!.clipPath = clone;
         this.canvas.requestRenderAll();
@@ -83,6 +80,8 @@ class MaskPlugin implements IPluginTempl {
     coverMask.set('selectable', false);
     coverMask.set('hasControls', false);
     coverMask.set('evented', false);
+    coverMask.set('originX', 'center');
+    coverMask.set('originY', 'center');
     coverMask.hoverCursor = 'default';
     this.canvas.on('object:added', () => {
       coverMask.bringToFront();

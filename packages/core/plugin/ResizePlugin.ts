@@ -70,8 +70,8 @@ class ResizePlugin implements IPluginTempl {
     const workspace = this.getWorkspase() as Required<fabric.Rect>;
     const wsWidth = workspace.width * scaleX;
     const wsHeight = workspace.height * scaleY;
-    const wsLeft = workspace.left * scaleX;
-    const wsTop = workspace.top * scaleY;
+    const wsLeft = -(workspace.width * scaleX) / 2;
+    const wsTop = -(workspace.height * scaleY) / 2;
     const { bWidth, bHeight, bPadding } = this.barOpts;
     if (!viewportTransform) return;
     // 左控制条
@@ -162,10 +162,10 @@ class ResizePlugin implements IPluginTempl {
           tempLength = Math.round(this.wsOffset.width - deltaViewX * 2);
           if (tempLength >= this.minSize.width) {
             this.dragEl.style.left = `${this.barOffset.x + deltaX}px`;
-            workspace.set('left', this.wsOffset.left + deltaViewX * 2);
+            // workspace.set('left', this.wsOffset.left + deltaViewX * 2);
             workspace.set('width', tempLength);
           } else {
-            workspace.set('left', this.wsOffset.left + this.wsOffset.width - this.minSize.width);
+            // workspace.set('left', this.wsOffset.left + this.wsOffset.width - this.minSize.width);
             workspace.set('width', this.minSize.width);
           }
           break;
@@ -182,10 +182,10 @@ class ResizePlugin implements IPluginTempl {
           tempLength = Math.round(this.wsOffset.height - deltaViewY * 2);
           if (tempLength >= this.minSize.height) {
             this.dragEl.style.top = `${this.barOffset.y + deltaY}px`;
-            workspace.set('top', this.wsOffset.top + deltaViewY * 2);
+            // workspace.set('top', this.wsOffset.top + deltaViewY * 2);
             workspace.set('height', tempLength);
           } else {
-            workspace.set('top', this.wsOffset.top + this.wsOffset.height - this.minSize.height);
+            // workspace.set('top', this.wsOffset.top + this.wsOffset.height - this.minSize.height);
             workspace.set('height', this.minSize.height);
           }
           break;
