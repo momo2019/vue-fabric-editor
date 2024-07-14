@@ -120,19 +120,22 @@ export const useEditor = <T>(cb: {
     if (!initEditorEnd.value) {
       return;
     }
-    // TODO 加入视频报错问题@kuaitu/core
-    fabric.Image.fromURL(url, (img) => {
+
+    const videoE = document.createElement('video');
+    videoE.muted = true;
+    videoE.crossOrigin = 'anonymous';
+    videoE.src = url;
+    videoE.preload = 'auto';
+    videoE.loop = true;
+    videoE.muted = true;
+
+    // 加入画布存在一定的延迟
+    videoE.oncanplay = () => {
+      videoE.width = videoE.videoWidth;
+      videoE.height = videoE.videoHeight;
+      const img = new fabric.Image(videoE);
       afterAdd(img, data);
-    });
-    // const videoDom = document.createElement('video');
-    // videoDom.src = item.url;
-    // videoDom.preload = 'auto';
-    // videoDom.onloadeddata = () => {
-    //   const img = new fabric.Image(videoDom, {
-    //     objectCaching: false,
-    //   });
-    //   afterAdd(item, img);
-    // };
+    };
   };
 
   const setSelect = (uid: string) => {

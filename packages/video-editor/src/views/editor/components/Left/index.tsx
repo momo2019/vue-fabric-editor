@@ -44,8 +44,7 @@ export default defineComponent({
           store.addImage(item.url, item);
           break;
         case MaterialType.video:
-          // TODO 视频url的问题
-          item.cover && store.addVideo(item.cover, item);
+          item.cover && store.addVideo(item.url, item);
           break;
         default:
           break;
