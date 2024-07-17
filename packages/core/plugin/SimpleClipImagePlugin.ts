@@ -120,12 +120,52 @@ const createPolygonClip = (activeObject: fabric.Object, inverted: boolean) => {
   });
   return { shell, clipPath };
 };
+
+const createCustomClip = (activeObject: fabric.Object, inverted: boolean, url: string) => {
+  const { width = 0, height = 0, left = 0, top = 0 } = getBounds(activeObject);
+  return new Promise<{ clipPath: fabric.Object; shell: fabric.Object }>((resolve) => {
+    const shell = new fabric.Rect({
+      fill: 'rgba(0,0,0,0)',
+      originX: 'center',
+      originY: 'center',
+      width,
+      height,
+      left,
+      top,
+    });
+    bindInfo(shell, activeObject);
+    fabric.Image.fromURL(
+      url,
+      (clipPath) => {
+        resolve({ clipPath, shell });
+        clipPath.scaleX = width / (clipPath.width || width);
+        clipPath.scaleY = height / (clipPath.height || height);
+        shell.set({
+          width: clipPath.width,
+          height: clipPath.height,
+          left,
+          top,
+          scaleX: clipPath.scaleX,
+          scaleY: clipPath.scaleY,
+        });
+      },
+      {
+        absolutePositioned: true,
+        originY: 'center',
+        originX: 'center',
+        left,
+        top,
+        inverted,
+      }
+    );
+  });
+};
 export default class SimpleClipImagePlugin implements IPluginTempl {
   static pluginName = 'SimpleClipImagePlugin';
   //  static events = ['sizeChange'];
   static apis = ['addClipPathToImage', 'removeClip'];
   constructor(public canvas: fabric.Canvas, public editor: IEditor) {}
-  addClipPathToImage(value: string) {
+  async addClipPathToImage(value: string) {
     const activeObject = this.canvas.getActiveObjects()[0];
     if (activeObject && activeObject.type === 'image') {
       let clip: { shell: fabric.Object; clipPath: fabric.Object } | null = null;
@@ -143,6 +183,9 @@ export default class SimpleClipImagePlugin implements IPluginTempl {
           break;
         case 'triangle':
           clip = createTriClip(activeObject, isInverted);
+          break;
+        default:
+          clip = await createCustomClip(activeObject, isInverted, name);
           break;
       }
       if (clip == null) return;
@@ -164,7 +207,7 @@ export default class SimpleClipImagePlugin implements IPluginTempl {
         if (clipPath instanceof fabric.Ellipse && shell instanceof fabric.Ellipse) {
           clipPath.set({ rx: shell.getRx(), ry: shell.getRy() });
           this.correctPosition(activeObject, shell, clipPath);
-        } else if (shell instanceof fabric.Polygon) {
+        } else if (shell instanceof fabric.Polygon || clipPath instanceof fabric.Image) {
           this.correctPosition(activeObject, shell, clipPath);
           const { scaleX: cSx = 1, scaleY: cSy = 1 } = clipPath;
           const { scaleX: sSx = 1, scaleY: sSy = 1 } = shell;
