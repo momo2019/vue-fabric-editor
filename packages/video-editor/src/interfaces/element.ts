@@ -9,4 +9,5 @@ export type ElementItem = {
   width: number;
   height: number;
   rotation?: number;
+  clip?: string;
 } & MaterialItem;

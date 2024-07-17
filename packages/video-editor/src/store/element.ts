@@ -24,15 +24,14 @@ export const elementStore = defineStore('element', () => {
           x: activeNode.value.x || 0,
           y: activeNode.value.y || 0,
           rotation: activeNode.value.rotation || 0,
+          clip: activeNode.value.clip || '',
         } as Required<ElementItem>)
       : null
   );
 
   const removeNode = (uid: string) => {
-    nodes.value.splice(
-      nodes.value.findIndex((item) => item.uid === uid),
-      1
-    );
+    const index = nodes.value.findIndex((item) => item.uid === uid);
+    index !== -1 && nodes.value.splice(index, 1);
   };
 
   const addNode = (data: MaterialItem, uid: string) => {
@@ -64,13 +63,7 @@ export const elementStore = defineStore('element', () => {
     editor.setWorkspaseSize(global.value.width, global.value.height);
   });
 
-  const operate = useOperate(
-    activeNode,
-    activeNodeShowValue,
-    timeLine.duration,
-    editor.requestRenderAll,
-    editor.getActiveObject
-  );
+  const operate = useOperate(activeNode, activeNodeShowValue, timeLine.duration, editor);
 
   const setActiveNode = (item: ElementItem) => {
     editor.setSelect(item.uid);

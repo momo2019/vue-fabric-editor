@@ -1,3 +1,4 @@
+import { ElementItem } from '@/interfaces/element';
 import Editor, {
   DringPlugin,
   AlignGuidLinePlugin,
@@ -13,12 +14,13 @@ import Editor, {
   MaskPlugin,
   ResizePlugin,
   RulerPlugin,
+  SimpleClipImagePlugin,
 } from '@kuaitu/core';
 import { fabric } from 'fabric';
 import { v4 } from 'uuid';
 import { computed, ref } from 'vue';
 
-export const useEditor = <T>(cb: {
+export const useEditor = <T = ElementItem>(cb: {
   afterAdd: (data: T, uid: string) => void;
   afterRemove: (uid: string) => void;
   chooseOne: (uid: string, activeObject: fabric.Object) => void;
@@ -57,6 +59,7 @@ export const useEditor = <T>(cb: {
     canvasEditor.use(MaskPlugin);
     canvasEditor.use(RulerPlugin);
     canvasEditor.use(ResizePlugin);
+    canvasEditor.use(SimpleClipImagePlugin);
     canvasEditor.rulerEnable();
 
     canvasEditor.on('selectOne', () => {
@@ -171,6 +174,14 @@ export const useEditor = <T>(cb: {
     object && fbrcCanvas.value?.remove(object);
   };
 
+  const addClipPathToImage = (clip: string) => {
+    canvasEditor.addClipPathToImage(clip);
+  };
+
+  const removeClip = () => {
+    canvasEditor.removeClip();
+  };
+
   return {
     initEditor,
     addImage,
@@ -181,5 +192,9 @@ export const useEditor = <T>(cb: {
     requestRenderAll,
     setWorkspaseSize,
     removeObject,
+    addClipPathToImage,
+    removeClip,
   };
 };
+
+export type EditorReturnType<T = ElementItem> = ReturnType<typeof useEditor<T>>;

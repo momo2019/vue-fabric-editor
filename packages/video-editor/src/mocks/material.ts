@@ -5,7 +5,7 @@ export const MOCK_MATERIALS: Record<MaterialType, MaterialGroup[]> = {
     {
       label: '背景',
       list: new Array(40).fill(0).map((_, i) => ({
-        url: i % 2 ? '/test.jpeg' : '/cover.jpeg',
+        url: ['/test.jpeg', '/cover.jpeg', '/test2.png'][i % 3],
       })),
     },
   ],

@@ -1,14 +1,22 @@
 import { ElementItem } from '@/interfaces/element';
-import { ComputedRef, Ref } from 'vue';
+import { CLIP_LIST } from '@/mocks/clip';
+import { ComputedRef, ref, Ref } from 'vue';
+import { EditorReturnType } from './useEditor';
 const minDuration = 1;
 
 export const useOperate = (
   activeNode: Ref<ElementItem | null>,
   activeNodeShowValue: ComputedRef<Required<ElementItem> | null>,
   duration: Ref<number>,
-  requestRenderAll: () => void,
-  getActiveNode: () => fabric.Object | null
+  editor: EditorReturnType
 ) => {
+  const clipList = ref<
+    {
+      value: string;
+      label: string;
+    }[]
+  >(CLIP_LIST);
+
   const setStartTime = (time: number) => {
     if (activeNodeShowValue.value && activeNode.value) {
       activeNode.value.startTime = Math.max(time, 0);
@@ -31,7 +39,7 @@ export const useOperate = (
   };
 
   const setFbNodeInfo = <T extends keyof fabric.Object>(key: T, value: fabric.Object[T]) => {
-    const activeFbNode = getActiveNode();
+    const activeFbNode = editor.getActiveObject();
     if (activeFbNode) {
       switch (key) {
         case 'width':
@@ -45,7 +53,7 @@ export const useOperate = (
           break;
       }
 
-      requestRenderAll();
+      editor.requestRenderAll();
       return true;
     }
     return false;
@@ -85,6 +93,14 @@ export const useOperate = (
     }
   };
 
+  const setClip = (clip?: string) => {
+    editor.removeClip();
+    if (activeNode.value) {
+      activeNode.value.clip = clip;
+    }
+    clip && editor.addClipPathToImage(clip);
+  };
+
   return {
     setStartTime,
     setEndTime,
@@ -93,5 +109,7 @@ export const useOperate = (
     setWidth,
     setHeight,
     setRotation,
+    clipList,
+    setClip,
   };
 };
