@@ -1,5 +1,5 @@
 import { formatDuration } from '@/utils/format';
-import { timeGap } from '@/utils/useTimeLine';
+import { timeGap } from '@/store/element/hooks/useTimeLine';
 
 export const cvsHeight = 24;
 

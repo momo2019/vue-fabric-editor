@@ -1,10 +1,10 @@
 import { ElementItem } from '@/interfaces/element';
-import { useEditor } from '@/utils/useEditor';
+import { useEditor } from '@/store/element/hooks/useEditor';
 import { defineStore } from 'pinia';
 import { computed, nextTick, ref } from 'vue';
 import { MaterialItem } from '@/interfaces/material';
-import { useTimeLine } from '@/utils/useTimeLine';
-import { useOperate } from '@/utils/useOperate';
+import { useTimeLine } from '@/store/element/hooks/useTimeLine';
+import { useOperate } from '@/store/element/hooks/useOperate';
 
 export const elementStore = defineStore('element', () => {
   const global = ref({
