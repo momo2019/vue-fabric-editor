@@ -1,10 +1,11 @@
-import { ElementItem } from '@/interfaces/element';
+import { ElementItem, ShowElementItem, VideoNode } from '@/interfaces/element';
 import { useEditor } from '@/store/element/hooks/useEditor';
 import { defineStore } from 'pinia';
-import { computed, nextTick, ref } from 'vue';
+import { computed, nextTick, Ref, ref } from 'vue';
 import { MaterialItem } from '@/interfaces/material';
 import { useTimeLine } from '@/store/element/hooks/useTimeLine';
 import { useOperate } from '@/store/element/hooks/useOperate';
+import { useVideoAudioOperate } from './hooks/useVideoAudioOperate';
 
 export const elementStore = defineStore('element', () => {
   const global = ref({
@@ -18,14 +19,14 @@ export const elementStore = defineStore('element', () => {
   const activeNodeShowValue = computed(() =>
     activeNode.value
       ? ({
-          ...activeNode.value,
+          ...(activeNode.value as unknown as ShowElementItem),
           startTime: activeNode.value?.startTime || 0,
           endTime: activeNode.value?.endTime || timeLine.duration.value,
           x: activeNode.value.x || 0,
           y: activeNode.value.y || 0,
           rotation: activeNode.value.rotation || 0,
           clip: activeNode.value.clip || '',
-        } as Required<ElementItem>)
+        } as ShowElementItem)
       : null
   );
 
@@ -65,6 +66,8 @@ export const elementStore = defineStore('element', () => {
   });
 
   const operate = useOperate(activeNode, activeNodeShowValue, timeLine.duration, editor);
+
+  const videoAudioOperate = useVideoAudioOperate(activeNode as Ref<ElementItem<VideoNode>>);
 
   const setActiveNode = (item: ElementItem) => {
     editor.setSelect(item.uid);
@@ -115,6 +118,7 @@ export const elementStore = defineStore('element', () => {
     setGlobalHeight,
     setGlobalWidth,
     removeActive,
+    ...videoAudioOperate,
     ...operate,
     ...timeLine,
     ...editor,

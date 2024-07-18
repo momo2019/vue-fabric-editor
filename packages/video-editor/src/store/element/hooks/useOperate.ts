@@ -1,4 +1,4 @@
-import { ElementItem } from '@/interfaces/element';
+import { ElementItem, ShowElementItem } from '@/interfaces/element';
 import { CLIP_LIST } from '@/mocks/clip';
 import { ComputedRef, ref, Ref } from 'vue';
 import { EditorReturnType } from './useEditor';
@@ -6,7 +6,7 @@ const minDuration = 1;
 
 export const useOperate = (
   activeNode: Ref<ElementItem | null>,
-  activeNodeShowValue: ComputedRef<Required<ElementItem> | null>,
+  activeNodeShowValue: ComputedRef<ShowElementItem | null>,
   duration: Ref<number>,
   editor: EditorReturnType
 ) => {

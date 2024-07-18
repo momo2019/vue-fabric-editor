@@ -38,11 +38,17 @@ export type ImageNode = {
 export type VideoNode = {
   type: MaterialType.video;
   data: string;
-  loop?: boolean;
+  isLoop?: boolean;
   vol?: number;
+  fadeIn?: number;
+  fadeOut?: number;
 };
 
-export type ElementItem = {
+export type ElementItem<T = TextNode | ImageNode | VideoNode> = {
   uid: string;
 } & BaseNode &
-  (TextNode | ImageNode | VideoNode);
+  T;
+
+export type ShowElementItem = Required<
+  BaseNode & Omit<TextNode, 'type'> & Omit<ImageNode, 'type'> & Omit<VideoNode, 'type'>
+>;

@@ -1,0 +1,24 @@
+.pane_item {
+  display: flex;
+  align-items: center;
+  height: 32px;
+  gap: 8px;
+
+  .pane_item_label {
+    display: flex;
+    width: 80px;
+    height: 100%;
+    font-size: 14px;
+    align-items: center;
+    justify-content: center;
+    color: rgba(0, 0, 0, 0.88);
+    background-color: rgba(0, 0, 0, 0.02);
+    border: 1px solid #d9d9d9;
+    border-radius: 6px;
+  }
+
+  .pane_item_content {
+    flex: 1;
+    min-width: 0;
+  }
+}
