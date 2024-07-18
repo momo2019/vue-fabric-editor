@@ -4,8 +4,9 @@ export enum MaterialType {
 }
 
 export type MaterialItem = {
+  type: MaterialType;
   cover?: string; // 封面
-  url: string; // 数据
+  data: string; // 数据
 };
 
 export type MaterialGroup = {

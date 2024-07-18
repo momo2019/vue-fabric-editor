@@ -55,7 +55,7 @@ export default defineComponent({
       <div
         class={styles.material_item}
         style={{
-          backgroundImage: `url(${item.cover || item.url})`,
+          backgroundImage: `url(${item.cover || item.data})`,
         }}
         onClick={() => addMaterial(item)}
       ></div>
