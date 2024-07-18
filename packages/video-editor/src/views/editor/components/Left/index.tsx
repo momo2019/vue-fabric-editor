@@ -65,8 +65,10 @@ export default defineComponent({
     const addCustomMaterial = (type: CustomType) => {
       switch (type) {
         case CustomType.text:
-          console.log('123');
-          // store.addText('');
+          store.addText('默认文本', {
+            type: MaterialType.text,
+            data: '默认文本',
+          });
           break;
         default:
           break;

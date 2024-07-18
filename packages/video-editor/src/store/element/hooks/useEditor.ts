@@ -1,4 +1,4 @@
-import { ElementItem } from '@/interfaces/element';
+import { MaterialItem } from '@/interfaces/material';
 import Editor, {
   DringPlugin,
   AlignGuidLinePlugin,
@@ -20,7 +20,7 @@ import { fabric } from 'fabric';
 import { v4 } from 'uuid';
 import { computed, ref } from 'vue';
 
-export const useEditor = <T = ElementItem>(cb: {
+export const useEditor = <T = MaterialItem>(cb: {
   afterAdd: (data: T, uid: string) => void;
   afterRemove: (uid: string) => void;
   chooseOne: (uid: string, activeObject: fabric.Object) => void;
@@ -28,7 +28,7 @@ export const useEditor = <T = ElementItem>(cb: {
   updateActiveInfo: (activeObject: fabric.Object) => void;
   updateGlobelInfo: (data: { height: number; width: number }) => void;
 }) => {
-  const fbrcNodes = new Map<string, fabric.Image>();
+  const fbrcNodes = new Map<string, fabric.Object>();
   const canvasEditor = new Editor();
 
   const fbrcCanvas = ref<fabric.Canvas | null>(null);
@@ -97,7 +97,7 @@ export const useEditor = <T = ElementItem>(cb: {
     cb.updateActiveInfo(activeObject!);
   };
 
-  const afterAdd = (img: fabric.Image, data: T) => {
+  const afterAdd = (img: fabric.Object, data: T) => {
     if (!initEditorEnd.value) {
       return;
     }
@@ -139,6 +139,14 @@ export const useEditor = <T = ElementItem>(cb: {
       const img = new fabric.Image(videoE);
       afterAdd(img, data);
     };
+  };
+
+  const addText = (text: string, data: T) => {
+    if (!initEditorEnd.value) {
+      return;
+    }
+    const obj = new fabric.Text(text);
+    afterAdd(obj, data);
   };
 
   const setSelect = (uid: string) => {
@@ -194,7 +202,8 @@ export const useEditor = <T = ElementItem>(cb: {
     removeObject,
     addClipPathToImage,
     removeClip,
+    addText,
   };
 };
 
-export type EditorReturnType<T = ElementItem> = ReturnType<typeof useEditor<T>>;
+export type EditorReturnType<T = MaterialItem> = ReturnType<typeof useEditor<T>>;

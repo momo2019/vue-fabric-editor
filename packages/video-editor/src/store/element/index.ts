@@ -36,7 +36,8 @@ export const elementStore = defineStore('element', () => {
 
   const addNode = (data: MaterialItem, uid: string) => {
     nodes.value.push({
-      ...data,
+      type: data.type,
+      data: data.data,
       uid,
       width: 0,
       height: 0,

@@ -167,7 +167,7 @@ export default class SimpleClipImagePlugin implements IPluginTempl {
   constructor(public canvas: fabric.Canvas, public editor: IEditor) {}
   async addClipPathToImage(value: string) {
     const activeObject = this.canvas.getActiveObjects()[0];
-    if (activeObject && activeObject.type === 'image') {
+    if (activeObject) {
       let clip: { shell: fabric.Object; clipPath: fabric.Object } | null = null;
       const [name, inverted] = value.split('-');
       const isInverted = !!inverted;
@@ -240,7 +240,7 @@ export default class SimpleClipImagePlugin implements IPluginTempl {
   }
   removeClip() {
     const activeObject = this.canvas.getActiveObjects()[0];
-    if (activeObject && activeObject.type === 'image') {
+    if (activeObject) {
       activeObject.set({ clipPath: undefined });
       activeObject.set('dirty', true);
       this.canvas.requestRenderAll();
