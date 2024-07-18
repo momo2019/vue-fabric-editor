@@ -1,6 +1,13 @@
+export enum MaterialGroupType {
+  image = 'image',
+  video = 'video',
+  custom = 'custom',
+}
+
 export enum MaterialType {
   image = 'image',
   video = 'video',
+  text = 'text',
 }
 
 export type MaterialItem = {

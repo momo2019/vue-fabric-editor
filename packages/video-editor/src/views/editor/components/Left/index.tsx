@@ -1,33 +1,43 @@
 import { defineComponent, ref } from 'vue';
 import styles from './index.module.scss';
-import { MaterialGroup, MaterialItem, MaterialType } from '@/interfaces/material';
+import {
+  MaterialGroupType,
+  MaterialGroup,
+  MaterialItem,
+  MaterialType,
+} from '@/interfaces/material';
 import MaterialList from '@/components/MaterialList';
 import { MOCK_MATERIALS } from '@/mocks/material';
 import { elementStore } from '@/store/element';
 
-type TypeItem = { type: MaterialType; label: string };
+type TypeItem = { type: MaterialGroupType; label: string };
 
 export default defineComponent({
   setup() {
-    const activeType = ref<MaterialType>(MaterialType.image);
+    const activeType = ref<MaterialGroupType>(MaterialGroupType.image);
     const store = elementStore();
 
-    const changeType = (type: MaterialType) => {
+    const changeType = (type: MaterialGroupType) => {
       activeType.value = type;
     };
 
     const types: TypeItem[] = [
       {
-        type: MaterialType.image,
+        type: MaterialGroupType.custom,
+        label: '添加',
+      },
+      {
+        type: MaterialGroupType.image,
         label: '图片',
       },
       {
-        type: MaterialType.video,
+        type: MaterialGroupType.video,
         label: '视频',
       },
     ];
 
-    const materials: Record<MaterialType, MaterialGroup[]> = MOCK_MATERIALS;
+    const materials: Record<MaterialGroupType.image | MaterialGroupType.video, MaterialGroup[]> =
+      MOCK_MATERIALS;
 
     const typeItemDom = (item: TypeItem) => (
       <div
@@ -39,7 +49,7 @@ export default defineComponent({
     );
 
     const addMaterial = (item: MaterialItem) => {
-      switch (activeType.value) {
+      switch (item.type) {
         case MaterialType.image:
           store.addImage(item.data, item);
           break;
@@ -55,7 +65,11 @@ export default defineComponent({
       <div class={styles.wrap}>
         <div class={styles.wrap_type}>{types.map(typeItemDom)}</div>
         <div class={styles.wrap_material}>
-          <MaterialList data={materials[activeType.value]} onAdd={addMaterial}></MaterialList>
+          {activeType.value === MaterialGroupType.custom ? (
+            <div>132</div>
+          ) : (
+            <MaterialList data={materials[activeType.value]} onAdd={addMaterial}></MaterialList>
+          )}
         </div>
       </div>
     );
