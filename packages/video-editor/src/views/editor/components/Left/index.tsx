@@ -9,12 +9,13 @@ import {
 import MaterialList from '@/components/MaterialList';
 import { MOCK_MATERIALS } from '@/mocks/material';
 import { elementStore } from '@/store/element';
+import CustomMaterial, { CustomType } from '@/components/CustomMaterial';
 
 type TypeItem = { type: MaterialGroupType; label: string };
 
 export default defineComponent({
   setup() {
-    const activeType = ref<MaterialGroupType>(MaterialGroupType.image);
+    const activeType = ref<MaterialGroupType>(MaterialGroupType.custom);
     const store = elementStore();
 
     const changeType = (type: MaterialGroupType) => {
@@ -61,12 +62,23 @@ export default defineComponent({
       }
     };
 
+    const addCustomMaterial = (type: CustomType) => {
+      switch (type) {
+        case CustomType.text:
+          console.log('123');
+          // store.addText('');
+          break;
+        default:
+          break;
+      }
+    };
+
     return () => (
       <div class={styles.wrap}>
         <div class={styles.wrap_type}>{types.map(typeItemDom)}</div>
         <div class={styles.wrap_material}>
           {activeType.value === MaterialGroupType.custom ? (
-            <div>132</div>
+            <CustomMaterial onAdd={addCustomMaterial}></CustomMaterial>
           ) : (
             <MaterialList data={materials[activeType.value]} onAdd={addMaterial}></MaterialList>
           )}

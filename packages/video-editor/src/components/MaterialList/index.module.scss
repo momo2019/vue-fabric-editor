@@ -59,6 +59,8 @@
     background-size: cover;
     cursor: pointer;
     border-radius: 4px;
+    transition: outline .3s ease-in-out;
+    outline: 4px solid transparent;
 
     &:hover {
       outline: 4px solid rgba(#1677ff, 0.4);
