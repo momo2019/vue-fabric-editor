@@ -2,6 +2,7 @@ import { ElementItem, ShowElementItem } from '@/interfaces/element';
 import { CLIP_LIST } from '@/mocks/clip';
 import { ComputedRef, ref, Ref } from 'vue';
 import { EditorReturnType } from './useEditor';
+import { OptionItem } from '@/interfaces/common';
 const minDuration = 1;
 
 export const useOperate = (
@@ -10,12 +11,7 @@ export const useOperate = (
   duration: Ref<number>,
   editor: EditorReturnType
 ) => {
-  const clipList = ref<
-    {
-      value: string;
-      label: string;
-    }[]
-  >(CLIP_LIST);
+  const clipList = ref<OptionItem[]>(CLIP_LIST);
 
   const setStartTime = (time: number) => {
     if (activeNodeShowValue.value && activeNode.value) {

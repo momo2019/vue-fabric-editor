@@ -1,5 +1,6 @@
 import { FbNodes } from '@/interfaces/fabric';
 import { MaterialItem } from '@/interfaces/material';
+import { DEFAULT_FONT_FAMILY } from '@/utils/config';
 import Editor, {
   DringPlugin,
   AlignGuidLinePlugin,
@@ -147,7 +148,9 @@ export const useEditor = <T = MaterialItem>(cb: {
     if (!initEditorEnd.value) {
       return;
     }
-    const obj = new fabric.IText(text);
+    const obj = new fabric.IText(text, {
+      fontFamily: DEFAULT_FONT_FAMILY,
+    });
     obj.setControlsVisibility({
       bl: false,
       tl: false,

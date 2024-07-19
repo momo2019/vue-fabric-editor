@@ -1,7 +1,9 @@
 import { defineComponent } from 'vue';
 import styles from '../index.module.scss';
-import { Input, InputNumber } from 'ant-design-vue';
+import { Input, InputNumber, Select } from 'ant-design-vue';
 import { elementStore } from '@/store/element';
+import LabelWrap from '../LabelWrap';
+import { OptionItem } from '@/interfaces/common';
 
 export default defineComponent({
   setup() {
@@ -26,6 +28,20 @@ export default defineComponent({
           }}
           onChange={store.setFontSize}
         ></InputNumber>
+
+        <LabelWrap label="字体选择">
+          <Select
+            value={store.activeNodeShowValue!.fontFamily}
+            options={store.fontFamilyList}
+            style={{ width: '100%' }}
+            v-slots={{
+              option: ({ label, value }: OptionItem) => (
+                <span style={{ fontFamily: value }}>{label}</span>
+              ),
+            }}
+            onChange={store.setFontFamily}
+          ></Select>
+        </LabelWrap>
       </div>
     );
   },

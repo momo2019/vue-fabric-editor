@@ -93,6 +93,7 @@ export const elementStore = defineStore('element', () => {
       if (data instanceof fabric.Text) {
         (activeNode.value as ElementItem<TextNode>).data = data.text || '';
         (activeNode.value as ElementItem<TextNode>).fontSize = data.fontSize;
+        (activeNode.value as ElementItem<TextNode>).fontFamily = data.fontFamily;
       }
     }
   };
