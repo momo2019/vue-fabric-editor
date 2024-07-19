@@ -32,10 +32,22 @@ export const useTextOperate = (
     editor.setFbNodeInfo('fontFamily', fontFamily);
   };
 
+  const setFontWeight = (isBold: boolean) => {
+    activeNode.value.fontWeight = isBold ? 'bold' : 'normal';
+    editor.setFbNodeInfo('fontWeight', isBold ? 'bold' : 'normal');
+  };
+
+  const setFontStyle = (isItalic: boolean) => {
+    activeNode.value.fontStyle = isItalic ? 'italic' : 'normal';
+    editor.setFbNodeInfo('fontStyle', isItalic ? 'italic' : 'normal');
+  };
+
   return {
     fontFamilyList,
     setFontSize,
     setFontText,
     setFontFamily,
+    setFontWeight,
+    setFontStyle,
   };
 };

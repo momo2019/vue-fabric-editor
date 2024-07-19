@@ -1,6 +1,6 @@
 import { defineComponent } from 'vue';
 import styles from '../index.module.scss';
-import { Input, InputNumber, Select } from 'ant-design-vue';
+import { Input, InputNumber, Select, Switch } from 'ant-design-vue';
 import { elementStore } from '@/store/element';
 import LabelWrap from '../LabelWrap';
 import { OptionItem } from '@/interfaces/common';
@@ -41,6 +41,20 @@ export default defineComponent({
             }}
             onChange={store.setFontFamily}
           ></Select>
+        </LabelWrap>
+
+        <LabelWrap label="开启粗体">
+          <Switch
+            checked={store.activeNodeShowValue!.fontWeight === 'bold'}
+            onChange={store.setFontWeight}
+          ></Switch>
+        </LabelWrap>
+
+        <LabelWrap label="开启斜体">
+          <Switch
+            checked={store.activeNodeShowValue!.fontStyle === 'italic'}
+            onChange={store.setFontStyle}
+          ></Switch>
         </LabelWrap>
       </div>
     );
