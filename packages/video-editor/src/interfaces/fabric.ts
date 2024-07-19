@@ -1,3 +1,3 @@
 import { fabric } from 'fabric';
 
-export type FbNodes = fabric.Image | fabric.Text;
+export type FbNodes = fabric.Image | fabric.IText;

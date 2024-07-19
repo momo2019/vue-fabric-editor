@@ -91,6 +91,7 @@ export const elementStore = defineStore('element', () => {
       activeNode.value.height = data.getScaledHeight();
       activeNode.value.rotation = data.angle;
       if (data instanceof fabric.Text) {
+        (activeNode.value as ElementItem<TextNode>).data = data.text || '';
         (activeNode.value as ElementItem<TextNode>).fontSize = data.fontSize;
       }
     }

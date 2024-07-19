@@ -11,7 +11,13 @@ export const useTextOperate = (
     editor.setFbNodeInfo('fontSize', size);
   };
 
+  const setFontText = (text: string) => {
+    activeNode.value.data = text;
+    editor.setFbNodeInfo('text', text);
+  };
+
   return {
     setFontSize,
+    setFontText,
   };
 };

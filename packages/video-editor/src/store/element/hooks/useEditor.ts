@@ -89,10 +89,11 @@ export const useEditor = <T = MaterialItem>(cb: {
     canvas.on('object:moving', updateActiveInfo);
     canvas.on('object:scaling', updateActiveInfo);
     canvas.on('object:rotating', updateActiveInfo);
+    canvas.on('text:changed', updateActiveInfo);
     fbrcCanvas.value = canvas;
   };
 
-  const updateActiveInfo = (e: fabric.IEvent<MouseEvent>) => {
+  const updateActiveInfo = (e: fabric.IEvent<Event>) => {
     const activeObject = fbrcCanvas.value?.getActiveObject() as FbNodes;
     if (e?.target?.data !== activeObject?.data) return;
     cb.updateActiveInfo(activeObject!);
@@ -146,7 +147,7 @@ export const useEditor = <T = MaterialItem>(cb: {
     if (!initEditorEnd.value) {
       return;
     }
-    const obj = new fabric.Text(text);
+    const obj = new fabric.IText(text);
     obj.setControlsVisibility({
       bl: false,
       tl: false,
@@ -202,7 +203,7 @@ export const useEditor = <T = MaterialItem>(cb: {
     canvasEditor.removeClip();
   };
 
-  function setFbNodeInfo<K extends keyof fabric.Text>(key: K, value: fabric.Text[K]): boolean;
+  function setFbNodeInfo<K extends keyof fabric.IText>(key: K, value: fabric.IText[K]): boolean;
   function setFbNodeInfo<K extends keyof fabric.Image>(key: K, value: fabric.Image[K]): boolean {
     const activeFbNode = getActiveObject();
     if (activeFbNode) {
