@@ -1,4 +1,4 @@
-import { ElementItem, ShowElementItem, VideoNode } from '@/interfaces/element';
+import { ElementItem, ShowElementItem, TextNode, VideoNode } from '@/interfaces/element';
 import { useEditor } from '@/store/element/hooks/useEditor';
 import { defineStore } from 'pinia';
 import { computed, nextTick, Ref, ref } from 'vue';
@@ -6,6 +6,9 @@ import { MaterialItem } from '@/interfaces/material';
 import { useTimeLine } from '@/store/element/hooks/useTimeLine';
 import { useOperate } from '@/store/element/hooks/useOperate';
 import { useVideoAudioOperate } from './hooks/useVideoAudioOperate';
+import { useTextOperate } from './hooks/useTextOperate';
+import { FbNodes } from '@/interfaces/fabric';
+import { fabric } from 'fabric';
 
 export const elementStore = defineStore('element', () => {
   const global = ref({
@@ -69,6 +72,8 @@ export const elementStore = defineStore('element', () => {
 
   const videoAudioOperate = useVideoAudioOperate(activeNode as Ref<ElementItem<VideoNode>>);
 
+  const textOperate = useTextOperate(activeNode as Ref<ElementItem<TextNode>>, editor);
+
   const setActiveNode = (item: ElementItem) => {
     editor.setSelect(item.uid);
   };
@@ -78,13 +83,16 @@ export const elementStore = defineStore('element', () => {
     editor.clearSelect();
   };
 
-  const updateActiveInfo = (data: fabric.Object) => {
+  const updateActiveInfo = (data: FbNodes) => {
     if (activeNode.value) {
       activeNode.value.x = data.left;
       activeNode.value.y = data.top;
       activeNode.value.width = data.getScaledWidth();
       activeNode.value.height = data.getScaledHeight();
       activeNode.value.rotation = data.angle;
+      if (data instanceof fabric.Text) {
+        (activeNode.value as ElementItem<TextNode>).fontSize = data.fontSize;
+      }
     }
   };
 
@@ -119,6 +127,7 @@ export const elementStore = defineStore('element', () => {
     setGlobalWidth,
     removeActive,
     ...videoAudioOperate,
+    ...textOperate,
     ...operate,
     ...timeLine,
     ...editor,

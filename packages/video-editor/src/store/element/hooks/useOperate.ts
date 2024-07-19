@@ -38,49 +38,26 @@ export const useOperate = (
     }
   };
 
-  const setFbNodeInfo = <T extends keyof fabric.Object>(key: T, value: fabric.Object[T]) => {
-    const activeFbNode = editor.getActiveObject();
-    if (activeFbNode) {
-      switch (key) {
-        case 'width':
-          activeFbNode.scaleX = activeFbNode.width ? value / activeFbNode.width : 1;
-          break;
-        case 'height':
-          activeFbNode.scaleY = activeFbNode.height ? value / activeFbNode.height : 1;
-          break;
-        default:
-          activeFbNode[key] = value;
-          break;
-      }
-
-      editor.requestRenderAll();
-      return true;
-    }
-    return false;
-  };
-
   const setX = (x: number) => {
-    // TODO 需要根据分辨率限制一下
-    if (setFbNodeInfo('left', x) && activeNode.value) {
+    if (editor.setFbNodeInfo('left', x) && activeNode.value) {
       activeNode.value.x = x;
     }
   };
 
   const setY = (y: number) => {
-    // TODO 需要根据分辨率限制一下
-    if (setFbNodeInfo('top', y) && activeNode.value) {
+    if (editor.setFbNodeInfo('top', y) && activeNode.value) {
       activeNode.value.y = y;
     }
   };
 
   const setWidth = (width: number) => {
-    if (setFbNodeInfo('width', width) && activeNode.value) {
+    if (editor.setFbNodeInfo('width', width) && activeNode.value) {
       activeNode.value.width = width;
     }
   };
 
   const setHeight = (height: number) => {
-    if (setFbNodeInfo('height', height) && activeNode.value) {
+    if (editor.setFbNodeInfo('height', height) && activeNode.value) {
       activeNode.value.height = height;
     }
   };
@@ -88,7 +65,7 @@ export const useOperate = (
   const setRotation = (rotation: number) => {
     rotation = Math.min(rotation, 360);
     rotation = Math.max(rotation, 0);
-    if (setFbNodeInfo('angle', rotation) && activeNode.value) {
+    if (editor.setFbNodeInfo('angle', rotation) && activeNode.value) {
       activeNode.value.rotation = rotation;
     }
   };

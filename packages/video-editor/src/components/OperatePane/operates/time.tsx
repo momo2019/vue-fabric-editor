@@ -13,6 +13,7 @@ export default defineComponent({
           value={store.activeNodeShowValue!.startTime}
           formatter={(value) => Number(value).toFixed(2)}
           parser={(value) => Number(value)}
+          min={0}
           v-slots={{
             addonBefore: () => '开始时间',
           }}
@@ -23,6 +24,7 @@ export default defineComponent({
           value={store.activeNodeShowValue!.endTime}
           formatter={(value) => Number(value).toFixed(2)}
           parser={(value) => Number(value)}
+          min={0}
           v-slots={{
             addonBefore: () => '结束时间',
           }}

@@ -1,3 +1,4 @@
+import { FbNodes } from '@/interfaces/fabric';
 import { MaterialItem } from '@/interfaces/material';
 import Editor, {
   DringPlugin,
@@ -23,12 +24,12 @@ import { computed, ref } from 'vue';
 export const useEditor = <T = MaterialItem>(cb: {
   afterAdd: (data: T, uid: string) => void;
   afterRemove: (uid: string) => void;
-  chooseOne: (uid: string, activeObject: fabric.Object) => void;
+  chooseOne: (uid: string, activeObject: FbNodes) => void;
   clearChoose: () => void;
-  updateActiveInfo: (activeObject: fabric.Object) => void;
+  updateActiveInfo: (activeObject: FbNodes) => void;
   updateGlobelInfo: (data: { height: number; width: number }) => void;
 }) => {
-  const fbrcNodes = new Map<string, fabric.Object>();
+  const fbrcNodes = new Map<string, FbNodes>();
   const canvasEditor = new Editor();
 
   const fbrcCanvas = ref<fabric.Canvas | null>(null);
@@ -63,7 +64,7 @@ export const useEditor = <T = MaterialItem>(cb: {
     canvasEditor.rulerEnable();
 
     canvasEditor.on('selectOne', () => {
-      const activeObject = canvas.getActiveObject();
+      const activeObject = canvas.getActiveObject() as FbNodes;
       if (!activeObject) {
         cb.clearChoose();
         return;
@@ -92,22 +93,22 @@ export const useEditor = <T = MaterialItem>(cb: {
   };
 
   const updateActiveInfo = (e: fabric.IEvent<MouseEvent>) => {
-    const activeObject = fbrcCanvas.value?.getActiveObject();
+    const activeObject = fbrcCanvas.value?.getActiveObject() as FbNodes;
     if (e?.target?.data !== activeObject?.data) return;
     cb.updateActiveInfo(activeObject!);
   };
 
-  const afterAdd = (img: fabric.Object, data: T) => {
+  const afterAdd = (obj: FbNodes, data: T) => {
     if (!initEditorEnd.value) {
       return;
     }
-    img.originX = 'center';
-    img.originY = 'center';
+    obj.originX = 'center';
+    obj.originY = 'center';
     const uid = v4();
-    fbrcNodes.set(uid, img);
-    img.data = uid;
+    fbrcNodes.set(uid, obj);
+    obj.data = uid;
     cb.afterAdd(data, uid);
-    canvasEditor.dragAddItem(img);
+    canvasEditor.dragAddItem(obj);
   };
 
   const addImage = (url: string, data: T) => {
@@ -146,6 +147,17 @@ export const useEditor = <T = MaterialItem>(cb: {
       return;
     }
     const obj = new fabric.Text(text);
+    obj.setControlsVisibility({
+      bl: false,
+      tl: false,
+      br: false,
+      tr: false,
+      ml: false,
+      mt: false,
+      mr: false,
+      mb: false,
+      mtr: true,
+    });
     afterAdd(obj, data);
   };
 
@@ -163,7 +175,7 @@ export const useEditor = <T = MaterialItem>(cb: {
   };
 
   const getActiveObject = () => {
-    return fbrcCanvas.value?.getActiveObject() || null;
+    return (fbrcCanvas.value?.getActiveObject() as FbNodes) || null;
   };
 
   const requestRenderAll = () => {
@@ -190,6 +202,28 @@ export const useEditor = <T = MaterialItem>(cb: {
     canvasEditor.removeClip();
   };
 
+  function setFbNodeInfo<K extends keyof fabric.Text>(key: K, value: fabric.Text[K]): boolean;
+  function setFbNodeInfo<K extends keyof fabric.Image>(key: K, value: fabric.Image[K]): boolean {
+    const activeFbNode = getActiveObject();
+    if (activeFbNode) {
+      switch (key) {
+        case 'width':
+          activeFbNode.scaleX = activeFbNode.width ? value / activeFbNode.width : 1;
+          break;
+        case 'height':
+          activeFbNode.scaleY = activeFbNode.height ? value / activeFbNode.height : 1;
+          break;
+        default:
+          activeFbNode[key as keyof fabric.Object] = value;
+          break;
+      }
+
+      requestRenderAll();
+      return true;
+    }
+    return false;
+  }
+
   return {
     initEditor,
     addImage,
@@ -203,6 +237,7 @@ export const useEditor = <T = MaterialItem>(cb: {
     addClipPathToImage,
     removeClip,
     addText,
+    setFbNodeInfo,
   };
 };
 
