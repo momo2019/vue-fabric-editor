@@ -1,6 +1,6 @@
 import { FbNodes } from '@/interfaces/fabric';
 import { MaterialItem } from '@/interfaces/material';
-import { DEFAULT_FONT_FAMILY } from '@/utils/config';
+import { DEFAULT_FONT_CONFIG } from '@/utils/config';
 import Editor, {
   DringPlugin,
   AlignGuidLinePlugin,
@@ -149,7 +149,8 @@ export const useEditor = <T = MaterialItem>(cb: {
       return;
     }
     const obj = new fabric.IText(text, {
-      fontFamily: DEFAULT_FONT_FAMILY,
+      fontFamily: DEFAULT_FONT_CONFIG.fontfamily,
+      fill: DEFAULT_FONT_CONFIG.color,
     });
     obj.setControlsVisibility({
       bl: false,
@@ -221,7 +222,7 @@ export const useEditor = <T = MaterialItem>(cb: {
           activeFbNode[key as keyof fabric.Object] = value;
           break;
       }
-
+      activeFbNode.dirty = true;
       requestRenderAll();
       return true;
     }

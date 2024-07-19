@@ -10,6 +10,7 @@ import MaterialList from '@/components/MaterialList';
 import { MOCK_MATERIALS } from '@/mocks/material';
 import { elementStore } from '@/store/element';
 import CustomMaterial, { CustomType } from '@/components/CustomMaterial';
+import { DEFAULT_FONT_CONFIG } from '@/utils/config';
 
 type TypeItem = { type: MaterialGroupType; label: string };
 
@@ -52,7 +53,10 @@ export default defineComponent({
     const addMaterial = (item: MaterialItem) => {
       switch (item.type) {
         case MaterialType.image:
-          store.addImage(item.data, item);
+          store.addImage(item.data, {
+            ...item,
+            cover: item.cover || item.data,
+          });
           break;
         case MaterialType.video:
           store.addVideo(item.data, item);
@@ -65,9 +69,10 @@ export default defineComponent({
     const addCustomMaterial = (type: CustomType) => {
       switch (type) {
         case CustomType.text:
-          store.addText('默认文本', {
+          store.addText(DEFAULT_FONT_CONFIG.data, {
             type: MaterialType.text,
-            data: '默认文本',
+            data: DEFAULT_FONT_CONFIG.data,
+            cover: DEFAULT_FONT_CONFIG.icon,
           });
           break;
         default:

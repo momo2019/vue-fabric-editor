@@ -1,9 +1,9 @@
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import App from './App';
-
 import Antd from 'ant-design-vue';
 import 'ant-design-vue/dist/reset.css';
+import 'vue3-colorpicker/style.css';
 
 const app = createApp(App);
 const pinia = createPinia();

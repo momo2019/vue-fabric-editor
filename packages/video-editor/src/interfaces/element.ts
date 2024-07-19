@@ -1,6 +1,7 @@
 import { MaterialType } from './material';
 
 export type BaseNode = {
+  cover?: string;
   width: number;
   height: number;
   startTime?: number;

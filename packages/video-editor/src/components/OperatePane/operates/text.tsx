@@ -4,6 +4,7 @@ import { Input, InputNumber, Select, Switch } from 'ant-design-vue';
 import { elementStore } from '@/store/element';
 import LabelWrap from '../LabelWrap';
 import { OptionItem } from '@/interfaces/common';
+import { ColorPicker } from 'vue3-colorpicker';
 
 export default defineComponent({
   setup() {
@@ -16,17 +17,17 @@ export default defineComponent({
           v-slots={{
             addonBefore: () => '文本内容',
           }}
-          onInput={(ev: InputEvent) => store.setFontText((ev.target as HTMLInputElement).value)}
+          onInput={(ev) => store.setFontText((ev.target as HTMLInputElement).value)}
         ></Input>
         <InputNumber
           value={store.activeNodeShowValue!.fontSize}
-          formatter={(value) => Math.ceil(value)}
+          formatter={(value) => `${Math.ceil(value as number)}`}
           parser={(value) => Number(value)}
           min={10}
           v-slots={{
             addonBefore: () => '文字大小',
           }}
-          onChange={store.setFontSize}
+          onChange={(value) => store.setFontSize(value as number)}
         ></InputNumber>
 
         <LabelWrap label="字体选择">
@@ -39,22 +40,31 @@ export default defineComponent({
                 <span style={{ fontFamily: value }}>{label}</span>
               ),
             }}
-            onChange={store.setFontFamily}
+            onChange={(value) => store.setFontFamily(value as string)}
           ></Select>
         </LabelWrap>
 
         <LabelWrap label="开启粗体">
           <Switch
             checked={store.activeNodeShowValue!.fontWeight === 'bold'}
-            onChange={store.setFontWeight}
+            onChange={(value) => store.setFontWeight(value as boolean)}
           ></Switch>
         </LabelWrap>
 
         <LabelWrap label="开启斜体">
           <Switch
             checked={store.activeNodeShowValue!.fontStyle === 'italic'}
-            onChange={store.setFontStyle}
+            onChange={(value) => store.setFontStyle(value as boolean)}
           ></Switch>
+        </LabelWrap>
+
+        <LabelWrap label="文字颜色">
+          <ColorPicker
+            pureColor={store.activeNodeShowValue!.color}
+            onPureColorChange={store.setFontColor}
+            disableHistory={true}
+            pickerType="pure"
+          ></ColorPicker>
         </LabelWrap>
       </div>
     );

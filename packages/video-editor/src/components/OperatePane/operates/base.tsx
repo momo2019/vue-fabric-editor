@@ -17,7 +17,7 @@ export default defineComponent({
           v-slots={{
             addonBefore: () => '位置 X',
           }}
-          onChange={store.setX}
+          onChange={(value) => store.setX(value as number)}
         ></InputNumber>
 
         <InputNumber
@@ -27,7 +27,7 @@ export default defineComponent({
           v-slots={{
             addonBefore: () => '位置 Y',
           }}
-          onChange={store.setY}
+          onChange={(value) => store.setY(value as number)}
         ></InputNumber>
 
         {store.activeNode?.type !== MaterialType.text && (
@@ -39,7 +39,7 @@ export default defineComponent({
               v-slots={{
                 addonBefore: () => '宽度',
               }}
-              onChange={store.setWidth}
+              onChange={(value) => store.setWidth(value as number)}
             ></InputNumber>
 
             <InputNumber
@@ -49,7 +49,7 @@ export default defineComponent({
               v-slots={{
                 addonBefore: () => '高度',
               }}
-              onChange={store.setHeight}
+              onChange={(value) => store.setHeight(value as number)}
             ></InputNumber>
           </>
         )}
@@ -63,7 +63,7 @@ export default defineComponent({
           v-slots={{
             addonBefore: () => '旋转',
           }}
-          onChange={store.setRotation}
+          onChange={(value) => store.setRotation(value as number)}
         ></InputNumber>
       </div>
     );

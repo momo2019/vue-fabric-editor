@@ -16,7 +16,7 @@ export default defineComponent({
             options={store.clipList}
             style={{ width: '100%' }}
             allowClear
-            onChange={store.setClip}
+            onChange={(value) => store.setClip(value as string)}
           ></Select>
         </LabelWrap>
       </div>

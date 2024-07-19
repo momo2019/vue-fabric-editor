@@ -42,6 +42,7 @@ export const elementStore = defineStore('element', () => {
     nodes.value.push({
       type: data.type,
       data: data.data,
+      cover: data.cover,
       uid,
       width: 0,
       height: 0,
@@ -94,6 +95,7 @@ export const elementStore = defineStore('element', () => {
         (activeNode.value as ElementItem<TextNode>).data = data.text || '';
         (activeNode.value as ElementItem<TextNode>).fontSize = data.fontSize;
         (activeNode.value as ElementItem<TextNode>).fontFamily = data.fontFamily;
+        (activeNode.value as ElementItem<TextNode>).color = data.fill as string;
       }
     }
   };

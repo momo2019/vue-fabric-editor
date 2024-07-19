@@ -11,22 +11,22 @@ export default defineComponent({
         <div class={styles.pane_title}>全局配置</div>
         <InputNumber
           value={store.global.width}
-          formatter={(value) => Math.ceil(value)}
+          formatter={(value) => `${Math.ceil(value as number)}`}
           parser={(value) => Number(value)}
           v-slots={{
             addonBefore: () => '宽度',
           }}
-          onChange={store.setGlobalWidth}
+          onChange={(value) => store.setGlobalWidth(value as number)}
         ></InputNumber>
 
         <InputNumber
           value={store.global.height}
-          formatter={(value) => Math.ceil(value)}
+          formatter={(value) => `${Math.ceil(value as number)}`}
           parser={(value) => Number(value)}
           v-slots={{
             addonBefore: () => '高度',
           }}
-          onChange={store.setGlobalHeight}
+          onChange={(value) => store.setGlobalHeight(value as number)}
         ></InputNumber>
       </div>
     );

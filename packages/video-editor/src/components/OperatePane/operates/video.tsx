@@ -11,7 +11,10 @@ export default defineComponent({
       <div class={styles.pane}>
         <div class={styles.pane_title}>视频配置</div>
         <LabelWrap label="是否循环">
-          <Switch checked={store.activeNodeShowValue!.isLoop} onChange={store.setLoop}></Switch>
+          <Switch
+            checked={store.activeNodeShowValue!.isLoop}
+            onChange={(value) => store.setLoop(value as boolean)}
+          ></Switch>
         </LabelWrap>
         <LabelWrap label="设置音量">
           <Slider
@@ -19,7 +22,7 @@ export default defineComponent({
             min={0}
             max={2}
             step={0.1}
-            onChange={store.setVol}
+            onChange={(value) => store.setVol(value as number)}
           ></Slider>
         </LabelWrap>
         <LabelWrap label="声音淡入">
@@ -28,7 +31,7 @@ export default defineComponent({
             min={0}
             max={2}
             step={0.1}
-            onChange={store.setFadeIn}
+            onChange={(value) => store.setFadeIn(value as number)}
           ></Slider>
         </LabelWrap>
         <LabelWrap label="声音淡出">
@@ -37,7 +40,7 @@ export default defineComponent({
             min={0}
             max={2}
             step={0.1}
-            onChange={store.setFadeOut}
+            onChange={(value) => store.setFadeOut(value as number)}
           ></Slider>
         </LabelWrap>
       </div>

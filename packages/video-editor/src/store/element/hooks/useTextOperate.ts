@@ -3,7 +3,7 @@ import { ref, Ref } from 'vue';
 import { EditorReturnType } from './useEditor';
 import { FONTFAMILY_LIST } from '@/mocks/text';
 import { OptionItem } from '@/interfaces/common';
-import { DEFAULT_FONT_FAMILY, DEFAULT_FONT_FAMILY_LABEL } from '@/utils/config';
+import { DEFAULT_FONT_CONFIG } from '@/utils/config';
 
 export const useTextOperate = (
   activeNode: Ref<ElementItem<TextNode>>,
@@ -11,8 +11,8 @@ export const useTextOperate = (
 ) => {
   const fontFamilyList = ref<OptionItem[]>([
     {
-      label: DEFAULT_FONT_FAMILY_LABEL,
-      value: DEFAULT_FONT_FAMILY,
+      label: DEFAULT_FONT_CONFIG.fontfamily,
+      value: DEFAULT_FONT_CONFIG.fontfamily,
     },
     ...FONTFAMILY_LIST,
   ]);
@@ -42,6 +42,11 @@ export const useTextOperate = (
     editor.setFbNodeInfo('fontStyle', isItalic ? 'italic' : 'normal');
   };
 
+  const setFontColor = (color: string) => {
+    activeNode.value.color = color;
+    editor.setFbNodeInfo('fill', color);
+  };
+
   return {
     fontFamilyList,
     setFontSize,
@@ -49,5 +54,6 @@ export const useTextOperate = (
     setFontFamily,
     setFontWeight,
     setFontStyle,
+    setFontColor,
   };
 };
