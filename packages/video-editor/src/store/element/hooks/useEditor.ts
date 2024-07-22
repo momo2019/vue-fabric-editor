@@ -36,6 +36,8 @@ export const useEditor = <T = MaterialItem>(cb: {
   const fbrcCanvas = ref<fabric.Canvas | null>(null);
   const initEditorEnd = computed(() => !!fbrcCanvas.value);
 
+  const disableSelect = ref(false);
+
   const initEditor = (cvs: HTMLCanvasElement) => {
     // 初始化fabric
     const canvas = new fabric.Canvas(cvs, {
@@ -65,6 +67,10 @@ export const useEditor = <T = MaterialItem>(cb: {
     canvasEditor.rulerEnable();
 
     canvasEditor.on('selectOne', () => {
+      if (disableSelect.value) {
+        clearSelect();
+        return;
+      }
       const activeObject = canvas.getActiveObject() as FbNodes;
       if (!activeObject) {
         cb.clearChoose();
@@ -250,6 +256,14 @@ export const useEditor = <T = MaterialItem>(cb: {
     return objs;
   };
 
+  const stopSelect = () => {
+    disableSelect.value = true;
+  };
+
+  const openSelect = () => {
+    disableSelect.value = false;
+  };
+
   return {
     initEditor,
     addImage,
@@ -265,6 +279,8 @@ export const useEditor = <T = MaterialItem>(cb: {
     addText,
     setFbNodeInfo,
     getAllObject,
+    stopSelect,
+    openSelect,
   };
 };
 

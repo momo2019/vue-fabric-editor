@@ -10,6 +10,7 @@ import { useTextOperate } from './hooks/useTextOperate';
 import { useNode } from './hooks/useNode';
 import { useGlobal } from './hooks/useGlobal';
 import { usePreview } from './hooks/usePreview';
+import { useAnimationOperate } from './hooks/useAnimationOperate';
 
 export const elementStore = defineStore('element', () => {
   const timeLine = useTimeLine();
@@ -45,6 +46,8 @@ export const elementStore = defineStore('element', () => {
 
   const preview = usePreview(editor, timeLine, node);
 
+  const animation = useAnimationOperate(node);
+
   return {
     ...preview,
     ...node,
@@ -54,5 +57,6 @@ export const elementStore = defineStore('element', () => {
     ...operate,
     ...timeLine,
     ...editor,
+    ...animation,
   };
 });

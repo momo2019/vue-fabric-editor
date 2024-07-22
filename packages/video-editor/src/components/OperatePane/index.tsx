@@ -14,6 +14,7 @@ import Video from './operates/video';
 import Text from './operates/text';
 import TextShadow from './operates/textShadow';
 import TextStroke from './operates/textStroke';
+import Animation from './operates/animation';
 
 export default defineComponent({
   setup() {
@@ -44,6 +45,7 @@ export default defineComponent({
             <Base></Base>
             {typeOperateDom()}
             <Clip></Clip>
+            <Animation></Animation>
             <Button onClick={store.removeActive}>删除节点</Button>
           </>
         ) : (

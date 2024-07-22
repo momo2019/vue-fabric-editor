@@ -1,5 +1,4 @@
 import { ElementItem, VideoNode } from '@/interfaces/element';
-import { fabric } from 'fabric';
 
 type FadeInOutOption = {
   element: HTMLVideoElement | HTMLAudioElement;
@@ -31,7 +30,6 @@ const setVolumeFadeInAndOut = ({
   } else {
     element.volume = 0;
   }
-  console.log(element.volume);
 };
 
 export const handleVideoOrAudio = (
@@ -39,7 +37,6 @@ export const handleVideoOrAudio = (
   item: {
     element: HTMLVideoElement | HTMLAudioElement;
     node: ElementItem<VideoNode>;
-    fbNode?: fabric.Image;
   },
   duration: number
 ) => {
@@ -49,28 +46,23 @@ export const handleVideoOrAudio = (
   const volume = node.vol || 1;
   const fadeIn = node.fadeIn || 0;
   const fadeOut = node.fadeOut || 0;
-  if (curTime >= startTime && curTime < endTime) {
-    item.fbNode && (item.fbNode.opacity = 1);
-    if (!node.isLoop && curTime >= startTime + element.duration) {
-      element.pause();
-    } else {
-      element.play();
-    }
-    if (fadeIn || fadeOut) {
-      setVolumeFadeInAndOut({
-        element,
-        curTime,
-        startTime,
-        endTime: node.isLoop ? duration : endTime,
-        fadeIn,
-        fadeOut,
-        volume,
-      });
-    } else {
-      element.volume = volume;
-    }
-  } else {
-    item.fbNode && (item.fbNode.opacity = 0);
+
+  if (!node.isLoop && curTime >= startTime + element.duration) {
     element.pause();
+  } else {
+    element.play();
+  }
+  if (fadeIn || fadeOut) {
+    setVolumeFadeInAndOut({
+      element,
+      curTime,
+      startTime,
+      endTime: node.isLoop ? duration : endTime,
+      fadeIn,
+      fadeOut,
+      volume,
+    });
+  } else {
+    element.volume = volume;
   }
 };

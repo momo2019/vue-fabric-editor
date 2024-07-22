@@ -1,5 +1,5 @@
-import { ElementItem, VideoNode } from '@/interfaces/element';
-import { handleVideoOrAudio } from '@/utils/videoAudio';
+import { ElementItem } from '@/interfaces/element';
+import { handleNode } from '@/utils/nodeHandler';
 import { fabric } from 'fabric';
 import { EditorReturnType } from './useEditor';
 import { NodeReturnType } from './useNode';
@@ -12,39 +12,45 @@ export const usePreview = (
 ) => {
   const previewVideo = () => {
     const objs = editor.getAllObject();
-    const videoOrAudioNode: {
-      element: HTMLVideoElement | HTMLAudioElement;
-      node: ElementItem<VideoNode>;
-      fbNode?: fabric.Image;
+    const nodes: {
+      element?: HTMLVideoElement | HTMLAudioElement;
+      node: ElementItem;
+      fbNode?: fabric.Object;
     }[] = [];
 
     objs?.forEach((item) => {
+      let element: HTMLVideoElement | undefined = undefined;
       if (item instanceof fabric.Image) {
-        const element = item.getElement();
-        if (element instanceof HTMLVideoElement) {
-          const node = nodeGroup.findNodeByUid(item.data);
-          node &&
-            videoOrAudioNode.push({
-              element,
-              node: node as ElementItem<VideoNode>,
-              fbNode: item,
-            });
+        const tempElement = item.getElement();
+        if (tempElement instanceof HTMLVideoElement) {
+          element = tempElement;
         }
       }
+      const node = nodeGroup.findNodeByUid(item.data);
+      node &&
+        nodes.push({
+          element,
+          node,
+          fbNode: item,
+        });
     });
     editor.clearSelect();
+    editor.stopSelect();
     timeLine.start({
       process: (curTime: number) => {
-        videoOrAudioNode.forEach((item) => {
-          handleVideoOrAudio(curTime, item, timeLine.duration.value);
+        nodes.forEach((node) => {
+          handleNode(curTime, node, timeLine.duration.value);
         });
         editor.requestRenderAll();
       },
       end: () => {
-        videoOrAudioNode.forEach(({ element }) => {
-          element.pause();
-          element.currentTime = 0;
+        nodes.forEach(({ element }) => {
+          if (element) {
+            element?.pause();
+            element.currentTime = 0;
+          }
         });
+        editor.clearSelect();
         editor.requestRenderAll();
       },
     });
