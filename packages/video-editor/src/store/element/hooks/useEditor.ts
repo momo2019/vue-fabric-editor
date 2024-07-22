@@ -151,6 +151,8 @@ export const useEditor = <T = MaterialItem>(cb: {
     const obj = new fabric.IText(text, {
       fontFamily: DEFAULT_FONT_CONFIG.fontfamily,
       fill: DEFAULT_FONT_CONFIG.color,
+      shadow: new fabric.Shadow(),
+      paintFirst: 'stroke',
     });
     obj.setControlsVisibility({
       bl: false,
@@ -207,20 +209,33 @@ export const useEditor = <T = MaterialItem>(cb: {
     canvasEditor.removeClip();
   };
 
+  function setFbNodeInfo<K extends keyof fabric.Shadow>(
+    key: K,
+    value: fabric.Shadow[K],
+    type: 'shadow'
+  ): boolean;
   function setFbNodeInfo<K extends keyof fabric.IText>(key: K, value: fabric.IText[K]): boolean;
-  function setFbNodeInfo<K extends keyof fabric.Image>(key: K, value: fabric.Image[K]): boolean {
+  function setFbNodeInfo<K extends keyof fabric.Image>(
+    key: K,
+    value: fabric.Image[K],
+    type?: string
+  ): boolean {
     const activeFbNode = getActiveObject();
     if (activeFbNode) {
-      switch (key) {
-        case 'width':
-          activeFbNode.scaleX = activeFbNode.width ? value / activeFbNode.width : 1;
-          break;
-        case 'height':
-          activeFbNode.scaleY = activeFbNode.height ? value / activeFbNode.height : 1;
-          break;
-        default:
-          activeFbNode[key as keyof fabric.Object] = value;
-          break;
+      if (type === 'shadow') {
+        activeFbNode.shadow![key as keyof fabric.Shadow] = value;
+      } else {
+        switch (key) {
+          case 'width':
+            activeFbNode.scaleX = activeFbNode.width ? value / activeFbNode.width : 1;
+            break;
+          case 'height':
+            activeFbNode.scaleY = activeFbNode.height ? value / activeFbNode.height : 1;
+            break;
+          default:
+            activeFbNode[key as keyof fabric.Object] = value;
+            break;
+        }
       }
       activeFbNode.dirty = true;
       requestRenderAll();

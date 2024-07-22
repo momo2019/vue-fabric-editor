@@ -12,6 +12,8 @@ import Clip from './operates/clip';
 import { MaterialType } from '@/interfaces/material';
 import Video from './operates/video';
 import Text from './operates/text';
+import TextShadow from './operates/textShadow';
+import TextStroke from './operates/textStroke';
 
 export default defineComponent({
   setup() {
@@ -22,7 +24,13 @@ export default defineComponent({
         case MaterialType.video:
           return <Video></Video>;
         case MaterialType.text:
-          return <Text></Text>;
+          return (
+            <>
+              <Text></Text>
+              <TextShadow></TextShadow>
+              <TextStroke></TextStroke>
+            </>
+          );
         default:
           return <></>;
       }

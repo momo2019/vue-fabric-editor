@@ -20,13 +20,12 @@ export type TextNode = {
   fontWeight?: 'normal' | 'bold';
   fontStyle?: 'normal' | 'italic';
   color?: string;
-  textAlign?: 'left' | 'center' | 'right';
+  textAlign?: string;
   letterSpacing?: number;
   shadowColor?: string;
   shadowOffsetX?: number;
   shadowOffsetY?: number;
   shadowBlur?: number;
-  shadowOpacity?: number;
   strokeColor?: string;
   strokeWidth?: number;
 };

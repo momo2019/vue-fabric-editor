@@ -96,6 +96,8 @@ export const elementStore = defineStore('element', () => {
         (activeNode.value as ElementItem<TextNode>).fontSize = data.fontSize;
         (activeNode.value as ElementItem<TextNode>).fontFamily = data.fontFamily;
         (activeNode.value as ElementItem<TextNode>).color = data.fill as string;
+        (activeNode.value as ElementItem<TextNode>).textAlign = data.textAlign || 'left';
+        (activeNode.value as ElementItem<TextNode>).letterSpacing = data.charSpacing || 0;
       }
     }
   };

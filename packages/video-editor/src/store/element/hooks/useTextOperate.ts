@@ -47,6 +47,46 @@ export const useTextOperate = (
     editor.setFbNodeInfo('fill', color);
   };
 
+  const setTextAlign = (textAlign: string) => {
+    activeNode.value.textAlign = textAlign;
+    editor.setFbNodeInfo('textAlign', textAlign);
+  };
+
+  const setLetterSpacing = (letterSpacing: number) => {
+    activeNode.value.letterSpacing = letterSpacing;
+    editor.setFbNodeInfo('charSpacing', letterSpacing);
+  };
+
+  const setShadowColor = (color: string) => {
+    activeNode.value.shadowColor = color;
+    editor.setFbNodeInfo('color', color, 'shadow');
+  };
+
+  const setShadowOffsetX = (shadowOffsetX: number) => {
+    activeNode.value.shadowOffsetX = shadowOffsetX;
+    editor.setFbNodeInfo('offsetX', shadowOffsetX, 'shadow');
+  };
+
+  const setShadowOffsetY = (shadowOffsetY: number) => {
+    activeNode.value.shadowOffsetY = shadowOffsetY;
+    editor.setFbNodeInfo('offsetY', shadowOffsetY, 'shadow');
+  };
+
+  const setShadowBlur = (shadowBlur: number) => {
+    activeNode.value.shadowBlur = shadowBlur;
+    editor.setFbNodeInfo('blur', shadowBlur, 'shadow');
+  };
+
+  const setStrokeColor = (color: string) => {
+    activeNode.value.strokeColor = color;
+    editor.setFbNodeInfo('stroke', color);
+  };
+
+  const setStrokeWidth = (strokeWidth: number) => {
+    activeNode.value.strokeWidth = strokeWidth;
+    editor.setFbNodeInfo('strokeWidth', strokeWidth);
+  };
+
   return {
     fontFamilyList,
     setFontSize,
@@ -55,5 +95,13 @@ export const useTextOperate = (
     setFontWeight,
     setFontStyle,
     setFontColor,
+    setTextAlign,
+    setLetterSpacing,
+    setShadowColor,
+    setShadowOffsetX,
+    setShadowOffsetY,
+    setShadowBlur,
+    setStrokeColor,
+    setStrokeWidth,
   };
 };

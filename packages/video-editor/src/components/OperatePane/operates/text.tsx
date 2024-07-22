@@ -1,10 +1,11 @@
 import { defineComponent } from 'vue';
 import styles from '../index.module.scss';
-import { Input, InputNumber, Select, Switch } from 'ant-design-vue';
+import { InputNumber, RadioGroup, Select, Switch, Textarea } from 'ant-design-vue';
 import { elementStore } from '@/store/element';
 import LabelWrap from '../LabelWrap';
 import { OptionItem } from '@/interfaces/common';
 import { ColorPicker } from 'vue3-colorpicker';
+import { FONT_ALIGN_OPTIONS } from '@/utils/config';
 
 export default defineComponent({
   setup() {
@@ -12,13 +13,12 @@ export default defineComponent({
     return () => (
       <div class={styles.pane}>
         <div class={styles.pane_title}>文本配置</div>
-        <Input
-          value={store.activeNodeShowValue!.data}
-          v-slots={{
-            addonBefore: () => '文本内容',
-          }}
-          onInput={(ev) => store.setFontText((ev.target as HTMLInputElement).value)}
-        ></Input>
+        <LabelWrap label="文本内容">
+          <Textarea
+            value={store.activeNodeShowValue!.data}
+            onInput={(ev) => store.setFontText((ev.target as HTMLInputElement).value)}
+          ></Textarea>
+        </LabelWrap>
         <InputNumber
           value={store.activeNodeShowValue!.fontSize}
           formatter={(value) => `${Math.ceil(value as number)}`}
@@ -65,6 +65,23 @@ export default defineComponent({
             disableHistory={true}
             pickerType="pure"
           ></ColorPicker>
+        </LabelWrap>
+
+        <LabelWrap label="文字位置">
+          <RadioGroup
+            value={store.activeNodeShowValue!.textAlign}
+            optionType="button"
+            options={FONT_ALIGN_OPTIONS}
+            onChange={(value) => store.setTextAlign(value.target.value as string)}
+          ></RadioGroup>
+        </LabelWrap>
+
+        <LabelWrap label="文字间距">
+          <InputNumber
+            value={store.activeNodeShowValue!.letterSpacing}
+            step={1}
+            onChange={(value) => store.setLetterSpacing(value as number)}
+          ></InputNumber>
         </LabelWrap>
       </div>
     );
