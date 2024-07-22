@@ -1,5 +1,4 @@
-import { nextTick } from 'process';
-import { ref } from 'vue';
+import { ref, nextTick } from 'vue';
 import { EditorReturnType } from './useEditor';
 
 export const useGlobal = (editor: EditorReturnType) => {

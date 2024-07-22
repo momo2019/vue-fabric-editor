@@ -1,6 +1,6 @@
 import { ElementItem, VideoNode } from '@/interfaces/element';
 import { handleVideoOrAudio } from '@/utils/videoAudio';
-import fabric from 'fabric/fabric-impl';
+import { fabric } from 'fabric';
 import { EditorReturnType } from './useEditor';
 import { NodeReturnType } from './useNode';
 import { TimeLineReturnType } from './useTimeLine';
