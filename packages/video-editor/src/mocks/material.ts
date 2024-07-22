@@ -25,8 +25,8 @@ export const MOCK_MATERIALS: Record<
     {
       label: '背景2',
       list: new Array(40).fill(0).map(() => ({
-        cover: '/cover.jpeg',
-        data: '/test.mp4',
+        cover: '/test.jpeg',
+        data: '/video1.mp4',
         type: MaterialType.video,
       })),
     },

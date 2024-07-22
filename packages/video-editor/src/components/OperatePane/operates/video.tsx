@@ -20,7 +20,7 @@ export default defineComponent({
           <Slider
             value={store.activeNodeShowValue!.vol}
             min={0}
-            max={2}
+            max={1}
             step={0.1}
             onChange={(value) => store.setVol(value as number)}
           ></Slider>

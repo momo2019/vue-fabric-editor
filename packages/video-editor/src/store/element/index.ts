@@ -9,6 +9,7 @@ import { useVideoAudioOperate } from './hooks/useVideoAudioOperate';
 import { useTextOperate } from './hooks/useTextOperate';
 import { FbNodes } from '@/interfaces/fabric';
 import { fabric } from 'fabric';
+import { handleVideoOrAudio } from '@/utils/videoAudio';
 
 export const elementStore = defineStore('element', () => {
   const global = ref({
@@ -49,11 +50,15 @@ export const elementStore = defineStore('element', () => {
     });
   };
 
+  const findNodeByUid = (uid: string): ElementItem | null => {
+    return nodes.value.find((item) => item.uid === uid) || null;
+  };
+
   const editor = useEditor<MaterialItem>({
     afterAdd: addNode,
     afterRemove: removeNode,
     chooseOne: (uid: string) => {
-      activeNode.value = nodes.value.find((item) => item.uid === uid) || null;
+      activeNode.value = findNodeByUid(uid);
     },
     clearChoose: () => {
       activeNode.value = null;
@@ -71,7 +76,7 @@ export const elementStore = defineStore('element', () => {
 
   const operate = useOperate(activeNode, activeNodeShowValue, timeLine.duration, editor);
 
-  const videoAudioOperate = useVideoAudioOperate(activeNode as Ref<ElementItem<VideoNode>>);
+  const videoAudioOperate = useVideoAudioOperate(activeNode as Ref<ElementItem<VideoNode>>, editor);
 
   const textOperate = useTextOperate(activeNode as Ref<ElementItem<TextNode>>, editor);
 
@@ -98,6 +103,12 @@ export const elementStore = defineStore('element', () => {
         (activeNode.value as ElementItem<TextNode>).color = data.fill as string;
         (activeNode.value as ElementItem<TextNode>).textAlign = data.textAlign || 'left';
         (activeNode.value as ElementItem<TextNode>).letterSpacing = data.charSpacing || 0;
+      } else if (data instanceof fabric.Image) {
+        const element = data.getElement();
+        if (element instanceof HTMLVideoElement) {
+          (activeNode.value as ElementItem<VideoNode>).isLoop = element.loop;
+          (activeNode.value as ElementItem<VideoNode>).vol = element.volume;
+        }
       }
     }
   };
@@ -124,26 +135,36 @@ export const elementStore = defineStore('element', () => {
 
   const previewVideo = () => {
     const objs = editor.getAllObject();
-    const videoElement: HTMLVideoElement[] = [];
+    const videoOrAudioNode: {
+      element: HTMLVideoElement | HTMLAudioElement;
+      node: ElementItem<VideoNode>;
+      fbNode?: fabric.Image;
+    }[] = [];
 
     objs?.forEach((item) => {
       if (item instanceof fabric.Image) {
         const element = item.getElement();
         if (element instanceof HTMLVideoElement) {
-          videoElement.push(element);
+          const node = findNodeByUid(item.data);
+          node &&
+            videoOrAudioNode.push({
+              element,
+              node: node as ElementItem<VideoNode>,
+              fbNode: item,
+            });
         }
       }
     });
-    videoElement.forEach((element) => {
-      element.currentTime = 0;
-      element.play();
-    });
+    editor.clearSelect();
     timeLine.start({
-      process: () => {
+      process: (curTime: number) => {
+        videoOrAudioNode.forEach((item) => {
+          handleVideoOrAudio(curTime, item, timeLine.duration.value);
+        });
         editor.requestRenderAll();
       },
       end: () => {
-        videoElement.forEach((element) => {
+        videoOrAudioNode.forEach(({ element }) => {
           element.pause();
           element.currentTime = 0;
         });

@@ -128,12 +128,11 @@ export const useEditor = <T = MaterialItem>(cb: {
     }
 
     const videoE = document.createElement('video');
-    videoE.muted = true;
     videoE.crossOrigin = 'anonymous';
     videoE.src = url;
     videoE.preload = 'auto';
     videoE.loop = true;
-    videoE.muted = true;
+    videoE.muted = false;
 
     // 加入画布存在一定的延迟
     videoE.onloadeddata = () => {
