@@ -60,6 +60,7 @@ export const useNode = (timeLine: TimeLineReturnType, editor: EditorReturnType) 
       activeNode.value.width = data.getScaledWidth();
       activeNode.value.height = data.getScaledHeight();
       activeNode.value.rotation = data.angle;
+      activeNode.value.opacity = data.opacity || 1;
       if (data instanceof fabric.Text) {
         (activeNode.value as ElementItem<TextNode>).data = data.text || '';
         (activeNode.value as ElementItem<TextNode>).fontSize = data.fontSize;

@@ -65,6 +65,19 @@ export default defineComponent({
           }}
           onChange={(value) => store.setRotation(value as number)}
         ></InputNumber>
+
+        <InputNumber
+          value={store.activeNodeShowValue?.opacity}
+          formatter={(value) => Number(value).toFixed(2)}
+          parser={(value) => Number(value)}
+          min={0}
+          max={1}
+          step={0.1}
+          v-slots={{
+            addonBefore: () => '透明度',
+          }}
+          onChange={(value) => store.setOpacity(value as number)}
+        ></InputNumber>
       </div>
     );
   },

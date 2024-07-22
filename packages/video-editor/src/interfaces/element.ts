@@ -10,6 +10,11 @@ export type BaseNode = {
   y?: number;
   rotation?: number;
   clip?: string;
+  opacity?: number;
+  startAnimation?: string;
+  endAnimation?: string;
+  startAnimationTime?: number;
+  endAnimationTime?: number;
 };
 
 export type TextNode = {

@@ -80,6 +80,12 @@ export const useOperate = (
     clip && editor.addClipPathToImage(clip);
   };
 
+  const setOpacity = (opacity: number) => {
+    if (editor.setFbNodeInfo('opacity', opacity) && node.activeNode.value) {
+      node.activeNode.value.opacity = opacity;
+    }
+  };
+
   return {
     setStartTime,
     setEndTime,
@@ -90,5 +96,6 @@ export const useOperate = (
     setRotation,
     clipList,
     setClip,
+    setOpacity,
   };
 };
