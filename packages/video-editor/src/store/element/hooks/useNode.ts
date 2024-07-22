@@ -2,10 +2,11 @@ import { ElementItem, ShowElementItem, TextNode, VideoNode } from '@/interfaces/
 import { FbNodes } from '@/interfaces/fabric';
 import { MaterialItem } from '@/interfaces/material';
 import { fabric } from 'fabric';
-import { computed, Ref, ref } from 'vue';
+import { computed, ref } from 'vue';
 import { EditorReturnType } from './useEditor';
+import { TimeLineReturnType } from './useTimeLine';
 
-export const useNode = (duration: Ref<number>, editor: EditorReturnType) => {
+export const useNode = (timeLine: TimeLineReturnType, editor: EditorReturnType) => {
   const nodes = ref<ElementItem[]>([]);
   const activeNode = ref<ElementItem | null>(null);
 
@@ -14,7 +15,7 @@ export const useNode = (duration: Ref<number>, editor: EditorReturnType) => {
       ? ({
           ...(activeNode.value as unknown as ShowElementItem),
           startTime: activeNode.value?.startTime || 0,
-          endTime: activeNode.value?.endTime || duration.value,
+          endTime: activeNode.value?.endTime || timeLine.duration.value,
           x: activeNode.value.x || 0,
           y: activeNode.value.y || 0,
           rotation: activeNode.value.rotation || 0,
@@ -93,3 +94,5 @@ export const useNode = (duration: Ref<number>, editor: EditorReturnType) => {
     removeActive,
   };
 };
+
+export type NodeReturnType = ReturnType<typeof useNode>;

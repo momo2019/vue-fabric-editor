@@ -51,3 +51,5 @@ export const useTimeLine = () => {
     isPreviewing,
   };
 };
+
+export type TimeLineReturnType = ReturnType<typeof useTimeLine>;

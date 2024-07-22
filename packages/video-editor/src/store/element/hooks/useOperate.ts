@@ -1,75 +1,81 @@
-import { ElementItem, ShowElementItem } from '@/interfaces/element';
 import { CLIP_LIST } from '@/mocks/clip';
-import { ComputedRef, ref, Ref } from 'vue';
+import { ref } from 'vue';
 import { EditorReturnType } from './useEditor';
 import { OptionItem } from '@/interfaces/common';
+import { NodeReturnType } from './useNode';
+import { TimeLineReturnType } from './useTimeLine';
 const minDuration = 1;
 
 export const useOperate = (
-  activeNode: Ref<ElementItem | null>,
-  activeNodeShowValue: ComputedRef<ShowElementItem | null>,
-  duration: Ref<number>,
+  node: NodeReturnType,
+  timeLine: TimeLineReturnType,
   editor: EditorReturnType
 ) => {
   const clipList = ref<OptionItem[]>(CLIP_LIST);
 
   const setStartTime = (time: number) => {
-    if (activeNodeShowValue.value && activeNode.value) {
-      activeNode.value.startTime = Math.max(time, 0);
-      if (activeNodeShowValue.value.startTime + minDuration > activeNodeShowValue.value.endTime) {
-        activeNode.value.startTime = activeNodeShowValue.value.endTime - minDuration;
+    if (node.activeNodeShowValue.value && node.activeNode.value) {
+      node.activeNode.value.startTime = Math.max(time, 0);
+      if (
+        node.activeNodeShowValue.value.startTime + minDuration >
+        node.activeNodeShowValue.value.endTime
+      ) {
+        node.activeNode.value.startTime = node.activeNodeShowValue.value.endTime - minDuration;
       }
     }
   };
 
   const setEndTime = (time: number) => {
-    if (activeNodeShowValue.value && activeNode.value) {
-      activeNode.value.endTime = time;
-      if (activeNodeShowValue.value.startTime + minDuration > activeNodeShowValue.value.endTime) {
-        activeNode.value.endTime = activeNodeShowValue.value.startTime + minDuration;
+    if (node.activeNodeShowValue.value && node.activeNode.value) {
+      node.activeNode.value.endTime = time;
+      if (
+        node.activeNodeShowValue.value.startTime + minDuration >
+        node.activeNodeShowValue.value.endTime
+      ) {
+        node.activeNode.value.endTime = node.activeNodeShowValue.value.startTime + minDuration;
       }
-      if (activeNodeShowValue.value.endTime >= duration.value) {
-        activeNode.value.endTime = undefined;
+      if (node.activeNodeShowValue.value.endTime >= timeLine.duration.value) {
+        node.activeNode.value.endTime = undefined;
       }
     }
   };
 
   const setX = (x: number) => {
-    if (editor.setFbNodeInfo('left', x) && activeNode.value) {
-      activeNode.value.x = x;
+    if (editor.setFbNodeInfo('left', x) && node.activeNode.value) {
+      node.activeNode.value.x = x;
     }
   };
 
   const setY = (y: number) => {
-    if (editor.setFbNodeInfo('top', y) && activeNode.value) {
-      activeNode.value.y = y;
+    if (editor.setFbNodeInfo('top', y) && node.activeNode.value) {
+      node.activeNode.value.y = y;
     }
   };
 
   const setWidth = (width: number) => {
-    if (editor.setFbNodeInfo('width', width) && activeNode.value) {
-      activeNode.value.width = width;
+    if (editor.setFbNodeInfo('width', width) && node.activeNode.value) {
+      node.activeNode.value.width = width;
     }
   };
 
   const setHeight = (height: number) => {
-    if (editor.setFbNodeInfo('height', height) && activeNode.value) {
-      activeNode.value.height = height;
+    if (editor.setFbNodeInfo('height', height) && node.activeNode.value) {
+      node.activeNode.value.height = height;
     }
   };
 
   const setRotation = (rotation: number) => {
     rotation = Math.min(rotation, 360);
     rotation = Math.max(rotation, 0);
-    if (editor.setFbNodeInfo('angle', rotation) && activeNode.value) {
-      activeNode.value.rotation = rotation;
+    if (editor.setFbNodeInfo('angle', rotation) && node.activeNode.value) {
+      node.activeNode.value.rotation = rotation;
     }
   };
 
   const setClip = (clip?: string) => {
     editor.removeClip();
-    if (activeNode.value) {
-      activeNode.value.clip = clip;
+    if (node.activeNode.value) {
+      node.activeNode.value.clip = clip;
     }
     clip && editor.addClipPathToImage(clip);
   };
