@@ -1,137 +1,53 @@
-import { ElementItem, ShowElementItem, TextNode, VideoNode } from '@/interfaces/element';
+import { ElementItem, TextNode, VideoNode } from '@/interfaces/element';
 import { useEditor } from '@/store/element/hooks/useEditor';
 import { defineStore } from 'pinia';
-import { computed, nextTick, Ref, ref } from 'vue';
+import { Ref } from 'vue';
 import { MaterialItem } from '@/interfaces/material';
 import { useTimeLine } from '@/store/element/hooks/useTimeLine';
 import { useOperate } from '@/store/element/hooks/useOperate';
 import { useVideoAudioOperate } from './hooks/useVideoAudioOperate';
 import { useTextOperate } from './hooks/useTextOperate';
-import { FbNodes } from '@/interfaces/fabric';
 import { fabric } from 'fabric';
 import { handleVideoOrAudio } from '@/utils/videoAudio';
+import { useNode } from './hooks/useNode';
+import { useGlobal } from './hooks/useGlobal';
 
 export const elementStore = defineStore('element', () => {
-  const global = ref({
-    height: 1920,
-    width: 1080,
-  });
-  const nodes = ref<ElementItem[]>([]);
-  const activeNode = ref<ElementItem | null>(null);
-
   const timeLine = useTimeLine();
-  const activeNodeShowValue = computed(() =>
-    activeNode.value
-      ? ({
-          ...(activeNode.value as unknown as ShowElementItem),
-          startTime: activeNode.value?.startTime || 0,
-          endTime: activeNode.value?.endTime || timeLine.duration.value,
-          x: activeNode.value.x || 0,
-          y: activeNode.value.y || 0,
-          rotation: activeNode.value.rotation || 0,
-          clip: activeNode.value.clip || '',
-        } as ShowElementItem)
-      : null
-  );
-
-  const removeNode = (uid: string) => {
-    const index = nodes.value.findIndex((item) => item.uid === uid);
-    index !== -1 && nodes.value.splice(index, 1);
-  };
-
-  const addNode = (data: MaterialItem, uid: string) => {
-    nodes.value.push({
-      type: data.type,
-      data: data.data,
-      cover: data.cover,
-      uid,
-      width: 0,
-      height: 0,
-    });
-  };
-
-  const findNodeByUid = (uid: string): ElementItem | null => {
-    return nodes.value.find((item) => item.uid === uid) || null;
-  };
 
   const editor = useEditor<MaterialItem>({
-    afterAdd: addNode,
-    afterRemove: removeNode,
+    afterAdd: (...arg) => nodeGroup.addNode(...arg),
+    afterRemove: (...arg) => nodeGroup.removeNode(...arg),
     chooseOne: (uid: string) => {
-      activeNode.value = findNodeByUid(uid);
+      nodeGroup.activeNode.value = nodeGroup.findNodeByUid(uid);
     },
     clearChoose: () => {
-      activeNode.value = null;
+      nodeGroup.activeNode.value = null;
     },
-    updateActiveInfo: (data) => updateActiveInfo(data),
+    updateActiveInfo: (data) => nodeGroup.updateActiveInfo(data),
     updateGlobelInfo: (data) => {
-      setGlobalWidth(data.width);
-      setGlobalHeight(data.height);
+      global.setGlobalWidth(data.width);
+      global.setGlobalHeight(data.height);
     },
   });
 
-  nextTick(() => {
-    editor.setWorkspaseSize(global.value.width, global.value.height);
-  });
+  const global = useGlobal(editor);
 
-  const operate = useOperate(activeNode, activeNodeShowValue, timeLine.duration, editor);
+  const nodeGroup = useNode(timeLine.duration, editor);
 
-  const videoAudioOperate = useVideoAudioOperate(activeNode as Ref<ElementItem<VideoNode>>, editor);
+  const operate = useOperate(
+    nodeGroup.activeNode,
+    nodeGroup.activeNodeShowValue,
+    timeLine.duration,
+    editor
+  );
 
-  const textOperate = useTextOperate(activeNode as Ref<ElementItem<TextNode>>, editor);
+  const videoAudioOperate = useVideoAudioOperate(
+    nodeGroup.activeNode as Ref<ElementItem<VideoNode>>,
+    editor
+  );
 
-  const setActiveNode = (item: ElementItem) => {
-    editor.setSelect(item.uid);
-  };
-
-  const clearActiveNode = () => {
-    activeNode.value = null;
-    editor.clearSelect();
-  };
-
-  const updateActiveInfo = (data: FbNodes) => {
-    if (activeNode.value) {
-      activeNode.value.x = data.left;
-      activeNode.value.y = data.top;
-      activeNode.value.width = data.getScaledWidth();
-      activeNode.value.height = data.getScaledHeight();
-      activeNode.value.rotation = data.angle;
-      if (data instanceof fabric.Text) {
-        (activeNode.value as ElementItem<TextNode>).data = data.text || '';
-        (activeNode.value as ElementItem<TextNode>).fontSize = data.fontSize;
-        (activeNode.value as ElementItem<TextNode>).fontFamily = data.fontFamily;
-        (activeNode.value as ElementItem<TextNode>).color = data.fill as string;
-        (activeNode.value as ElementItem<TextNode>).textAlign = data.textAlign || 'left';
-        (activeNode.value as ElementItem<TextNode>).letterSpacing = data.charSpacing || 0;
-      } else if (data instanceof fabric.Image) {
-        const element = data.getElement();
-        if (element instanceof HTMLVideoElement) {
-          (activeNode.value as ElementItem<VideoNode>).isLoop = element.loop;
-          (activeNode.value as ElementItem<VideoNode>).vol = element.volume;
-        }
-      }
-    }
-  };
-
-  const setGlobalWidth = (width: number) => {
-    if (global.value.width === width) {
-      return;
-    }
-    global.value.width = width;
-    editor.setWorkspaseSize(global.value.width, global.value.height, false);
-  };
-
-  const setGlobalHeight = (height: number) => {
-    if (global.value.height === height) {
-      return;
-    }
-    global.value.height = height;
-    editor.setWorkspaseSize(global.value.width, global.value.height, false);
-  };
-
-  const removeActive = () => {
-    activeNode.value && editor.removeObject(activeNode.value.uid);
-  };
+  const textOperate = useTextOperate(nodeGroup.activeNode as Ref<ElementItem<TextNode>>, editor);
 
   const previewVideo = () => {
     const objs = editor.getAllObject();
@@ -145,7 +61,7 @@ export const elementStore = defineStore('element', () => {
       if (item instanceof fabric.Image) {
         const element = item.getElement();
         if (element instanceof HTMLVideoElement) {
-          const node = findNodeByUid(item.data);
+          const node = nodeGroup.findNodeByUid(item.data);
           node &&
             videoOrAudioNode.push({
               element,
@@ -174,16 +90,9 @@ export const elementStore = defineStore('element', () => {
   };
 
   return {
-    nodes,
-    activeNode,
-    setActiveNode,
-    clearActiveNode,
-    activeNodeShowValue,
-    global,
-    setGlobalHeight,
-    setGlobalWidth,
-    removeActive,
     previewVideo,
+    ...nodeGroup,
+    ...global,
     ...videoAudioOperate,
     ...textOperate,
     ...operate,
