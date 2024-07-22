@@ -42,7 +42,9 @@ export default defineComponent({
             </div>
           </div>
           <div class={styles.wrap_editor_right}>
-            <Button type="primary">预览视频</Button>
+            <Button type="primary" disabled={store.isPreviewing} onClick={store.previewVideo}>
+              预览视频
+            </Button>
           </div>
         </div>
         <div ref={boxRef} class={styles.time_box}>

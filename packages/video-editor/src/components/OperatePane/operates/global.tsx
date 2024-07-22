@@ -28,6 +28,16 @@ export default defineComponent({
           }}
           onChange={(value) => store.setGlobalHeight(value as number)}
         ></InputNumber>
+
+        <InputNumber
+          value={store.duration}
+          formatter={(value) => Number(value).toFixed(2)}
+          parser={(value) => Number(value)}
+          v-slots={{
+            addonBefore: () => '时长',
+          }}
+          onChange={(value) => store.changeDuration(value as number)}
+        ></InputNumber>
       </div>
     );
   },

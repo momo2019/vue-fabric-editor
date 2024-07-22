@@ -122,6 +122,36 @@ export const elementStore = defineStore('element', () => {
     activeNode.value && editor.removeObject(activeNode.value.uid);
   };
 
+  const previewVideo = () => {
+    const objs = editor.getAllObject();
+    const videoElement: HTMLVideoElement[] = [];
+
+    objs?.forEach((item) => {
+      if (item instanceof fabric.Image) {
+        const element = item.getElement();
+        if (element instanceof HTMLVideoElement) {
+          videoElement.push(element);
+        }
+      }
+    });
+    videoElement.forEach((element) => {
+      element.currentTime = 0;
+      element.play();
+    });
+    timeLine.start({
+      process: () => {
+        editor.requestRenderAll();
+      },
+      end: () => {
+        videoElement.forEach((element) => {
+          element.pause();
+          element.currentTime = 0;
+        });
+        editor.requestRenderAll();
+      },
+    });
+  };
+
   return {
     nodes,
     activeNode,
@@ -132,6 +162,7 @@ export const elementStore = defineStore('element', () => {
     setGlobalHeight,
     setGlobalWidth,
     removeActive,
+    previewVideo,
     ...videoAudioOperate,
     ...textOperate,
     ...operate,

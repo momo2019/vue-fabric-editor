@@ -136,7 +136,7 @@ export const useEditor = <T = MaterialItem>(cb: {
     videoE.muted = true;
 
     // 加入画布存在一定的延迟
-    videoE.oncanplay = () => {
+    videoE.onloadeddata = () => {
       videoE.width = videoE.videoWidth;
       videoE.height = videoE.videoHeight;
       const img = new fabric.Image(videoE);
@@ -244,6 +244,13 @@ export const useEditor = <T = MaterialItem>(cb: {
     return false;
   }
 
+  const getAllObject = () => {
+    const objs = fbrcCanvas.value
+      ?.getObjects()
+      .filter((item: any) => item.id !== 'workspace' || item.id !== 'coverMask');
+    return objs;
+  };
+
   return {
     initEditor,
     addImage,
@@ -258,6 +265,7 @@ export const useEditor = <T = MaterialItem>(cb: {
     removeClip,
     addText,
     setFbNodeInfo,
+    getAllObject,
   };
 };
 
