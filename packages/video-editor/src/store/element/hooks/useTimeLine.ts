@@ -2,7 +2,11 @@ import { computed, ref } from 'vue';
 
 export const timeGap = 10; // 每格之间的距离
 
-type StartCallback = { process: (curTime: number, delta: number) => void; end: () => void };
+type StartCallback = {
+  process: (curTime: number, delta: number) => void;
+  end: () => void;
+  start: () => void;
+};
 
 export const useTimeLine = () => {
   const duration = ref(100);
@@ -43,6 +47,7 @@ export const useTimeLine = () => {
     }
     curTime.value = 0;
     isPreviewing.value = true;
+    cb.start();
     next(0, performance.now() / 1000, cb);
   };
 

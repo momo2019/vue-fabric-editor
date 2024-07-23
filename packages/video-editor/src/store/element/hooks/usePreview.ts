@@ -4,6 +4,9 @@ import { fabric } from 'fabric';
 import { EditorReturnType } from './useEditor';
 import { NodeReturnType } from './useNode';
 import { TimeLineReturnType } from './useTimeLine';
+import { handleAnimation } from '@/utils/animationHandler';
+import * as TWEEN from '@tweenjs/tween.js';
+import { AnimationStep } from '@/interfaces/animation';
 
 export const usePreview = (
   editor: EditorReturnType,
@@ -36,11 +39,32 @@ export const usePreview = (
     });
     editor.clearSelect();
     editor.stopSelect();
+
+    const tweens = nodes.reduce((acc, node) => {
+      acc.push(
+        ...handleAnimation(
+          node as {
+            node: ElementItem;
+            fbNode: fabric.Object;
+          },
+          timeLine.duration.value
+        )
+      );
+      return acc;
+    }, [] as TWEEN.Tween<AnimationStep>[]);
+
+    let tweenNow = 0;
+
     timeLine.start({
+      start: () => {
+        tweens.forEach((tween) => tween.start());
+        tweenNow = TWEEN.now();
+      },
       process: (curTime: number) => {
         nodes.forEach((node) => {
           handleNode(curTime, node, timeLine.duration.value);
         });
+        TWEEN.update(tweenNow + curTime * 1000);
         editor.requestRenderAll();
       },
       end: () => {
@@ -48,6 +72,7 @@ export const usePreview = (
           handleEndNode(node);
         });
         editor.clearSelect();
+        editor.openSelect();
         editor.requestRenderAll();
       },
     });

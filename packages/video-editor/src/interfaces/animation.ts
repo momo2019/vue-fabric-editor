@@ -9,4 +9,5 @@ export type AnimationStep = {
 export type AnimationCore = {
   from: AnimationStep;
   to: AnimationStep;
+  ease?: string;
 };

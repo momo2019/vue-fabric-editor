@@ -1,42 +1,51 @@
-import { AnimationCore } from '@/interfaces/animation';
+import { AnimationCore, AnimationStep } from '@/interfaces/animation';
 import { ElementItem } from '@/interfaces/element';
 import { fabric } from 'fabric';
 import { getKeys } from '.';
 import { getDefaultAnimation } from './defaultAnimation';
+import * as TWEEN from '@tweenjs/tween.js';
 
 const startAnimationCore = (
   item: {
     fbNode: fabric.Object;
   },
   animation: AnimationCore,
-  proportion: number
+  animationTime: number,
+  startTime: number
 ) => {
   const { fbNode } = item;
-  const keys = getKeys(animation.from);
-  for (const key of keys) {
-    const allValue = animation.to[key]! - animation.from[key]!;
-    if (!allValue) {
-      return;
-    }
-    const curValue = allValue * proportion;
-    switch (key) {
-      case 'opacity':
-        fbNode.opacity = curValue;
-        break;
-      case 'height':
-        fbNode.scaleY = fbNode.height ? curValue / fbNode.height : 1;
-        break;
-      case 'width':
-        fbNode.scaleX = fbNode.width ? curValue / fbNode.width : 1;
-        break;
-      case 'x':
-        fbNode.left = curValue;
-        break;
-      case 'y':
-        fbNode.top = curValue;
-        break;
-    }
-  }
+  const coords = { ...animation.from };
+  const keys = getKeys(coords);
+  return new TWEEN.Tween(coords)
+    .to({ ...animation.to }, animationTime * 1000)
+    .delay(startTime * 1000)
+    .easing(TWEEN.Easing.Quadratic.InOut)
+    .onUpdate(() => {
+      for (const key of keys) {
+        const allValue = animation.to[key]! - animation.from[key]!;
+        if (!allValue) {
+          return;
+        }
+        const curValue = coords[key];
+        switch (key) {
+          case 'opacity':
+            fbNode.opacity = curValue;
+            break;
+          case 'height':
+            fbNode.scaleY = fbNode.height ? curValue! / fbNode.height : 1;
+            break;
+          case 'width':
+            fbNode.scaleX = fbNode.width ? curValue! / fbNode.width : 1;
+            break;
+          case 'x':
+            fbNode.left = curValue;
+            break;
+          case 'y':
+            fbNode.top = curValue;
+            break;
+        }
+      }
+    });
 };
 
 export const clearAnimation = (item: { node: ElementItem; fbNode: fabric.Object }) => {
@@ -48,28 +57,7 @@ export const clearAnimation = (item: { node: ElementItem; fbNode: fabric.Object 
   fbNode.scaleY = fbNode.height ? node.height / fbNode.height : 1;
 };
 
-const handleStartAnimation = (
-  curTime: number,
-  item: {
-    node: ElementItem;
-    fbNode: fabric.Object;
-  }
-) => {
-  const { node } = item;
-  const startTime = node.startTime || 0;
-  if (curTime >= startTime && curTime <= startTime + node.startAnimationTime!) {
-    const defaultAnimation = getDefaultAnimation(node.startAnimation!);
-    defaultAnimation &&
-      startAnimationCore(item, defaultAnimation, (curTime - startTime) / node.startAnimationTime!);
-    return true;
-  } else {
-    clearAnimation(item);
-    return false;
-  }
-};
-
-const handleEndAnimation = (
-  curTime: number,
+export const handleAnimation = (
   item: {
     node: ElementItem;
     fbNode: fabric.Object;
@@ -77,31 +65,27 @@ const handleEndAnimation = (
   duration: number
 ) => {
   const { node } = item;
-  const endTime = node.endTime || duration;
-  if (curTime <= endTime && curTime >= endTime - node.endAnimationTime!) {
+  const tweens: TWEEN.Tween<AnimationStep>[] = [];
+  if (node.startAnimation && node.startAnimationTime) {
+    const startTime = node.startTime || 0;
+    const defaultAnimation = getDefaultAnimation(node.startAnimation);
+
+    defaultAnimation &&
+      tweens.push(startAnimationCore(item, defaultAnimation, node.startAnimationTime, startTime));
+  }
+
+  if (node.endAnimation && node.endAnimationTime) {
+    const endTime = node.endTime || duration;
     const defaultAnimation = getDefaultAnimation(node.endAnimation!);
     defaultAnimation &&
-      startAnimationCore(item, defaultAnimation, (curTime - endTime) / node.endAnimationTime!);
-  } else {
-    clearAnimation(item);
+      tweens.push(
+        startAnimationCore(
+          item,
+          defaultAnimation,
+          node.endAnimationTime!,
+          endTime - node.endAnimationTime!
+        )
+      );
   }
-};
-
-export const handleAnimation = (
-  curTime: number,
-  item: {
-    node: ElementItem;
-    fbNode: fabric.Object;
-  },
-  duration: number
-) => {
-  const { node } = item;
-  let isOnStartAnimation = false;
-  if (node.startAnimation && node.startAnimationTime) {
-    isOnStartAnimation = handleStartAnimation(curTime, item);
-  }
-
-  if (!isOnStartAnimation && node.endAnimation && node.endAnimationTime) {
-    handleEndAnimation(curTime, item, duration);
-  }
+  return tweens;
 };

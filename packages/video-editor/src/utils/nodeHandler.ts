@@ -1,7 +1,7 @@
 import { ElementItem, VideoNode } from '@/interfaces/element';
 import { fabric } from 'fabric';
 import { handleVideoOrAudio } from './videoAudioHandler';
-import { clearAnimation, handleAnimation } from './animationHandler';
+import { clearAnimation } from './animationHandler';
 
 export const handleNode = (
   curTime: number,
@@ -20,14 +20,6 @@ export const handleNode = (
       handleVideoOrAudio(curTime, { element, node: node as ElementItem<VideoNode> }, duration);
     if (item.fbNode) {
       item.fbNode.opacity = node.opacity || 1;
-      handleAnimation(
-        curTime,
-        item as {
-          node: ElementItem;
-          fbNode: fabric.Object;
-        },
-        duration
-      );
     }
   } else {
     item.fbNode && (item.fbNode.opacity = 0);
