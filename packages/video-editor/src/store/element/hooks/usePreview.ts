@@ -1,5 +1,5 @@
 import { ElementItem } from '@/interfaces/element';
-import { handleNode } from '@/utils/nodeHandler';
+import { handleNode, handleEndNode } from '@/utils/nodeHandler';
 import { fabric } from 'fabric';
 import { EditorReturnType } from './useEditor';
 import { NodeReturnType } from './useNode';
@@ -44,11 +44,8 @@ export const usePreview = (
         editor.requestRenderAll();
       },
       end: () => {
-        nodes.forEach(({ element }) => {
-          if (element) {
-            element?.pause();
-            element.currentTime = 0;
-          }
+        nodes.forEach((node) => {
+          handleEndNode(node);
         });
         editor.clearSelect();
         editor.requestRenderAll();

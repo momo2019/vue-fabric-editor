@@ -39,7 +39,7 @@ const startAnimationCore = (
   }
 };
 
-const clearAnimation = (item: { node: ElementItem; fbNode: fabric.Object }) => {
+export const clearAnimation = (item: { node: ElementItem; fbNode: fabric.Object }) => {
   const { node, fbNode } = item;
   fbNode.opacity = node.opacity;
   fbNode.left = node.x;

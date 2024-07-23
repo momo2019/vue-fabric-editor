@@ -17,6 +17,11 @@ export const useTimeLine = () => {
     isPreviewing.value = false;
   };
 
+  const stopPreview = () => {
+    isPreviewing.value = false;
+    curTime.value = 0;
+  };
+
   const next = (delta: number, lastTime: number, cb: StartCallback) => {
     if (curTime.value >= duration.value) {
       curTime.value = duration.value;
@@ -24,7 +29,7 @@ export const useTimeLine = () => {
     curTime.value = Number((curTime.value + delta).toFixed(2));
     cb.process(curTime.value, delta);
     if (curTime.value === duration.value || !isPreviewing.value) {
-      isPreviewing.value = false;
+      stopPreview();
       cb.end();
       return;
     }
@@ -49,6 +54,7 @@ export const useTimeLine = () => {
     changeDuration,
     start,
     isPreviewing,
+    stopPreview,
   };
 };
 

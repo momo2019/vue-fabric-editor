@@ -1,7 +1,7 @@
 import { ElementItem, VideoNode } from '@/interfaces/element';
 import { fabric } from 'fabric';
 import { handleVideoOrAudio } from './videoAudioHandler';
-import { handleAnimation } from './animationHandler';
+import { clearAnimation, handleAnimation } from './animationHandler';
 
 export const handleNode = (
   curTime: number,
@@ -32,5 +32,23 @@ export const handleNode = (
   } else {
     item.fbNode && (item.fbNode.opacity = 0);
     element?.pause();
+  }
+};
+
+export const handleEndNode = (item: {
+  element?: HTMLVideoElement | HTMLAudioElement;
+  node: ElementItem;
+  fbNode?: fabric.Object;
+}) => {
+  const { element, node, fbNode } = item;
+  if (fbNode) {
+    clearAnimation({
+      node,
+      fbNode,
+    });
+  }
+  if (element) {
+    element?.pause();
+    element.currentTime = 0;
   }
 };
