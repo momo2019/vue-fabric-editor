@@ -17,7 +17,9 @@ export default defineComponent({
           v-slots={{
             addonBefore: () => '开始时间',
           }}
-          onChange={(value) => store.setStartTime(value as number)}
+          onBlur={(e) => store.setStartTime(Number((e.target as HTMLInputElement).value))}
+          onPressEnter={(e) => store.setStartTime(Number((e.target as HTMLInputElement).value))}
+          onStep={(value) => store.setStartTime(value as number)}
         ></InputNumber>
 
         <InputNumber
@@ -28,7 +30,9 @@ export default defineComponent({
           v-slots={{
             addonBefore: () => '结束时间',
           }}
-          onChange={(value) => store.setEndTime(value as number)}
+          onBlur={(e) => store.setEndTime(Number((e.target as HTMLInputElement).value))}
+          onPressEnter={(e) => store.setEndTime(Number((e.target as HTMLInputElement).value))}
+          onStep={(value) => store.setEndTime(value as number)}
         ></InputNumber>
       </div>
     );
