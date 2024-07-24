@@ -4,6 +4,7 @@ import { fabric } from 'fabric';
 import { getKeys } from '.';
 import { getDefaultAnimation } from './defaultAnimation';
 import * as TWEEN from '@tweenjs/tween.js';
+import { get } from 'lodash-es';
 
 const startAnimationCore = (
   item: {
@@ -19,7 +20,7 @@ const startAnimationCore = (
   return new TWEEN.Tween(coords)
     .to({ ...animation.to }, animationTime * 1000)
     .delay(startTime * 1000)
-    .easing(TWEEN.Easing.Quadratic.InOut)
+    .easing(get(TWEEN.Easing, animation.ease || 'Linear'))
     .onUpdate(() => {
       for (const key of keys) {
         const allValue = animation.to[key]! - animation.from[key]!;
@@ -62,13 +63,17 @@ export const handleAnimation = (
     node: ElementItem;
     fbNode: fabric.Object;
   },
-  duration: number
+  duration: number,
+  global: {
+    width: number;
+    height: number;
+  }
 ) => {
   const { node } = item;
   const tweens: TWEEN.Tween<AnimationStep>[] = [];
   if (node.startAnimation && node.startAnimationTime) {
     const startTime = node.startTime || 0;
-    const defaultAnimation = getDefaultAnimation(node.startAnimation);
+    const defaultAnimation = getDefaultAnimation(node.startAnimation, item.node, global);
 
     defaultAnimation &&
       tweens.push(startAnimationCore(item, defaultAnimation, node.startAnimationTime, startTime));
@@ -76,7 +81,7 @@ export const handleAnimation = (
 
   if (node.endAnimation && node.endAnimationTime) {
     const endTime = node.endTime || duration;
-    const defaultAnimation = getDefaultAnimation(node.endAnimation!);
+    const defaultAnimation = getDefaultAnimation(node.endAnimation!, item.node, global);
     defaultAnimation &&
       tweens.push(
         startAnimationCore(

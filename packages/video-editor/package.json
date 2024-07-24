@@ -13,6 +13,7 @@
     "pinia": "2.1.7",
     "ant-design-vue": "4.2.3",
     "vue": "3.4.29",
+    "lodash-es": "4.17.21",
     "@tweenjs/tween.js": "23.1.2",
     "vue3-colorpicker": "2.3.0"
   },

@@ -7,11 +7,13 @@ import { TimeLineReturnType } from './useTimeLine';
 import { handleAnimation } from '@/utils/animationHandler';
 import * as TWEEN from '@tweenjs/tween.js';
 import { AnimationStep } from '@/interfaces/animation';
+import { GlobalReturnType } from './useGlobal';
 
 export const usePreview = (
   editor: EditorReturnType,
   timeLine: TimeLineReturnType,
-  nodeGroup: NodeReturnType
+  nodeGroup: NodeReturnType,
+  global: GlobalReturnType
 ) => {
   const previewVideo = () => {
     const objs = editor.getAllObject();
@@ -47,7 +49,8 @@ export const usePreview = (
             node: ElementItem;
             fbNode: fabric.Object;
           },
-          timeLine.duration.value
+          timeLine.duration.value,
+          global.global.value
         )
       );
       return acc;

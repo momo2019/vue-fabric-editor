@@ -33,3 +33,5 @@ export const useGlobal = (editor: EditorReturnType) => {
     setGlobalHeight,
   };
 };
+
+export type GlobalReturnType = ReturnType<typeof useGlobal>;

@@ -44,7 +44,7 @@ export const elementStore = defineStore('element', () => {
 
   const textOperate = useTextOperate(node.activeNode as Ref<ElementItem<TextNode>>, editor);
 
-  const preview = usePreview(editor, timeLine, node);
+  const preview = usePreview(editor, timeLine, node, global);
 
   const animation = useAnimationOperate(node);
 
