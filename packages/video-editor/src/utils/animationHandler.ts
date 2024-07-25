@@ -10,13 +10,15 @@ const setClipPath = (obj: fabric.Object, type: WipeType, isWipeOut?: boolean) =>
   const width = obj.getScaledWidth();
   const height = obj.getScaledHeight();
   const proportion = isWipeOut ? 1.5 : 0.5;
+  const leftO = obj.left || 0;
+  const topO = obj.top || 0;
   const left = type === WipeType.right || type === WipeType.left ? width * proportion : width / 2;
   const top = type === WipeType.bottom || type === WipeType.top ? height * proportion : height / 2;
 
   const wipeClip = new fabric.Rect({
     absolutePositioned: true,
-    left: type === WipeType.right ? left : -left,
-    top: type === WipeType.bottom ? top : -top,
+    left: type === WipeType.right ? left + leftO : -left + leftO,
+    top: type === WipeType.bottom ? top + topO : -top + topO,
     width,
     height,
     originX: type === WipeType.right ? 'right' : 'left',
@@ -71,6 +73,9 @@ const startAnimationCore = (
   const width = fbNode.getScaledWidth();
   const height = fbNode.getScaledHeight();
 
+  const left = fbNode.left || 0;
+  const top = fbNode.top || 0;
+
   return new TWEEN.Tween(coords)
     .to({ ...animation.to }, animationTime * 1000)
     .delay(startTime * 1000)
@@ -80,16 +85,16 @@ const startAnimationCore = (
       const proportion = tempElapsed + 0.5;
       switch (wipe) {
         case WipeType.left:
-          clipPath?.set('left', -width * proportion);
+          clipPath?.set('left', -width * proportion + left);
           break;
         case WipeType.right:
-          clipPath?.set('left', width * proportion);
+          clipPath?.set('left', width * proportion + left);
           break;
         case WipeType.top:
-          clipPath?.set('top', -height * proportion);
+          clipPath?.set('top', -height * proportion + top);
           break;
         case WipeType.bottom:
-          clipPath?.set('top', height * proportion);
+          clipPath?.set('top', height * proportion + top);
           break;
       }
 
