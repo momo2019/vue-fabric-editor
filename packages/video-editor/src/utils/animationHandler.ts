@@ -21,6 +21,7 @@ const setClipPath = (obj: fabric.Object, type: WipeType, isWipeOut?: boolean) =>
     height,
     originX: type === WipeType.right ? 'right' : 'left',
     originY: type === WipeType.bottom ? 'bottom' : 'top',
+    inverted: true,
     data: 'wipe',
   });
 
