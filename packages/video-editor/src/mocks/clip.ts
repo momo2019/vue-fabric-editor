@@ -3,10 +3,6 @@ export const CLIP_LIST: {
   label: string;
 }[] = [
   {
-    value: 'polygon',
-    label: 'test',
-  },
-  {
     value: '/clip.png',
     label: 'cip',
   },

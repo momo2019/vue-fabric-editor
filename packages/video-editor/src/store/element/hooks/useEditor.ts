@@ -264,6 +264,10 @@ export const useEditor = <T = MaterialItem>(cb: {
     disableSelect.value = false;
   };
 
+  const changeBackgroundColor = (color: string) => {
+    canvasEditor.setWorkspaseBg(color);
+  };
+
   return {
     initEditor,
     addImage,
@@ -281,6 +285,7 @@ export const useEditor = <T = MaterialItem>(cb: {
     getAllObject,
     stopSelect,
     openSelect,
+    changeBackgroundColor,
   };
 };
 

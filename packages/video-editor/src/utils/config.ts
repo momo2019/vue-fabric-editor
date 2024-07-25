@@ -1,3 +1,5 @@
+import { BackgoundType } from '@/interfaces/common';
+
 export const DEFAULT_FONT_CONFIG = {
   fontfamily: 'Arial',
   data: '默认文本',
@@ -17,5 +19,21 @@ export const FONT_ALIGN_OPTIONS = [
   {
     value: 'right',
     label: '右对齐',
+  },
+];
+
+export const BACKGROUND_COLOR = '#ffffff';
+export const BACKGROUND_TYPES = [
+  {
+    value: BackgoundType.color,
+    label: '颜色',
+  },
+  {
+    value: BackgoundType.image,
+    label: '图片',
+  },
+  {
+    value: BackgoundType.video,
+    label: '视频',
   },
 ];

@@ -1,5 +1,8 @@
 import { ref, nextTick } from 'vue';
 import { EditorReturnType } from './useEditor';
+import { BackgoundType } from '@/interfaces/common';
+import { CLIP_LIST } from '@/mocks/clip';
+import { BACKGROUND_COLOR } from '@/utils/config';
 
 export const useGlobal = (editor: EditorReturnType) => {
   const global = ref({
@@ -27,10 +30,34 @@ export const useGlobal = (editor: EditorReturnType) => {
     editor.setWorkspaseSize(global.value.width, global.value.height);
   });
 
+  const background = ref({
+    type: BackgoundType.color,
+    data: BACKGROUND_COLOR,
+  });
+
+  const backgroundImageList = ref(CLIP_LIST);
+
+  const setBackground = ({ type, data }: { type?: BackgoundType; data?: string }) => {
+    background.value.type = type ?? background.value.type;
+    background.value.data = data ?? background.value.data;
+    switch (type) {
+      case BackgoundType.image:
+        background.value.data = backgroundImageList.value[0].value;
+        break;
+      case BackgoundType.color:
+        background.value.data = BACKGROUND_COLOR;
+        editor.changeBackgroundColor(background.value.data);
+        break;
+    }
+  };
+
   return {
     global,
     setGlobalWidth,
     setGlobalHeight,
+    background,
+    setBackground,
+    backgroundImageList,
   };
 };
 
