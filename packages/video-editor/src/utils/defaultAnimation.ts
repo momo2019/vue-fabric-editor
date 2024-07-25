@@ -1,5 +1,6 @@
-import { AnimationCore, AnimationStep } from '@/interfaces/animation';
+import { AnimationCore, AnimationStep, WipeType } from '@/interfaces/animation';
 import { BaseNode } from '@/interfaces/element';
+import { isNumber } from 'lodash-es';
 
 // 位置枚举
 enum PositionType {
@@ -104,63 +105,61 @@ const ZOOM_IN_OUT = {
   },
 };
 
-const WIPE_MIN = 0.0001; // 擦除的最小值
-
 // 擦除动画集合
 const WIPE_IN_OUT = {
   // 从左侧擦入，最左侧内容最后出现
   wipeLeftIn: {
-    from: { hor: 1, dir: 1, ratio: WIPE_MIN },
-    to: { hor: 1, dir: 1, ratio: 1 },
+    from: { wipe: WipeType.left },
+    to: { wipe: WipeType.right },
     ease: 'Quadratic.InOut',
   },
 
   // 向左侧擦除，最左侧内容最后消失
   wipeLeftOut: {
-    from: { hor: 1, dir: -1, ratio: 1 },
-    to: { hor: 1, dir: -1, ratio: 0 },
+    from: { wipe: WipeType.left, isWipeOut: true },
+    to: { wipe: WipeType.right },
     ease: 'Quadratic.InOut',
   },
 
   // 从右侧擦入
   wipeRightIn: {
-    from: { hor: 1, dir: -1, ratio: WIPE_MIN },
-    to: { hor: 1, dir: -1, ratio: 1 },
+    from: { wipe: WipeType.right },
+    to: { wipe: WipeType.left },
     ease: 'Quadratic.InOut',
   },
 
   // 向右侧擦除
   wipeRightOut: {
-    from: { hor: 1, dir: 1, ratio: 1 },
-    to: { hor: 1, dir: 1, ratio: 0 },
+    from: { wipe: WipeType.right, isWipeOut: true },
+    to: { wipe: WipeType.left },
     ease: 'Quadratic.InOut',
   },
 
   // 从下方擦入
   wipeDownIn: {
-    from: { hor: 0, dir: -1, ratio: WIPE_MIN },
-    to: { hor: 0, dir: -1, ratio: 1 },
+    from: { wipe: WipeType.top },
+    to: { wipe: WipeType.bottom },
     ease: 'Quadratic.InOut',
   },
 
-  // 向下方擦除
+  // 向上方擦除
   wipeDownOut: {
-    from: { hor: 0, dir: 1, ratio: 1 },
-    to: { hor: 0, dir: 1, ratio: 0 },
+    from: { wipe: WipeType.top, isWipeOut: true },
+    to: { wipe: WipeType.bottom },
     ease: 'Quadratic.InOut',
   },
 
   // 从上方擦入
   wipeUpIn: {
-    from: { hor: 0, dir: 1, ratio: WIPE_MIN },
-    to: { hor: 0, dir: 1, ratio: 1 },
+    from: { wipe: WipeType.bottom },
+    to: { wipe: WipeType.top },
     ease: 'Quadratic.InOut',
   },
 
-  // 向下方擦除
+  // 向上方擦除
   wipeUpOut: {
-    from: { hor: 0, dir: -1, ratio: 1 },
-    to: { hor: 0, dir: -1, ratio: 0 },
+    from: { wipe: WipeType.bottom, isWipeOut: true },
+    to: { wipe: WipeType.top },
     ease: 'Quadratic.InOut',
   },
 };
@@ -175,8 +174,8 @@ const GET_DEFAULT_ANIMATION = (type: string): AnimationCore | undefined => {
     fadeIn: { from: { opacity: 0 }, to: { opacity: 1 }, ease: 'Quadratic.InOut' },
     fadeOut: { from: { opacity: 1 }, to: { opacity: 0 }, ease: 'Quadratic.InOut' },
     ...SLIDE_IN_OUT,
-    // ...ZOOM_IN_OUT,
-    // ...WIPE_IN_OUT,
+    ...ZOOM_IN_OUT,
+    ...WIPE_IN_OUT,
   }[type];
 
   // 防止污染原数据，深度克隆
@@ -235,6 +234,12 @@ const setEnumData = (
     default:
       delete animation.y;
       break;
+  }
+
+  if (isNumber(animation.scale)) {
+    animation.height = base.height * animation.scale;
+    animation.width = base.width * animation.scale;
+    delete animation.scale;
   }
 };
 
