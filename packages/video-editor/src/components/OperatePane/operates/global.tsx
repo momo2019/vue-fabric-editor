@@ -37,7 +37,16 @@ export default defineComponent({
             </LabelWrap>
           );
         case BackgoundType.video:
-          return <></>;
+          return (
+            <LabelWrap label="选择视频">
+              <Select
+                value={store.background.data}
+                options={store.backgroundVideoList}
+                style={{ width: '100%' }}
+                onChange={(data) => store.setBackground({ data: data as string })}
+              ></Select>
+            </LabelWrap>
+          );
         default:
           return <></>;
       }

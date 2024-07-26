@@ -268,6 +268,10 @@ export const useEditor = <T = MaterialItem>(cb: {
     canvasEditor.setWorkspaseBg(color);
   };
 
+  const addMediaBackground = (url: string, isVideo = false) => {
+    canvasEditor.setWorkspaseMediaBg(url, isVideo);
+  };
+
   return {
     initEditor,
     addImage,
@@ -286,6 +290,7 @@ export const useEditor = <T = MaterialItem>(cb: {
     stopSelect,
     openSelect,
     changeBackgroundColor,
+    addMediaBackground,
   };
 };
 

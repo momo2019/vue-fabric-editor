@@ -32,3 +32,25 @@ export const MOCK_MATERIALS: Record<
     },
   ],
 };
+
+export const VIDEO_LIST = [
+  {
+    value: '/video1.mp4',
+    label: '111',
+  },
+  {
+    value: '/test.mp4',
+    label: '2222',
+  },
+];
+
+export const IMAGE_LIST = [
+  {
+    value: '/cover.jpeg',
+    label: 'aaa',
+  },
+  {
+    value: '/test.jpeg',
+    label: 'bbbb',
+  },
+];
