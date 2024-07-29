@@ -1,7 +1,7 @@
 import { AnimationCore, AnimationStep, WipeType } from '@/interfaces/animation';
 import { ElementItem } from '@/interfaces/element';
 import { fabric } from 'fabric';
-import { getKeys } from '.';
+import { getKeys } from '..';
 import { getDefaultAnimation } from './defaultAnimation';
 import * as TWEEN from '@tweenjs/tween.js';
 import { get } from 'lodash-es';

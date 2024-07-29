@@ -1,10 +1,10 @@
 import { ElementItem } from '@/interfaces/element';
-import { handleNode, handleEndNode } from '@/utils/nodeHandler';
+import { handleNode, handleEndNode } from '@/utils/handler/nodeHandler';
 import { fabric } from 'fabric';
 import { EditorReturnType } from './useEditor';
 import { NodeReturnType } from './useNode';
 import { TimeLineReturnType } from './useTimeLine';
-import { handleAnimation } from '@/utils/animationHandler';
+import { handleAnimation } from '@/utils/handler/animationHandler';
 import * as TWEEN from '@tweenjs/tween.js';
 import { AnimationStep } from '@/interfaces/animation';
 import { GlobalReturnType } from './useGlobal';
