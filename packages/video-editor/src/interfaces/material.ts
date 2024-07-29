@@ -8,6 +8,7 @@ export enum MaterialType {
   image = 'image',
   video = 'video',
   text = 'text',
+  audio = 'audio',
 }
 
 export type MaterialItem = {

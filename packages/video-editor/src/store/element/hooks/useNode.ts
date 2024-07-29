@@ -44,8 +44,9 @@ export const useNode = (timeLine: TimeLineReturnType, editor: EditorReturnType) 
     return nodes.value.find((item) => item.uid === uid) || null;
   };
 
-  const setActiveNode = (item: ElementItem) => {
-    editor.setSelect(item.uid);
+  const setActiveNode = (uid: string) => {
+    editor.setSelect(uid);
+    activeNode.value = findNodeByUid(uid);
   };
 
   const clearActiveNode = () => {

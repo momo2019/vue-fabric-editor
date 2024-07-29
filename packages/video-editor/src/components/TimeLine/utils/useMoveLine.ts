@@ -12,7 +12,7 @@ export const useMoveLine = () => {
   const isMoving = ref(false);
 
   const startMove = (ev: MouseEvent, item: ElementItem, pos: 'left' | 'right') => {
-    store.setActiveNode(item);
+    store.setActiveNode(item.uid);
     isStart = pos === 'left';
     startX = ev.pageX;
     ev.stopPropagation();

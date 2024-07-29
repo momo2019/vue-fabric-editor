@@ -49,11 +49,21 @@ export type VideoNode = {
   fadeOut?: number;
 };
 
-export type ElementItem<T = TextNode | ImageNode | VideoNode> = {
+export type AudioNode = {
+  uid: string;
+  type: MaterialType.audio;
+  data: string;
+  isLoop?: boolean;
+  vol?: number;
+  fadeIn?: number;
+  fadeOut?: number;
+};
+
+export type ElementItem<T = TextNode | ImageNode | VideoNode | AudioNode> = {
   uid: string;
 } & BaseNode &
   T;
 
 export type ShowElementItem = Required<
-  BaseNode & Omit<TextNode, 'type'> & Omit<ImageNode, 'type'> & Omit<VideoNode, 'type'>
+  BaseNode & Omit<TextNode, 'type'> & Omit<ImageNode, 'type'> & Omit<VideoNode, 'type'> & AudioNode
 >;

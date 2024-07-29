@@ -65,7 +65,7 @@ export default defineComponent({
             </div>
             <div class={styles.wrap_content}>
               {store.nodes.map((item) => (
-                <div onClick={() => store.setActiveNode(item)}>
+                <div onClick={() => store.setActiveNode(item.uid)}>
                   {elementNodeDom(item, startMove)}
                 </div>
               ))}

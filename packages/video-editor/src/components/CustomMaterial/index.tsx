@@ -3,6 +3,7 @@ import { defineComponent, ref } from 'vue';
 
 export enum CustomType {
   text = 'text',
+  audio = 'audio',
 }
 
 type GroupItem = {
@@ -25,6 +26,15 @@ export default defineComponent({
           {
             label: '文字',
             type: CustomType.text,
+          },
+        ],
+      },
+      {
+        label: '音频',
+        list: [
+          {
+            label: '音频',
+            type: CustomType.audio,
           },
         ],
       },

@@ -11,6 +11,7 @@ import { useNode } from './hooks/useNode';
 import { useGlobal } from './hooks/useGlobal';
 import { usePreview } from './hooks/usePreview';
 import { useAnimationOperate } from './hooks/useAnimationOperate';
+import { useAudio } from './hooks/useAudio';
 
 export const elementStore = defineStore('element', () => {
   const timeLine = useTimeLine();
@@ -19,10 +20,10 @@ export const elementStore = defineStore('element', () => {
     afterAdd: (...arg) => node.addNode(...arg),
     afterRemove: (...arg) => node.removeNode(...arg),
     chooseOne: (uid: string) => {
-      node.activeNode.value = node.findNodeByUid(uid);
+      node.setActiveNode(uid);
     },
     clearChoose: () => {
-      node.activeNode.value = null;
+      node.clearActiveNode();
     },
     updateActiveInfo: (data) => node.updateActiveInfo(data),
     updateGlobelInfo: (data) => {
@@ -48,6 +49,8 @@ export const elementStore = defineStore('element', () => {
 
   const animation = useAnimationOperate(node);
 
+  const audio = useAudio(node);
+
   return {
     ...preview,
     ...node,
@@ -58,5 +61,6 @@ export const elementStore = defineStore('element', () => {
     ...timeLine,
     ...editor,
     ...animation,
+    ...audio,
   };
 });

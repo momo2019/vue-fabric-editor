@@ -178,6 +178,8 @@ export const useEditor = <T = MaterialItem>(cb: {
     if (node) {
       fbrcCanvas.value?.setActiveObject(node);
       fbrcCanvas.value?.requestRenderAll();
+    } else {
+      clearSelect();
     }
   };
 

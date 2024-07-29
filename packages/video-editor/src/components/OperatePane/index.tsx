@@ -20,13 +20,35 @@ export default defineComponent({
   setup() {
     const store = elementStore();
 
+    const showDom = () => (
+      <>
+        <Base></Base>
+        <Clip></Clip>
+        <Animation></Animation>
+      </>
+    );
+
     const typeOperateDom = () => {
       switch (store.activeNode?.type) {
+        case MaterialType.audio:
+          return (
+            <>
+              <Video title="音频配置"></Video>
+            </>
+          );
+        case MaterialType.image:
+          return showDom();
         case MaterialType.video:
-          return <Video></Video>;
+          return (
+            <>
+              <Video></Video>
+              {showDom()}
+            </>
+          );
         case MaterialType.text:
           return (
             <>
+              {showDom()}
               <Text></Text>
               <TextShadow></TextShadow>
               <TextStroke></TextStroke>
@@ -42,10 +64,7 @@ export default defineComponent({
         {store.activeNode ? (
           <>
             <Time></Time>
-            <Base></Base>
             {typeOperateDom()}
-            <Clip></Clip>
-            <Animation></Animation>
             <Button onClick={store.removeActive}>删除节点</Button>
           </>
         ) : (

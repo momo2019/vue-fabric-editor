@@ -5,11 +5,17 @@ import { elementStore } from '@/store/element';
 import LabelWrap from '../LabelWrap';
 
 export default defineComponent({
-  setup() {
+  props: {
+    title: {
+      type: String,
+      default: '视频配置',
+    },
+  },
+  setup(props) {
     const store = elementStore();
     return () => (
       <div class={styles.pane}>
-        <div class={styles.pane_title}>视频配置</div>
+        <div class={styles.pane_title}>{props.title}</div>
         <LabelWrap label="是否循环">
           <Switch
             checked={store.activeNodeShowValue!.isLoop}

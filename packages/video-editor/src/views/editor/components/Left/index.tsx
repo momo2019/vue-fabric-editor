@@ -75,6 +75,9 @@ export default defineComponent({
             cover: DEFAULT_FONT_CONFIG.icon,
           });
           break;
+        case CustomType.audio:
+          store.addAudio('./02.wav');
+          break;
         default:
           break;
       }

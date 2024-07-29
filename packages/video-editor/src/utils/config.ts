@@ -37,3 +37,7 @@ export const BACKGROUND_TYPES = [
     label: '视频',
   },
 ];
+
+export const AUDIO_CONFIG = {
+  cover: './test2.png',
+};
