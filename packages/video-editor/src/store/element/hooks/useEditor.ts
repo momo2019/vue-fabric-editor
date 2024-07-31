@@ -3,18 +3,13 @@ import { MaterialItem } from '@/interfaces/material';
 import { DEFAULT_FONT_CONFIG } from '@/utils/config';
 import Editor, {
   DringPlugin,
-  AlignGuidLinePlugin,
   ControlsPlugin,
   CenterAlignPlugin,
   LayerPlugin,
-  CopyPlugin,
-  MoveHotKeyPlugin,
   DeleteHotKeyPlugin,
   GroupPlugin,
   DrawLinePlugin,
   WorkspacePlugin,
-  MaskPlugin,
-  ResizePlugin,
   RulerPlugin,
   SimpleClipImagePlugin,
 } from '@kuaitu/core';
@@ -50,21 +45,15 @@ export const useEditor = <T = MaterialItem>(cb: {
     // 初始化编辑器
     canvasEditor.init(canvas);
     canvasEditor.use(DringPlugin);
-    canvasEditor.use(AlignGuidLinePlugin);
     canvasEditor.use(ControlsPlugin);
     canvasEditor.use(CenterAlignPlugin);
     canvasEditor.use(LayerPlugin);
-    canvasEditor.use(CopyPlugin);
-    canvasEditor.use(MoveHotKeyPlugin);
     canvasEditor.use(DeleteHotKeyPlugin);
     canvasEditor.use(GroupPlugin);
     canvasEditor.use(DrawLinePlugin);
     canvasEditor.use(WorkspacePlugin);
-    canvasEditor.use(MaskPlugin);
-    canvasEditor.use(RulerPlugin);
-    canvasEditor.use(ResizePlugin);
+    canvasEditor.use(RulerPlugin); // 移除会报错
     canvasEditor.use(SimpleClipImagePlugin);
-    canvasEditor.rulerEnable();
 
     canvasEditor.on('selectOne', () => {
       if (disableSelect.value) {

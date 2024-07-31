@@ -100,9 +100,11 @@ export default defineComponent({
           ></Select>
         </div>
         <div class={styles.wrap_content}>
-          {isMore.value
-            ? materialItemBoxDom(activeLabelList.value)
-            : data.value.map(materialGroupDom)}
+          {isMore.value ? (
+            <div class={styles.wrap_content_more}>{materialItemBoxDom(activeLabelList.value)}</div>
+          ) : (
+            data.value.map(materialGroupDom)
+          )}
         </div>
       </div>
     );
