@@ -11,16 +11,19 @@ import { MOCK_MATERIALS } from '@/mocks/material';
 import { elementStore } from '@/store/element';
 import CustomMaterial, { CustomType } from '@/components/CustomMaterial';
 import { DEFAULT_FONT_CONFIG } from '@/utils/config';
+import DrawerPane from '@/components/DrawerPane';
 
 type TypeItem = { type: MaterialGroupType; label: string };
 
 export default defineComponent({
   setup() {
     const activeType = ref<MaterialGroupType>(MaterialGroupType.custom);
+    const isOpen = ref(true);
     const store = elementStore();
 
     const changeType = (type: MaterialGroupType) => {
       activeType.value = type;
+      isOpen.value = true;
     };
 
     const types: TypeItem[] = [
@@ -43,7 +46,10 @@ export default defineComponent({
 
     const typeItemDom = (item: TypeItem) => (
       <div
-        class={[styles.type_item, activeType.value === item.type && styles.type_item_active]}
+        class={[
+          styles.type_item,
+          isOpen.value && activeType.value === item.type && styles.type_item_active,
+        ]}
         onClick={() => changeType(item.type)}
       >
         {item.label}
@@ -83,16 +89,22 @@ export default defineComponent({
       }
     };
 
+    const changeActive = (open: boolean) => {
+      isOpen.value = open;
+    };
+
     return () => (
       <div class={styles.wrap}>
         <div class={styles.wrap_type}>{types.map(typeItemDom)}</div>
-        <div class={styles.wrap_material}>
-          {activeType.value === MaterialGroupType.custom ? (
-            <CustomMaterial onAdd={addCustomMaterial}></CustomMaterial>
-          ) : (
-            <MaterialList data={materials[activeType.value]} onAdd={addMaterial}></MaterialList>
-          )}
-        </div>
+        <DrawerPane open={isOpen.value} size={262} onChange={changeActive}>
+          <div class={styles.wrap_material}>
+            {activeType.value === MaterialGroupType.custom ? (
+              <CustomMaterial onAdd={addCustomMaterial}></CustomMaterial>
+            ) : (
+              <MaterialList data={materials[activeType.value]} onAdd={addMaterial}></MaterialList>
+            )}
+          </div>
+        </DrawerPane>
       </div>
     );
   },

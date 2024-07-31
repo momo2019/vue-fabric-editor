@@ -1,0 +1,58 @@
+.drawer {
+  position: relative;
+  transition: all .3s ease-in-out;
+
+  .drawer_content {
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+  }
+
+  .drawer_button {
+    height: 64px;
+    width: 16px;
+    background-color: rgba($color: #000000, $alpha: 0.5);
+    position: absolute;
+    z-index: 1111;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    color: #fff;
+    clip-path: ellipse(100% 48% at 0% 50%);
+
+    .drawer_button_icon {
+      transform: rotateY(0);
+      transition: all .3s ease-in-out;
+    }
+
+    .drawer_bi_close {
+      transform: rotateY(180deg);
+    }
+  }
+
+
+  .drawer_button_left {
+    right: 0;
+    top: 50%;
+    transform: translate(100%, -50%);
+  }
+
+  .drawer_button_right {
+    left: 0;
+    top: 50%;
+    transform: translate(-100%, -50%);
+  }
+
+  .drawer_button_top {
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -100%);
+  }
+
+  .drawer_button_bottom {
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%, 100%);
+  }
+}
