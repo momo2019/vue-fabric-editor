@@ -19,8 +19,8 @@ export const elementStore = defineStore('element', () => {
   const editor = useEditor<MaterialItem>({
     afterAdd: (...arg) => node.addNode(...arg),
     afterRemove: (...arg) => node.removeNode(...arg),
-    chooseOne: (uid: string) => {
-      node.setActiveNode(uid);
+    chooseOne: (uid, activeObject) => {
+      node.setActiveNode(uid, activeObject);
     },
     clearChoose: () => {
       node.clearActiveNode();

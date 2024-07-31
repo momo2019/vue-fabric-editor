@@ -173,8 +173,8 @@ export const useEditor = <T = MaterialItem>(cb: {
     afterAdd(obj, data);
   };
 
-  const setSelect = (uid: string) => {
-    const node = fbrcNodes.get(uid);
+  const setSelect = (uid: string, activeObject?: fabric.Object) => {
+    const node = fbrcNodes.get(uid) || activeObject;
     if (node) {
       fbrcCanvas.value?.setActiveObject(node);
       fbrcCanvas.value?.requestRenderAll();
