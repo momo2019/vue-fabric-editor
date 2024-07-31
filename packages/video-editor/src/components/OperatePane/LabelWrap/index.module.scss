@@ -5,19 +5,18 @@
   min-height: 32px;
   height: max-content;
   gap: 8px;
+  margin-bottom: 12px;
+  width: 100%;
 
   .pane_item_label {
     display: flex;
-    width: 80px;
     height: 100%;
     min-height: 32px;
     font-size: 14px;
     align-items: center;
     justify-content: center;
-    color: rgba(0, 0, 0, 0.88);
-    background-color: rgba(0, 0, 0, 0.02);
-    border: 1px solid #d9d9d9;
-    border-radius: 6px;
+    color: $color-primary;
+    background-color: $bg-secondary;
   }
 
   .pane_item_content {

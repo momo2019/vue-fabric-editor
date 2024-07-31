@@ -58,6 +58,10 @@ export default defineComponent({
       confirmActiveMenu();
     };
     const setActiveMenu = (item: TYPES) => {
+      if (active.value === item && isOpen.value) {
+        isOpen.value = false;
+        return;
+      }
       active.value = item;
       isOpen.value = true;
     };
@@ -68,7 +72,9 @@ export default defineComponent({
           <>
             <Time></Time>
             {store.activeNode.type === MaterialType.audio ? <></> : <Base></Base>}
-            <Button onClick={store.removeActive}>删除节点</Button>
+            <Button danger type="primary" onClick={store.removeActive}>
+              删除节点
+            </Button>
           </>
         );
       } else {
@@ -138,12 +144,12 @@ export default defineComponent({
         <DrawerPane open={isOpen.value} size={260} buttonPosition="left" onChange={changeOpen}>
           <div class={styles.wrap_content}>{typeOperateDom()}</div>
         </DrawerPane>
-        <div class={styles.wrap_menu}>
+        <div class="video_menu">
           {operateList.value.map((item) => (
             <div
               class={[
-                styles.wrap_menu_item,
-                isOpen.value && item === active.value && styles.wrap_mi_active,
+                'video_menu_item',
+                isOpen.value && item === active.value && 'video_mi_active',
               ]}
               onClick={() => setActiveMenu(item)}
             >

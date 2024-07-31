@@ -7,3 +7,39 @@ body,
   width: 100%;
   background-color: $bg-primary;
 }
+
+.vc-colorpicker {
+  background-color: #000;
+}
+
+.video_menu {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 64px;
+  height: 100%;
+  border-right: 1px solid $bg-secondary;
+
+  .video_menu_item {
+    width: 64px;
+    height: 64px;
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: $color-secondary;
+    font-size: 12px;
+    color: #45484b;
+    transition: all .3s ease-in-out;
+
+    &:hover {
+      color: $color-primary;
+    }
+
+    &.video_mi_active {
+      color: $color-primary;
+      background-color: $bg-secondary;
+    }
+  }
+}

@@ -12,7 +12,7 @@ export default defineComponent({
         <div class={styles.pane_title}>动画</div>
         <LabelWrap label="开始动画">
           <Select
-            value={store.activeNodeShowValue!.startAnimation}
+            value={store.activeNodeShowValue?.startAnimation}
             options={store.startAnimationList}
             style={{ width: '100%' }}
             allowClear
@@ -20,21 +20,21 @@ export default defineComponent({
           ></Select>
         </LabelWrap>
 
-        <InputNumber
-          value={store.activeNodeShowValue!.startAnimationTime}
-          formatter={(value) => Number(value).toFixed(2)}
-          parser={(value) => Number(value)}
-          min={0}
-          max={5}
-          v-slots={{
-            addonBefore: () => '开始动画用时',
-          }}
-          onChange={(value) => store.setStartAnimationTime(value as number)}
-        ></InputNumber>
+        <LabelWrap label="开始动画用时">
+          <InputNumber
+            value={store.activeNodeShowValue?.startAnimationTime}
+            formatter={(value) => Number(value).toFixed(2)}
+            parser={(value) => Number(value)}
+            style={{ width: '100%' }}
+            min={0}
+            max={5}
+            onChange={(value) => store.setStartAnimationTime(value as number)}
+          ></InputNumber>
+        </LabelWrap>
 
         <LabelWrap label="结束动画">
           <Select
-            value={store.activeNodeShowValue!.endAnimation}
+            value={store.activeNodeShowValue?.endAnimation}
             options={store.endAnimationList}
             style={{ width: '100%' }}
             allowClear
@@ -42,17 +42,17 @@ export default defineComponent({
           ></Select>
         </LabelWrap>
 
-        <InputNumber
-          value={store.activeNodeShowValue!.endAnimationTime}
-          formatter={(value) => Number(value).toFixed(2)}
-          parser={(value) => Number(value)}
-          min={0}
-          max={5}
-          v-slots={{
-            addonBefore: () => '结束动画用时',
-          }}
-          onChange={(value) => store.setEndAnimationTime(value as number)}
-        ></InputNumber>
+        <LabelWrap label="结束动画用时">
+          <InputNumber
+            value={store.activeNodeShowValue?.endAnimationTime}
+            formatter={(value) => Number(value).toFixed(2)}
+            parser={(value) => Number(value)}
+            style={{ width: '100%' }}
+            min={0}
+            max={5}
+            onChange={(value) => store.setEndAnimationTime(value as number)}
+          ></InputNumber>
+        </LabelWrap>
       </div>
     );
   },

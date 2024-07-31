@@ -22,6 +22,10 @@ export default defineComponent({
     const store = elementStore();
 
     const changeType = (type: MaterialGroupType) => {
+      if (isOpen.value && activeType.value === type) {
+        isOpen.value = false;
+        return;
+      }
       activeType.value = type;
       isOpen.value = true;
     };
@@ -47,8 +51,8 @@ export default defineComponent({
     const typeItemDom = (item: TypeItem) => (
       <div
         class={[
-          styles.type_item,
-          isOpen.value && activeType.value === item.type && styles.type_item_active,
+          'video_menu_item',
+          isOpen.value && activeType.value === item.type && 'video_mi_active',
         ]}
         onClick={() => changeType(item.type)}
       >
@@ -95,7 +99,7 @@ export default defineComponent({
 
     return () => (
       <div class={styles.wrap}>
-        <div class={styles.wrap_type}>{types.map(typeItemDom)}</div>
+        <div class="video_menu">{types.map(typeItemDom)}</div>
         <DrawerPane open={isOpen.value} size={262} onChange={changeActive}>
           <div class={styles.wrap_material}>
             {activeType.value === MaterialGroupType.custom ? (

@@ -15,24 +15,24 @@ export default defineComponent({
         <div class={styles.pane_title}>文本配置</div>
         <LabelWrap label="文本内容">
           <Textarea
-            value={store.activeNodeShowValue!.data}
+            value={store.activeNodeShowValue?.data}
             onInput={(ev) => store.setFontText((ev.target as HTMLInputElement).value)}
           ></Textarea>
         </LabelWrap>
-        <InputNumber
-          value={store.activeNodeShowValue!.fontSize}
-          formatter={(value) => `${Math.ceil(value as number)}`}
-          parser={(value) => Number(value)}
-          min={10}
-          v-slots={{
-            addonBefore: () => '文字大小',
-          }}
-          onChange={(value) => store.setFontSize(value as number)}
-        ></InputNumber>
+        <LabelWrap label="文字大小">
+          <InputNumber
+            value={store.activeNodeShowValue?.fontSize}
+            formatter={(value) => `${Math.ceil(value as number)}`}
+            parser={(value) => Number(value)}
+            style={{ width: '100%' }}
+            min={10}
+            onChange={(value) => store.setFontSize(value as number)}
+          ></InputNumber>
+        </LabelWrap>
 
         <LabelWrap label="字体选择">
           <Select
-            value={store.activeNodeShowValue!.fontFamily}
+            value={store.activeNodeShowValue?.fontFamily}
             options={store.fontFamilyList}
             style={{ width: '100%' }}
             v-slots={{
@@ -46,21 +46,22 @@ export default defineComponent({
 
         <LabelWrap label="开启粗体">
           <Switch
-            checked={store.activeNodeShowValue!.fontWeight === 'bold'}
+            checked={store.activeNodeShowValue?.fontWeight === 'bold'}
             onChange={(value) => store.setFontWeight(value as boolean)}
           ></Switch>
         </LabelWrap>
 
         <LabelWrap label="开启斜体">
           <Switch
-            checked={store.activeNodeShowValue!.fontStyle === 'italic'}
+            checked={store.activeNodeShowValue?.fontStyle === 'italic'}
             onChange={(value) => store.setFontStyle(value as boolean)}
           ></Switch>
         </LabelWrap>
 
         <LabelWrap label="文字颜色">
           <ColorPicker
-            pureColor={store.activeNodeShowValue!.color}
+            theme="dark"
+            pureColor={store.activeNodeShowValue?.color}
             onPureColorChange={store.setFontColor}
             disableHistory={true}
             pickerType="pure"
@@ -69,8 +70,9 @@ export default defineComponent({
 
         <LabelWrap label="文字位置">
           <RadioGroup
-            value={store.activeNodeShowValue!.textAlign}
+            value={store.activeNodeShowValue?.textAlign}
             optionType="button"
+            style={{ width: '100%' }}
             options={FONT_ALIGN_OPTIONS}
             onChange={(value) => store.setTextAlign(value.target.value as string)}
           ></RadioGroup>
@@ -78,7 +80,8 @@ export default defineComponent({
 
         <LabelWrap label="文字间距">
           <InputNumber
-            value={store.activeNodeShowValue!.letterSpacing}
+            value={store.activeNodeShowValue?.letterSpacing}
+            style={{ width: '100%' }}
             step={1}
             onChange={(value) => store.setLetterSpacing(value as number)}
           ></InputNumber>

@@ -18,22 +18,23 @@ export default defineComponent({
         <div class={styles.pane_title}>{props.title}</div>
         <LabelWrap label="是否循环">
           <Switch
-            checked={store.activeNodeShowValue!.isLoop}
+            checked={store.activeNodeShowValue?.isLoop}
             onChange={(value) => store.setLoop(value as boolean)}
           ></Switch>
         </LabelWrap>
         <LabelWrap label="设置音量">
           <Slider
-            value={store.activeNodeShowValue!.vol}
+            value={store.activeNodeShowValue?.vol}
             min={0}
             max={1}
+            style={{ width: '100%' }}
             step={0.1}
             onChange={(value) => store.setVol(value as number)}
           ></Slider>
         </LabelWrap>
         <LabelWrap label="声音淡入">
           <Slider
-            value={store.activeNodeShowValue!.fadeIn}
+            value={store.activeNodeShowValue?.fadeIn}
             min={0}
             max={2}
             step={0.1}
@@ -42,7 +43,7 @@ export default defineComponent({
         </LabelWrap>
         <LabelWrap label="声音淡出">
           <Slider
-            value={store.activeNodeShowValue!.fadeOut}
+            value={store.activeNodeShowValue?.fadeOut}
             min={0}
             max={2}
             step={0.1}

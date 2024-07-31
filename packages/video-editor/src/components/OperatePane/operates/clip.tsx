@@ -12,7 +12,7 @@ export default defineComponent({
         <div class={styles.pane_title}>蒙版</div>
         <LabelWrap label="选择蒙版">
           <Select
-            value={store.activeNodeShowValue!.clip}
+            value={store.activeNodeShowValue?.clip}
             options={store.clipList}
             style={{ width: '100%' }}
             allowClear

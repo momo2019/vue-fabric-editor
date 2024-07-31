@@ -17,6 +17,7 @@ export default defineComponent({
           return (
             <LabelWrap label="选择颜色">
               <ColorPicker
+                theme="dark"
                 pureColor={store.background.data}
                 onPureColorChange={(data) => store.setBackground({ data })}
                 disableHistory={true}
