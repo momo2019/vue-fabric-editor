@@ -2,6 +2,7 @@ import { formatDuration } from '@/utils/format';
 import { timeGap } from '@/store/element/hooks/useTimeLine';
 
 export const cvsHeight = 24;
+const durationOffset = 3.4;
 
 const getCanvasSize = (number: number) => number * window.devicePixelRatio;
 
@@ -25,7 +26,7 @@ export const timeLineCanvas = (options: {
   }
   const start = lineWidth / 2;
 
-  const linNum = duration / gap;
+  const linNum = (duration + durationOffset) / gap;
   const width = linNum * lineGap + start * 3;
 
   cvs.style.width = `${width / window.devicePixelRatio}px`;
