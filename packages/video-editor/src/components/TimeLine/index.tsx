@@ -37,7 +37,7 @@ export default defineComponent({
       <div class={styles.wrap}>
         <div class={styles.wrap_editor}>
           <div class={styles.wrap_editor_left}>
-            <div>
+            <div class={styles.wrap_el_duration}>
               {formatDuration(store.curTime)}/{formatDuration(store.duration)}
             </div>
           </div>

@@ -3,19 +3,24 @@
   height: 100%;
   width: 100%;
   flex-direction: column;
-  padding: 12px 16px 20px;
-  gap: 12px;
+  background-color: $bg-primary;
 
   .wrap_editor {
     display: flex;
     justify-content: space-between;
     height: max-content;
     align-items: center;
+    padding: 8px 16px;
+    border-bottom: 1px solid $bg-secondary;
 
     .wrap_editor_right,
     .wrap_editor_left {
       display: flex;
       gap: 8px;
+    }
+
+    .wrap_el_duration {
+      color: $color-primary;
     }
   }
 
@@ -23,6 +28,7 @@
     flex: 1;
     min-height: 0;
     width: 100%;
+    padding: 8px 16px;
     overflow-x: auto;
     overflow-y: hidden;
   }
@@ -30,13 +36,13 @@
   .time_box_wrap {
     position: relative;
     display: flex;
+    gap: 4px;
     flex-direction: column;
     width: max-content;
     height: 100%;
   }
 
   .wrap_time {
-    padding-left: 40px;
     width: max-content;
 
     &>canvas {

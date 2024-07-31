@@ -14,16 +14,11 @@ export const elementNodeDom = (
   const width = (endTime - startTime) * store.perSecGapWidth;
   return (
     <div class={styles.node}>
-      <div
-        class={styles.node_icon}
-        style={{
-          backgroundImage: item.cover ? `url(${item.cover})` : undefined,
-        }}
-      ></div>
       <div class={[styles.node_duration, store.activeNode?.uid === item.uid && styles.node_active]}>
         <div
           class={styles.node_duration_bar}
           style={{
+            backgroundImage: `url(${item.cover})`,
             width: `${width}px`,
             left: `${left}px`,
           }}
