@@ -2,7 +2,7 @@ import { defineComponent } from 'vue';
 import styles from './index.module.scss';
 import TimeLine from '@/components/TimeLine';
 import EditorView from '@/components/EditorView';
-import OperatePane from '@/components/OperatePane';
+import DrawerPane from '@/components/DrawerPane';
 
 export default defineComponent({
   setup() {
@@ -12,13 +12,12 @@ export default defineComponent({
           <div class={styles.wrap_view}>
             <EditorView></EditorView>
           </div>
-          <div class={styles.wrap_editor}>
-            <OperatePane></OperatePane>
+        </div>
+        <DrawerPane size={260} closeSize={50} dir="vertical" buttonPosition="top">
+          <div class={styles.wrap_bottom}>
+            <TimeLine></TimeLine>
           </div>
-        </div>
-        <div class={styles.wrap_bottom}>
-          <TimeLine></TimeLine>
-        </div>
+        </DrawerPane>
       </div>
     );
   },

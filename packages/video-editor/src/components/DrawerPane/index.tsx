@@ -19,13 +19,17 @@ export default defineComponent({
       type: Number,
       required: true,
     },
+    closeSize: {
+      type: Number,
+      default: 0,
+    },
   },
   emits: {
     change: (isOpen: boolean) => isOpen,
   },
   setup(props, { slots, emit }) {
     const { dir, buttonPosition, size } = props;
-    const { open } = toRefs(props);
+    const { open, closeSize } = toRefs(props);
 
     const isOpen = ref(open.value);
 
@@ -44,11 +48,11 @@ export default defineComponent({
     const drawerStyle = computed(() => {
       if (dir === 'horizontal') {
         return {
-          width: isOpen.value ? `${size}px` : '0px',
+          width: isOpen.value ? `${size}px` : `${closeSize.value}px`,
         };
       } else {
         return {
-          height: isOpen.value ? `${size}px` : '0px',
+          height: isOpen.value ? `${size}px` : `${closeSize.value}px`,
         };
       }
     });
