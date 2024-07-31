@@ -1,7 +1,7 @@
 /**
  * 该组件存在业务关系
  */
-import { defineComponent } from 'vue';
+import { computed, defineComponent, ref, watch } from 'vue';
 import styles from './index.module.scss';
 import Time from './operates/time';
 import { elementStore } from '@/store/element';
@@ -15,61 +15,142 @@ import Text from './operates/text';
 import TextShadow from './operates/textShadow';
 import TextStroke from './operates/textStroke';
 import Animation from './operates/animation';
+import DrawerPane from '@/components/DrawerPane';
+import Background from './operates/background';
+
+const TITLE_ICONS = {
+  base: {
+    title: '基础',
+  },
+  clip: {
+    title: '蒙版',
+  },
+  animation: {
+    title: '动画',
+  },
+  media: {
+    title: '媒体',
+  },
+  background: {
+    title: '背景',
+  },
+  text: {
+    title: '文本',
+  },
+  textShadow: {
+    title: '阴影',
+  },
+  textStroke: {
+    title: '描边',
+  },
+};
+
+type TYPES = keyof typeof TITLE_ICONS;
 
 export default defineComponent({
   setup() {
     const store = elementStore();
 
-    const showDom = () => (
-      <>
-        <Base></Base>
-        <Clip></Clip>
-        <Animation></Animation>
-      </>
-    );
+    const active = ref<TYPES | ''>('');
+    const isOpen = ref(false);
+    const changeOpen = (open: boolean) => {
+      isOpen.value = open;
+      confirmActiveMenu();
+    };
+    const setActiveMenu = (item: TYPES) => {
+      active.value = item;
+      isOpen.value = true;
+    };
+
+    const baseDom = () => {
+      if (store.activeNode) {
+        return (
+          <>
+            <Time></Time>
+            {store.activeNode.type === MaterialType.audio ? <></> : <Base></Base>}
+            <Button onClick={store.removeActive}>删除节点</Button>
+          </>
+        );
+      } else {
+        return <Global></Global>;
+      }
+    };
 
     const typeOperateDom = () => {
-      switch (store.activeNode?.type) {
-        case MaterialType.audio:
-          return (
-            <>
-              <Video title="音频配置"></Video>
-            </>
-          );
-        case MaterialType.image:
-          return showDom();
-        case MaterialType.video:
-          return (
-            <>
-              <Video></Video>
-              {showDom()}
-            </>
-          );
-        case MaterialType.text:
-          return (
-            <>
-              {showDom()}
-              <Text></Text>
-              <TextShadow></TextShadow>
-              <TextStroke></TextStroke>
-            </>
-          );
+      switch (active.value) {
+        case 'base':
+          return baseDom();
+        case 'background':
+          return <Background></Background>;
+        case 'clip':
+          return <Clip></Clip>;
+        case 'animation':
+          return <Animation></Animation>;
+        case 'media':
+          return <Video></Video>;
+        case 'text':
+          return <Text></Text>;
+        case 'textShadow':
+          return <TextShadow></TextShadow>;
+        case 'textStroke':
+          return <TextStroke></TextStroke>;
         default:
           return <></>;
       }
     };
 
+    const operateList = computed<TYPES[]>(() => {
+      if (store.activeNode) {
+        switch (store.activeNode.type) {
+          case MaterialType.audio:
+            return ['base', 'media'];
+          case MaterialType.image:
+            return ['base', 'clip', 'animation'];
+          case MaterialType.video:
+            return ['base', 'clip', 'animation', 'media'];
+          case MaterialType.text:
+            return ['base', 'clip', 'animation', 'text', 'textShadow', 'textStroke'];
+          default:
+            return [];
+        }
+      } else {
+        return ['base', 'background'];
+      }
+    });
+
+    watch(
+      () => store.activeNode?.type,
+      () => {
+        confirmActiveMenu();
+      }
+    );
+
+    const confirmActiveMenu = () => {
+      if (isOpen.value) {
+        if (!operateList.value.find((item) => item === active.value)) {
+          active.value = operateList.value[0];
+        }
+      }
+    };
+
     return () => (
       <div class={styles.wrap}>
-        {store.activeNode ? (
-          <>
-            <Time></Time>
-            {typeOperateDom()}
-            <Button onClick={store.removeActive}>删除节点</Button>
-          </>
-        ) : (
-          <Global></Global>
-        )}
+        <DrawerPane open={isOpen.value} size={260} buttonPosition="left" onChange={changeOpen}>
+          <div class={styles.wrap_content}>{typeOperateDom()}</div>
+        </DrawerPane>
+        <div class={styles.wrap_menu}>
+          {operateList.value.map((item) => (
+            <div
+              class={[
+                styles.wrap_menu_item,
+                isOpen.value && item === active.value && styles.wrap_mi_active,
+              ]}
+              onClick={() => setActiveMenu(item)}
+            >
+              {TITLE_ICONS[item].title}
+            </div>
+          ))}
+        </div>
       </div>
     );
   },

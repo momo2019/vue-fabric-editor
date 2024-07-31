@@ -33,15 +33,16 @@
 
 
   .drawer_button_left {
-    right: 0;
+    left: 0;
     top: 50%;
-    transform: translate(100%, -50%);
+    transform-origin: center;
+    transform: translate(-100%, -50%) rotate(180deg);
   }
 
   .drawer_button_right {
-    left: 0;
+    right: 0;
     top: 50%;
-    transform: translate(-100%, -50%);
+    transform: translate(100%, -50%);
   }
 
   .drawer_button_top {

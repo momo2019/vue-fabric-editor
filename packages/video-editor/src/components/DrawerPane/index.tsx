@@ -9,7 +9,7 @@ export default defineComponent({
     },
     buttonPosition: {
       type: String as PropType<'left' | 'right' | 'top' | 'bottom'>,
-      default: 'left',
+      default: 'right',
     },
     open: {
       type: Boolean,

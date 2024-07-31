@@ -2,7 +2,7 @@ import { defineComponent } from 'vue';
 import styles from './index.module.scss';
 import Left from './components/Left';
 import Content from './components/Content';
-import Right from './components/Right';
+import OperatePane from '@/components/OperatePane';
 
 export default defineComponent({
   setup() {
@@ -15,7 +15,7 @@ export default defineComponent({
           <Content></Content>
         </div>
         <div class={styles.wrap_right}>
-          <Right></Right>
+          <OperatePane></OperatePane>
         </div>
       </div>
     );

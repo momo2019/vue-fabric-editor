@@ -1,7 +1,44 @@
 .wrap {
   display: flex;
-  flex-direction: column;
-  gap: 16px;
-  padding: 16px;
+  height: 100%;
 
+
+  .wrap_content {
+    width: 260px;
+    height: 100%;
+  }
+
+  $size: 36px;
+
+  .wrap_menu {
+    display: flex;
+    width: 68px;
+    flex-direction: column;
+    height: 100%;
+    width: calc($size + 32px);
+    padding: 8px 16px;
+    gap: 16px;
+
+    .wrap_menu_item {
+      width: $size;
+      height: $size;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border-radius: 8px;
+      font-size: 12px;
+      color: #45484b;
+      transition: all .3s ease-in-out;
+
+      &:hover {
+        background-color: #f7f8fa;
+      }
+
+      &.wrap_mi_active {
+        color: #1677ff;
+        background-color: #e6f4ff;
+      }
+    }
+  }
 }

@@ -80,7 +80,11 @@ export const useNode = (timeLine: TimeLineReturnType, editor: EditorReturnType) 
   };
 
   const removeActive = () => {
-    activeNode.value && editor.removeObject(activeNode.value.uid);
+    if (activeNode.value) {
+      removeNode(activeNode.value.uid);
+      editor.removeObject(activeNode.value.uid);
+      activeNode.value = null;
+    }
   };
 
   return {
