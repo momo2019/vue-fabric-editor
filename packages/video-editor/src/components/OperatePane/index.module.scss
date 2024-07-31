@@ -1,11 +1,20 @@
 .wrap {
   display: flex;
   height: 100%;
+  border-left: 1px solid $bg-tertiary;
 
   .wrap_content {
     display: flex;
     gap: 16px;
     flex-direction: column;
+    height: 100%;
+    background-color: $bg-secondary;
+    padding: 16px;
+  }
+
+  .wrap_menu {
+    border-right: none;
+    border-left: 1px solid $bg-secondary;
   }
 
   .pane {
@@ -20,13 +29,5 @@
       color: $color-primary;
       padding-bottom: 16px;
     }
-  }
-
-  .wrap_content {
-    width: 260px;
-    height: 100%;
-    background-color: $bg-secondary;
-
-    padding: 16px;
   }
 }

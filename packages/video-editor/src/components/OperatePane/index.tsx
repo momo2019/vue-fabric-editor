@@ -47,6 +47,8 @@ const TITLE_ICONS = {
 
 type TYPES = keyof typeof TITLE_ICONS;
 
+const WIDTH = 200;
+
 export default defineComponent({
   setup() {
     const store = elementStore();
@@ -141,10 +143,12 @@ export default defineComponent({
 
     return () => (
       <div class={styles.wrap}>
-        <DrawerPane open={isOpen.value} size={260} buttonPosition="left" onChange={changeOpen}>
-          <div class={styles.wrap_content}>{typeOperateDom()}</div>
+        <DrawerPane open={isOpen.value} size={WIDTH} buttonPosition="left" onChange={changeOpen}>
+          <div class={styles.wrap_content} style={{ width: `${WIDTH}px` }}>
+            {typeOperateDom()}
+          </div>
         </DrawerPane>
-        <div class="video_menu">
+        <div class={['video_menu', styles.wrap_menu]}>
           {operateList.value.map((item) => (
             <div
               class={[
