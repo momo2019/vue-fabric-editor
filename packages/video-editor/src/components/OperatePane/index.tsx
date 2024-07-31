@@ -74,9 +74,11 @@ export default defineComponent({
           <>
             <Time></Time>
             {store.activeNode.type === MaterialType.audio ? <></> : <Base></Base>}
-            <Button danger type="primary" onClick={store.removeActive}>
-              删除节点
-            </Button>
+            <div class={styles.operate_button}>
+              <Button danger type="primary" style={{ width: '100%' }} onClick={store.removeActive}>
+                删除节点
+              </Button>
+            </div>
           </>
         );
       } else {

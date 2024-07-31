@@ -9,7 +9,7 @@
     flex-direction: column;
     height: 100%;
     background-color: $bg-secondary;
-    padding: 16px;
+    padding: 16px 0;
   }
 
   .wrap_menu {
@@ -18,7 +18,7 @@
   }
 
   .pane {
-    padding-bottom: 16px;
+    padding: 0 16px 8px;
     border-bottom: 1px solid $bg-tertiary;
 
     &:nth-last-child(1) {
@@ -29,5 +29,9 @@
       color: $color-primary;
       padding-bottom: 16px;
     }
+  }
+
+  .operate_button {
+    padding: 0 16px;
   }
 }
