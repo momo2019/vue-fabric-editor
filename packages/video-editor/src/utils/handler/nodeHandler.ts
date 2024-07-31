@@ -19,6 +19,7 @@ export const handleNode = (
     element &&
       handleVideoOrAudio(curTime, { element, node: node as ElementItem<VideoNode> }, duration);
     if (item.fbNode) {
+      item.fbNode.dirty = true;
       item.fbNode.opacity = node.opacity || 1;
     }
   } else {
