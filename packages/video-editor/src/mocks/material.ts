@@ -30,6 +30,38 @@ export const MOCK_MATERIALS: Record<
         type: MaterialType.video,
       })),
     },
+    {
+      label: '背景',
+      list: new Array(4).fill(0).map(() => ({
+        cover: '/cover.jpeg',
+        data: '/test.mp4',
+        type: MaterialType.video,
+      })),
+    },
+    {
+      label: '背景2',
+      list: new Array(40).fill(0).map(() => ({
+        cover: '/test.jpeg',
+        data: '/video1.mp4',
+        type: MaterialType.video,
+      })),
+    },
+    {
+      label: '背景',
+      list: new Array(4).fill(0).map(() => ({
+        cover: '/cover.jpeg',
+        data: '/test.mp4',
+        type: MaterialType.video,
+      })),
+    },
+    {
+      label: '背景2',
+      list: new Array(40).fill(0).map(() => ({
+        cover: '/test.jpeg',
+        data: '/video1.mp4',
+        type: MaterialType.video,
+      })),
+    },
   ],
 };
 

@@ -22,10 +22,12 @@ class WorkspacePlugin implements IPluginTempl {
     'setSize',
     'getWorkspase',
     'setWorkspaseBg',
+    'setWorkspaseMediaBg',
     'setCenterFromObject',
   ];
   workspaceEl!: HTMLElement;
   workspace: null | fabric.Rect;
+  backgroundMedia: null | fabric.Image = null;
   option: any;
   zoomRatio: number;
   constructor(public canvas: fabric.Canvas, public editor: IEditor) {
@@ -48,7 +50,7 @@ class WorkspacePlugin implements IPluginTempl {
     this._initBackground();
     this._initWorkspace();
     this._initResizeObserve();
-    this._bindWheel();
+    // this._bindWheel();
     this._bindSizeChange();
   }
 
@@ -83,7 +85,7 @@ class WorkspacePlugin implements IPluginTempl {
   _initWorkspace() {
     const { width, height } = this.option;
     const workspace = new fabric.Rect({
-      fill: 'rgba(255,255,255,1)',
+      fill: 'rgba(0,0,0,1)',
       width,
       height,
       id: 'workspace',
@@ -97,6 +99,12 @@ class WorkspacePlugin implements IPluginTempl {
     this.canvas.add(workspace);
     this.canvas.renderAll();
 
+    const backgroundMedia = new fabric.Image('', {
+      id: 'workspaceBg',
+    });
+    backgroundMedia.visible = false;
+
+    this.backgroundMedia = backgroundMedia;
     this.workspace = workspace;
     if (this.canvas.clearHistory) {
       this.canvas.clearHistory();
@@ -203,7 +211,55 @@ class WorkspacePlugin implements IPluginTempl {
 
   setWorkspaseBg(color: string) {
     const workspase = this.getWorkspase();
-    workspase?.set('fill', color);
+    if (workspase) {
+      workspase.set('fill', color);
+      this.canvas.requestRenderAll();
+      if (this.backgroundMedia) {
+        this.backgroundMedia.visible = false;
+      }
+    }
+  }
+
+  _setBackgroundEl(ele: HTMLVideoElement | HTMLImageElement) {
+    if (this.backgroundMedia) {
+      this.backgroundMedia.setElement(ele);
+      this.backgroundMedia.set({
+        width: ele.width,
+        height: ele.height,
+        visible: true,
+      });
+      console.log(this.backgroundMedia);
+      if (this.workspace) {
+        this.workspace.fill = 'transparent';
+      }
+      this.canvas.requestRenderAll();
+    }
+  }
+
+  setWorkspaseMediaBg(url: string, isVideo = false) {
+    // TODO 未完成
+    if (this.backgroundMedia) {
+      if (isVideo) {
+        const element = document.createElement('video');
+        element.crossOrigin = 'anonymous';
+        element.src = url;
+        element.preload = 'auto';
+        element.loop = true;
+        element.muted = false;
+        // 加入画布存在一定的延迟
+        element.onloadeddata = () => {
+          element.width = element.videoWidth;
+          element.height = element.videoHeight;
+          this._setBackgroundEl(element);
+        };
+      } else {
+        const ele = new Image();
+        ele.src = url;
+        ele.onload = () => {
+          this._setBackgroundEl(ele);
+        };
+      }
+    }
   }
 
   _bindWheel() {

@@ -19,13 +19,14 @@
     flex: 1;
     min-height: 0;
     overflow: auto;
+    scrollbar-gutter: stable;
   }
 
   .material_group {
     display: flex;
     flex-direction: column;
     gap: 12px;
-    padding: 0 16px 16px;
+    padding: 0 0 16px 16px;
     border-bottom: 1px solid $bg-tertiary;
 
     &:nth-last-child(1) {
@@ -50,7 +51,7 @@
   }
 
   .wrap_content_more {
-    padding: 0 16px 16px;
+    padding: 0 0 16px 16px;
   }
 
   .material_box {
