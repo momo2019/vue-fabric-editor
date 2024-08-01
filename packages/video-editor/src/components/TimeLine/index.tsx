@@ -1,9 +1,9 @@
 /**
  * 该组件存在业务关系
  */
-import { defineComponent, nextTick, ref, watch } from 'vue';
+import { defineComponent, nextTick, ref, toRefs, watch } from 'vue';
 import styles from './index.module.scss';
-import { Button } from 'ant-design-vue';
+import { Button, Slider } from 'ant-design-vue';
 import { elementNodeDom } from './ElementNode';
 import { formatDuration } from '@/utils/format';
 import { cvsHeight, timeLineCanvas } from './utils/timeLineCanvas';
@@ -11,7 +11,14 @@ import { elementStore } from '@/store/element';
 import { useMoveLine } from './utils/useMoveLine';
 
 export default defineComponent({
-  setup() {
+  props: {
+    isOpen: {
+      type: Boolean,
+      default: true,
+    },
+  },
+  setup(props) {
+    const { isOpen } = toRefs(props);
     const store = elementStore();
     const cvsRef = ref<HTMLCanvasElement>();
 
@@ -35,9 +42,18 @@ export default defineComponent({
 
     return () => (
       <div class={styles.wrap}>
-        <div class={styles.wrap_editor}>
+        <div class={[styles.wrap_editor, !isOpen.value && styles.editor_close]}>
           <div class={styles.wrap_editor_left}>
-            <div class={styles.wrap_el_duration}></div>
+            <div class={styles.left_time_line}>
+              <Slider
+                v-model:value={store.curTime}
+                min={0}
+                max={store.duration}
+                step={0.01}
+                tooltipOpen={false}
+                style={{ width: '100%' }}
+              ></Slider>
+            </div>
           </div>
           <div class={styles.wrap_editor_middle}>
             <span class={[styles.middle_cur_time, styles.middle_time]}>
