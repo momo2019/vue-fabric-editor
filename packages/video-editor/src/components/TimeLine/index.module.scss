@@ -14,12 +14,40 @@
     border-bottom: 1px solid $bg-secondary;
 
     .wrap_editor_right,
+    .wrap_editor_middle,
     .wrap_editor_left {
       display: flex;
       gap: 8px;
+      flex: 1;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .wrap_editor_left {
+      justify-content: flex-start;
+    }
+
+    .wrap_editor_right {
+      justify-content: flex-end;
     }
 
     .wrap_el_duration {
+      color: $color-primary;
+    }
+
+    .wrap_editor_middle {
+      color: $color-secondary;
+      font-size: 12px;
+      gap: 0px;
+      user-select: none;
+    }
+
+    .middle_time {
+      width: 60px;
+      text-align: center;
+    }
+
+    .middle_cur_time {
       color: $color-primary;
     }
   }

@@ -37,9 +37,14 @@ export default defineComponent({
       <div class={styles.wrap}>
         <div class={styles.wrap_editor}>
           <div class={styles.wrap_editor_left}>
-            <div class={styles.wrap_el_duration}>
-              {formatDuration(store.curTime)}/{formatDuration(store.duration)}
-            </div>
+            <div class={styles.wrap_el_duration}></div>
+          </div>
+          <div class={styles.wrap_editor_middle}>
+            <span class={[styles.middle_cur_time, styles.middle_time]}>
+              {formatDuration(store.curTime, true)}
+            </span>
+            <span>/</span>
+            <span class={styles.middle_time}>{formatDuration(store.duration, true)}</span>
           </div>
           <div class={styles.wrap_editor_right}>
             {store.isPreviewing ? (

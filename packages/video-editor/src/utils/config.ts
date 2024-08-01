@@ -22,7 +22,7 @@ export const FONT_ALIGN_OPTIONS = [
   },
 ];
 
-export const BACKGROUND_COLOR = '#ffffff';
+export const BACKGROUND_COLOR = '#000';
 export const BACKGROUND_TYPES = [
   {
     value: BackgoundType.color,

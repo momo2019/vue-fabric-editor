@@ -6,7 +6,7 @@ export const formatTwoNumber = (num: number) => {
   }
 };
 
-export const formatDuration = (duration: number) => {
+export const formatDuration = (duration: number, hasMil = false) => {
   let result = '';
   const h = Math.floor(duration / 3600);
   if (h) {
@@ -21,6 +21,10 @@ export const formatDuration = (duration: number) => {
   duration %= 60;
 
   result += `${formatTwoNumber(duration)}`;
+
+  if (hasMil) {
+    result += `.${(duration % 1).toFixed(2).slice(2)}`;
+  }
 
   return result;
 };
