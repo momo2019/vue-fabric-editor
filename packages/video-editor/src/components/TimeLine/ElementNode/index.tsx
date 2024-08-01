@@ -10,8 +10,8 @@ export const elementNodeDom = (
 
   const startTime = item.startTime || 0;
   const endTime = item.endTime || store.duration;
-  const left = store.perSecGapWidth * startTime;
-  const width = (endTime - startTime) * store.perSecGapWidth;
+  const left = store.timeToWidth(startTime);
+  const width = store.timeToWidth(endTime - startTime);
   return (
     <div class={styles.node}>
       <div class={[styles.node_duration, store.activeNode?.uid === item.uid && styles.node_active]}>

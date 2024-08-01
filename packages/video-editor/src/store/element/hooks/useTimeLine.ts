@@ -13,6 +13,15 @@ export const useTimeLine = () => {
   const curTime = ref(0);
   const lineGapTime = ref(1); // 单个代表多少秒
   const perSecGapWidth = computed(() => timeGap / lineGapTime.value); // 每秒的间隔
+
+  const widthToTime = (width: number) => {
+    return width / perSecGapWidth.value;
+  };
+
+  const timeToWidth = (time: number) => {
+    return time * perSecGapWidth.value;
+  };
+
   const isPreviewing = ref(false);
 
   const changeDuration = (time: number) => {
@@ -60,6 +69,8 @@ export const useTimeLine = () => {
     start,
     isPreviewing,
     stopPreview,
+    widthToTime,
+    timeToWidth,
   };
 };
 

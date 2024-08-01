@@ -44,9 +44,9 @@ export const useMoveLine = () => {
     const lastStartTime = store.activeNodeShowValue!.startTime;
     const lastEndTime = store.activeNodeShowValue!.endTime;
     if (isStart) {
-      store.setStartTime(lastStartTime + xGap / store.perSecGapWidth);
+      store.setStartTime(lastStartTime + store.widthToTime(xGap));
     } else {
-      store.setEndTime(lastEndTime + xGap / store.perSecGapWidth);
+      store.setEndTime(lastEndTime + store.widthToTime(xGap));
     }
     setBoxScrollX(pageX, xGap);
     startX = pageX;

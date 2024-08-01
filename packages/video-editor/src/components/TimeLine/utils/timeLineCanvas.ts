@@ -12,7 +12,7 @@ const smallLineHeight = getCanvasSize(cvsHeight * 0.3);
 const bigLineHeight = getCanvasSize(cvsHeight * 0.6);
 const fontGap = getCanvasSize(8);
 const fontSize = getCanvasSize(10);
-const lineColor = '#fff';
+const lineColor = '#ababc0';
 
 export const timeLineCanvas = (options: {
   cvs: HTMLCanvasElement;

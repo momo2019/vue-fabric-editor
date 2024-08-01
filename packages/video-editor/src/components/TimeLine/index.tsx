@@ -70,6 +70,12 @@ export default defineComponent({
                 </div>
               ))}
             </div>
+            <div
+              class={styles.wrap_pointer}
+              style={{
+                left: `${store.timeToWidth(store.curTime)}px`,
+              }}
+            ></div>
           </div>
         </div>
       </div>
