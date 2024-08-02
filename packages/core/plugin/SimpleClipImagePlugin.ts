@@ -218,6 +218,7 @@ export default class SimpleClipImagePlugin implements IPluginTempl {
           clipPath.set('width', shell.getScaledWidth());
           clipPath.set('height', shell.getScaledHeight());
         }
+        clipPath.rotate((clipPath.angle || 0) - (activeObject.angle || 0));
         activeObject.set('dirty', true);
         this.canvas.remove(shell);
         this.canvas.requestRenderAll();
