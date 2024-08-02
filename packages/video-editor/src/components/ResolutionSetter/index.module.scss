@@ -1,0 +1,49 @@
+.setter {
+  position: absolute;
+  right: 24px;
+  top: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 120px;
+
+  .setter_item {
+    border: 1px solid $color-secondary;
+    border-radius: 2px;
+    color: $color-secondary;
+    cursor: pointer;
+    user-select: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+
+    &:hover {
+      border-color: $color-primary;
+      color: $color-primary;
+    }
+  }
+
+  .setter_item_open {
+    color: $bg-primary;
+    background-color: $color-primary;
+    border-color: $color-primary;
+    margin-bottom: 12px;
+
+    &:hover {
+      border-color: $color-primary;
+      color: $bg-primary;
+    }
+  }
+
+  .setter_box {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .setter_box_open {
+    display: flex;
+  }
+}

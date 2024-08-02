@@ -4,6 +4,7 @@
 import { defineComponent, onMounted, ref } from 'vue';
 import styles from './index.module.scss';
 import { elementStore } from '@/store/element';
+import ResolutionSetter from '../ResolutionSetter';
 
 export default defineComponent({
   setup() {
@@ -17,6 +18,7 @@ export default defineComponent({
     return () => (
       <div id="workspace" class={styles.wrap}>
         <canvas ref={cvsRef}></canvas>
+        <ResolutionSetter></ResolutionSetter>
       </div>
     );
   },

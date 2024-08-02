@@ -26,6 +26,16 @@ export const useGlobal = (editor: EditorReturnType) => {
     editor.setWorkspaseSize(global.value.width, global.value.height, false);
   };
 
+  const setGlobalWidhtAndHeight = (width: number, height: number) => {
+    if (global.value.height !== height) {
+      global.value.height = height;
+    }
+    if (global.value.width !== width) {
+      global.value.width = width;
+    }
+    editor.setWorkspaseSize(global.value.width, global.value.height, false);
+  };
+
   nextTick(() => {
     editor.setWorkspaseSize(global.value.width, global.value.height);
   });
@@ -67,6 +77,7 @@ export const useGlobal = (editor: EditorReturnType) => {
     global,
     setGlobalWidth,
     setGlobalHeight,
+    setGlobalWidhtAndHeight,
     background,
     setBackground,
     backgroundImageList,
