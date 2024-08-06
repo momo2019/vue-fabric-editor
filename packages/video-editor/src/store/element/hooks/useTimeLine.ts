@@ -35,10 +35,6 @@ export const useTimeLine = () => {
     curTime.value = 0;
   };
 
-  const setCurTime = (time: number) => {
-    curTime.value = time;
-  };
-
   const next = (delta: number, lastTime: number, cb: StartCallback) => {
     if (curTime.value >= duration.value) {
       curTime.value = duration.value;
@@ -58,7 +54,6 @@ export const useTimeLine = () => {
     if (isPreviewing.value) {
       return;
     }
-    curTime.value = 0;
     isPreviewing.value = true;
     cb.start();
     next(0, performance.now() / 1000, cb);
@@ -75,7 +70,6 @@ export const useTimeLine = () => {
     stopPreview,
     widthToTime,
     timeToWidth,
-    setCurTime,
   };
 };
 

@@ -9,19 +9,21 @@ import * as TWEEN from '@tweenjs/tween.js';
 import { AnimationStep } from '@/interfaces/animation';
 import { GlobalReturnType } from './useGlobal';
 
+type NodeType = {
+  element?: HTMLVideoElement | HTMLAudioElement;
+  node: ElementItem;
+  fbNode?: fabric.Object;
+};
+
 export const usePreview = (
   editor: EditorReturnType,
   timeLine: TimeLineReturnType,
   nodeGroup: NodeReturnType,
   global: GlobalReturnType
 ) => {
-  const previewVideo = () => {
+  const getPreviewNodes = () => {
     const objs = editor.getAllObject();
-    const nodes: {
-      element?: HTMLVideoElement | HTMLAudioElement;
-      node: ElementItem;
-      fbNode?: fabric.Object;
-    }[] = [];
+    const nodes: NodeType[] = [];
 
     objs?.forEach((item) => {
       let element: HTMLVideoElement | undefined = undefined;
@@ -39,10 +41,12 @@ export const usePreview = (
           fbNode: item,
         });
     });
-    editor.clearSelect();
-    editor.stopSelect();
+    return nodes;
+  };
 
-    const tweens = nodes.reduce((acc, node) => {
+  const setAnimation = (nodes: NodeType[]) => {
+    TWEEN.removeAll();
+    return nodes.reduce((acc, node) => {
       acc.push(
         ...handleAnimation(
           node as {
@@ -55,8 +59,16 @@ export const usePreview = (
       );
       return acc;
     }, [] as TWEEN.Tween<AnimationStep>[]);
+  };
 
-    let tweenNow = 0;
+  let tweenNow = 0;
+
+  const previewVideo = () => {
+    const nodes = getPreviewNodes();
+    editor.clearSelect();
+    editor.stopSelect();
+
+    const tweens = setAnimation(nodes);
 
     timeLine.start({
       start: () => {
@@ -80,7 +92,23 @@ export const usePreview = (
       },
     });
   };
+
+  const setCurTime = (curTime: number) => {
+    timeLine.curTime.value = curTime;
+    const nodes = getPreviewNodes();
+    const tweens = setAnimation(nodes);
+    tweens.forEach((tween) => tween.start());
+    tweenNow = TWEEN.now();
+    nodes.forEach((node) => {
+      handleNode(curTime, node, timeLine.duration.value);
+    });
+    TWEEN.update(tweenNow + curTime * 1000);
+    editor.requestRenderAll();
+  };
+
   return {
     previewVideo,
+    getPreviewNodes,
+    setCurTime,
   };
 };

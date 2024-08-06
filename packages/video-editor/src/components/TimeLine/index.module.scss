@@ -138,6 +138,7 @@
     transform: translateX(-50%);
     clip-path: polygon(0 0, 100% 0, 100% 6px, 60% 10px, 60% 100%, 40% 100%, 40% 10px, 0 6px);
     border-radius: 2px;
+    z-index: 12;
   }
 
   .wrap_pointer_bar {
@@ -149,5 +150,6 @@
     background-color: $color-primary;
     opacity: 0.5;
     transform: translateX(-50%);
+    z-index: 11;
   }
 }
