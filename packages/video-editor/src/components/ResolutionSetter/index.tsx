@@ -77,7 +77,7 @@ export default defineComponent({
       const scale = value[0] / value[1];
       const height = store.global.height * store.global.zoom;
       showStyle.value = {
-        outlineWidth: '3000px',
+        outlineColor: 'rgba(255, 255, 255, 0.5)',
         borderWidth: '2px',
         width: `${scale * height}px`,
         height: `${height}px`,
