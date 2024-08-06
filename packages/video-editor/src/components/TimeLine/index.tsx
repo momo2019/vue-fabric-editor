@@ -22,7 +22,14 @@ export default defineComponent({
     const store = elementStore();
     const cvsRef = ref<HTMLCanvasElement>();
 
-    const { startMove, boxRef } = useMoveLine();
+    const { startMove, boxRef, lineOffsetX, isEntering, leaveBox, enterBox, moveLine } =
+      useMoveLine();
+
+    const setCurTime = () => {
+      if (isEntering.value) {
+        store.setCurTime(store.widthToTime(lineOffsetX.value));
+      }
+    };
 
     watch(
       () => store.duration,
@@ -46,12 +53,13 @@ export default defineComponent({
           <div class={styles.wrap_editor_left}>
             <div class={styles.left_time_line}>
               <Slider
-                v-model:value={store.curTime}
+                value={store.curTime}
                 min={0}
                 max={store.duration}
                 step={0.01}
                 tooltipOpen={false}
                 style={{ width: '100%' }}
+                onChange={(time) => store.setCurTime(time as number)}
               ></Slider>
             </div>
           </div>
@@ -64,7 +72,14 @@ export default defineComponent({
           </div>
           <div class={styles.wrap_editor_right}></div>
         </div>
-        <div ref={boxRef} class={styles.time_box}>
+        <div
+          ref={boxRef}
+          class={styles.time_box}
+          onClick={setCurTime}
+          onMouseleave={leaveBox}
+          onMouseenter={enterBox}
+          onMousemove={moveLine}
+        >
           <div class={styles.time_box_wrap}>
             <div
               class={styles.wrap_time}
@@ -77,7 +92,7 @@ export default defineComponent({
             <div class={styles.wrap_content}>
               {store.nodes.map((item) => (
                 <div onClick={() => store.setActiveNode(item.uid)}>
-                  {elementNodeDom(item, startMove)}
+                  {elementNodeDom(item, startMove, enterBox, leaveBox)}
                 </div>
               ))}
             </div>
@@ -87,6 +102,14 @@ export default defineComponent({
                 left: `${store.timeToWidth(store.curTime)}px`,
               }}
             ></div>
+            {isEntering.value && (
+              <div
+                class={styles.wrap_pointer_bar}
+                style={{
+                  left: `${lineOffsetX.value}px`,
+                }}
+              ></div>
+            )}
           </div>
         </div>
       </div>

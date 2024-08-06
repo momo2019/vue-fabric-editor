@@ -35,6 +35,10 @@ export const useTimeLine = () => {
     curTime.value = 0;
   };
 
+  const setCurTime = (time: number) => {
+    curTime.value = time;
+  };
+
   const next = (delta: number, lastTime: number, cb: StartCallback) => {
     if (curTime.value >= duration.value) {
       curTime.value = duration.value;
@@ -71,6 +75,7 @@ export const useTimeLine = () => {
     stopPreview,
     widthToTime,
     timeToWidth,
+    setCurTime,
   };
 };
 

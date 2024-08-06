@@ -4,7 +4,9 @@ import { elementStore } from '@/store/element';
 
 export const elementNodeDom = (
   item: ElementItem,
-  mouseDown: (ev: MouseEvent, item: ElementItem, pos: 'left' | 'right') => void
+  mouseDown: (ev: MouseEvent, item: ElementItem, pos: 'left' | 'right') => void,
+  mouseEnter: () => void,
+  mouseLeave: () => void
 ) => {
   const store = elementStore();
 
@@ -22,6 +24,8 @@ export const elementNodeDom = (
             width: `${width}px`,
             left: `${left}px`,
           }}
+          onMouseenter={mouseLeave}
+          onMouseleave={mouseEnter}
         >
           <div class={styles.bar_left} onMousedown={(ev) => mouseDown(ev, item, 'left')}></div>
           <div class={styles.bar_right} onMousedown={(ev) => mouseDown(ev, item, 'right')}></div>

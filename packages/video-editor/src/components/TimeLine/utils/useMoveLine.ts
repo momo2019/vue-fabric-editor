@@ -58,6 +58,28 @@ export const useMoveLine = () => {
     ev.preventDefault();
   };
 
+  const isEntering = ref(false);
+
+  const enterBox = () => {
+    isEntering.value = true;
+  };
+
+  const leaveBox = () => {
+    isEntering.value = false;
+  };
+
+  const lineOffsetX = ref(0);
+
+  const moveLine = (ev: MouseEvent) => {
+    if (!isEntering.value) {
+      return;
+    }
+    const { left } = boxRef.value?.getBoundingClientRect() || { left: 0 };
+    const scrollLeft = boxRef.value?.scrollLeft || 0;
+    const { pageX } = ev;
+    lineOffsetX.value = pageX - left + scrollLeft;
+  };
+
   const documentFuncs = [
     ['mouseup', endMove],
     ['mousemove', moving],
@@ -83,5 +105,10 @@ export const useMoveLine = () => {
   return {
     startMove,
     boxRef,
+    lineOffsetX,
+    leaveBox,
+    moveLine,
+    enterBox,
+    isEntering,
   };
 };

@@ -94,8 +94,8 @@
   .time_box {
     flex: 1;
     min-height: 0;
-    width: 100%;
-    padding: 8px 16px 0px;
+    width: calc(100% - 32px);
+    margin: 8px 16px 0px;
     overflow-x: auto;
     overflow-y: hidden;
   }
@@ -138,5 +138,16 @@
     transform: translateX(-50%);
     clip-path: polygon(0 0, 100% 0, 100% 6px, 60% 10px, 60% 100%, 40% 100%, 40% 10px, 0 6px);
     border-radius: 2px;
+  }
+
+  .wrap_pointer_bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 2px;
+    height: 100%;
+    background-color: $color-primary;
+    opacity: 0.5;
+    transform: translateX(-50%);
   }
 }
