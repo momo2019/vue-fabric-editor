@@ -3,7 +3,7 @@
  */
 import { defineComponent, nextTick, ref, toRefs, watch } from 'vue';
 import styles from './index.module.scss';
-import { Button, Slider } from 'ant-design-vue';
+import { Slider } from 'ant-design-vue';
 import { elementNodeDom } from './ElementNode';
 import { formatDuration } from '@/utils/format';
 import { cvsHeight, timeLineCanvas } from './utils/timeLineCanvas';
@@ -62,17 +62,7 @@ export default defineComponent({
             <span>/</span>
             <span class={styles.middle_time}>{formatDuration(store.duration, true)}</span>
           </div>
-          <div class={styles.wrap_editor_right}>
-            {store.isPreviewing ? (
-              <Button type="primary" danger onClick={store.stopPreview}>
-                停止预览
-              </Button>
-            ) : (
-              <Button type="primary" onClick={store.previewVideo}>
-                预览视频
-              </Button>
-            )}
-          </div>
+          <div class={styles.wrap_editor_right}></div>
         </div>
         <div ref={boxRef} class={styles.time_box}>
           <div class={styles.time_box_wrap}>

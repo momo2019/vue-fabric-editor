@@ -27,8 +27,9 @@ export const elementStore = defineStore('element', () => {
     },
     updateActiveInfo: (data) => node.updateActiveInfo(data),
     updateGlobelInfo: (data) => {
-      global.setGlobalWidth(data.width);
-      global.setGlobalHeight(data.height);
+      data.width && global.setGlobalWidth(data.width);
+      data.height && global.setGlobalHeight(data.height);
+      data.zoom && global.setGlobalZoom(data.zoom);
     },
   });
 

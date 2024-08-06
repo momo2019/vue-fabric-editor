@@ -8,6 +8,7 @@ export const useGlobal = (editor: EditorReturnType) => {
   const global = ref({
     height: 1920,
     width: 1080,
+    zoom: 1,
   });
 
   const setGlobalWidth = (width: number) => {
@@ -24,6 +25,13 @@ export const useGlobal = (editor: EditorReturnType) => {
     }
     global.value.height = height;
     editor.setWorkspaseSize(global.value.width, global.value.height);
+  };
+
+  const setGlobalZoom = (zoom: number) => {
+    if (global.value.zoom === zoom) {
+      return;
+    }
+    global.value.zoom = zoom;
   };
 
   const setGlobalWidhtAndHeight = (width: number, height: number) => {
@@ -78,6 +86,7 @@ export const useGlobal = (editor: EditorReturnType) => {
     setGlobalWidth,
     setGlobalHeight,
     setGlobalWidhtAndHeight,
+    setGlobalZoom,
     background,
     setBackground,
     backgroundImageList,

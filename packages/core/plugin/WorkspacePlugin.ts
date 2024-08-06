@@ -36,7 +36,7 @@ class WorkspacePlugin implements IPluginTempl {
       width: 900,
       height: 2000,
     });
-    this.zoomRatio = 0.85;
+    this.zoomRatio = 0.8;
   }
 
   init(option: { width: number; height: number }) {
@@ -127,7 +127,7 @@ class WorkspacePlugin implements IPluginTempl {
     const viewportTransform = canvas.viewportTransform;
     if (canvas.width === undefined || canvas.height === undefined || !viewportTransform) return;
     viewportTransform[4] = canvas.width / 2 - objCenter.x * viewportTransform[0];
-    viewportTransform[5] = canvas.height / 2 - objCenter.y * viewportTransform[3];
+    viewportTransform[5] = (canvas.height * 0.95) / 2 - objCenter.y * viewportTransform[3];
     canvas.setViewportTransform(viewportTransform);
     canvas.renderAll();
   }
@@ -167,7 +167,7 @@ class WorkspacePlugin implements IPluginTempl {
     this.canvas.zoomToPoint(new fabric.Point(center.left, center.top), scale);
     if (!this.workspace) return;
     this.setCenterFromObject(this.workspace);
-    this.editor.emit('zoomChange');
+    this.editor.emit('zoomChange', scale);
     if (cb) cb(this.workspace.left, this.workspace.top);
   }
 

@@ -23,7 +23,7 @@ export const useEditor = <T = MaterialItem>(cb: {
   chooseOne: (uid: string, activeObject: FbNodes) => void;
   clearChoose: () => void;
   updateActiveInfo: (activeObject: FbNodes) => void;
-  updateGlobelInfo: (data: { height: number; width: number }) => void;
+  updateGlobelInfo: (data: { height?: number; width?: number; zoom?: number }) => void;
 }) => {
   const fbrcNodes = new Map<string, FbNodes>();
   const canvasEditor = new Editor();
@@ -76,6 +76,10 @@ export const useEditor = <T = MaterialItem>(cb: {
 
     canvasEditor.on('sizeChange', (width, height) => {
       cb.updateGlobelInfo({ width, height });
+    });
+
+    canvasEditor.on('zoomChange', (zoom) => {
+      cb.updateGlobelInfo({ zoom });
     });
 
     canvas.on('object:removed', (e) => {
