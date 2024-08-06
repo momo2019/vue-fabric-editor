@@ -101,6 +101,10 @@ export const usePreview = (
     tweenNow = TWEEN.now();
     nodes.forEach((node) => {
       handleNode(curTime, node, timeLine.duration.value);
+      if (node.element && node.fbNode) {
+        node.element.currentTime = curTime / node.element.duration;
+        node.fbNode.dirty = true;
+      }
     });
     TWEEN.update(tweenNow + curTime * 1000);
     editor.requestRenderAll();

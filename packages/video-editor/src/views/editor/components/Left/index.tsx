@@ -12,6 +12,7 @@ import { elementStore } from '@/store/element';
 import CustomMaterial, { CustomType } from '@/components/CustomMaterial';
 import { DEFAULT_FONT_CONFIG } from '@/utils/config';
 import DrawerPane from '@/components/DrawerPane';
+import { message } from 'ant-design-vue';
 
 type TypeItem = { type: MaterialGroupType; label: string };
 
@@ -61,6 +62,10 @@ export default defineComponent({
     );
 
     const addMaterial = (item: MaterialItem) => {
+      if (store.isPreviewing) {
+        message.warning('正在预览中，无法添加元素');
+        return;
+      }
       switch (item.type) {
         case MaterialType.image:
           store.addImage(item.data, {
@@ -77,6 +82,10 @@ export default defineComponent({
     };
 
     const addCustomMaterial = (type: CustomType) => {
+      if (store.isPreviewing) {
+        message.warning('正在预览中，无法添加元素');
+        return;
+      }
       switch (type) {
         case CustomType.text:
           store.addText(DEFAULT_FONT_CONFIG.data, {
