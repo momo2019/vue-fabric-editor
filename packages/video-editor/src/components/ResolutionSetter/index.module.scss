@@ -6,6 +6,7 @@
   flex-direction: column;
   align-items: center;
   width: 120px;
+  z-index: 11;
 
   .setter_item {
     border: 1px solid $color-secondary;
@@ -46,4 +47,19 @@
   .setter_box_open {
     display: flex;
   }
+}
+
+.show_box {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  border: 0px solid $color-primary;
+  border-radius: 2px;
+  transform: translate(-50%, -53%);
+  outline: 0px solid rgba($color: #fff, $alpha: 0.3);
+  pointer-events: none;
+  width: 0px;
+  height: 0px;
+  transition: none 0.3s ease-in-out;
+  transition-property: width, height;
 }

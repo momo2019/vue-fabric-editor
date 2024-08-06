@@ -1,4 +1,4 @@
-import { computed, defineComponent, onBeforeUnmount, onMounted, ref } from 'vue';
+import { computed, CSSProperties, defineComponent, onBeforeUnmount, onMounted, ref } from 'vue';
 import styles from './index.module.scss';
 import { elementStore } from '@/store/element';
 import { isEqual } from '@/utils/compute';
@@ -71,29 +71,51 @@ export default defineComponent({
       store.setGlobalWidhtAndHeight(value[0], value[1]);
     };
 
+    const showStyle = ref({} as CSSProperties);
+
+    const moveIn = (value: TwoNumber) => {
+      const scale = value[0] / value[1];
+      const height = store.global.height * store.global.zoom;
+      showStyle.value = {
+        outlineWidth: '3000px',
+        borderWidth: '2px',
+        width: `${scale * height}px`,
+        height: `${height}px`,
+      };
+    };
+
+    const moveOut = () => {
+      showStyle.value = {};
+    };
+
     return () => (
-      <div class={styles.setter}>
-        <div
-          class={[styles.setter_item, isOpen.value && styles.setter_item_open]}
-          style={activeResolute.value && getHeightWidth(activeResolute.value.value)}
-          onClick={toggle}
-        >
-          {activeResolute.value?.label}
+      <>
+        <div class={styles.setter}>
+          <div
+            class={[styles.setter_item, isOpen.value && styles.setter_item_open]}
+            style={activeResolute.value && getHeightWidth(activeResolute.value.value)}
+            onClick={toggle}
+          >
+            {activeResolute.value?.label}
+          </div>
+          <div class={[styles.setter_box, isOpen.value && styles.setter_box_open]}>
+            {resolutionList
+              .filter((item) => item !== activeResolute.value)
+              .map((item) => (
+                <div
+                  class={styles.setter_item}
+                  style={getHeightWidth(item.value)}
+                  onClick={() => changeResolution(item.value)}
+                  onMouseenter={() => moveIn(item.value)}
+                  onMouseleave={() => moveOut()}
+                >
+                  {item.label}
+                </div>
+              ))}
+          </div>
         </div>
-        <div class={[styles.setter_box, isOpen.value && styles.setter_box_open]}>
-          {resolutionList
-            .filter((item) => item !== activeResolute.value)
-            .map((item) => (
-              <div
-                class={styles.setter_item}
-                style={getHeightWidth(item.value)}
-                onClick={() => changeResolution(item.value)}
-              >
-                {item.label}
-              </div>
-            ))}
-        </div>
-      </div>
+        <div class={styles.show_box} style={showStyle.value}></div>
+      </>
     );
   },
 });
