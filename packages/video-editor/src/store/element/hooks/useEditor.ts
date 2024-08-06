@@ -16,6 +16,7 @@ import Editor, {
 import { fabric } from 'fabric';
 import { v4 } from 'uuid';
 import { computed, ref } from 'vue';
+import { GlobalInfo } from './useGlobal';
 
 export const useEditor = <T = MaterialItem>(cb: {
   afterAdd: (data: T, uid: string) => void;
@@ -23,7 +24,7 @@ export const useEditor = <T = MaterialItem>(cb: {
   chooseOne: (uid: string, activeObject: FbNodes) => void;
   clearChoose: () => void;
   updateActiveInfo: (activeObject: FbNodes) => void;
-  updateGlobelInfo: (data: { height?: number; width?: number; zoom?: number }) => void;
+  updateGlobelInfo: (data: Partial<GlobalInfo>) => void;
 }) => {
   const fbrcNodes = new Map<string, FbNodes>();
   const canvasEditor = new Editor();
@@ -78,9 +79,12 @@ export const useEditor = <T = MaterialItem>(cb: {
       cb.updateGlobelInfo({ width, height });
     });
 
-    canvasEditor.on('zoomChange', (zoom) => {
-      cb.updateGlobelInfo({ zoom });
-    });
+    canvasEditor.on(
+      'zoomChange',
+      ({ zoom, top, left }: { zoom: number; top: number; left: number }) => {
+        cb.updateGlobelInfo({ zoom, top, left });
+      }
+    );
 
     canvas.on('object:removed', (e) => {
       cb.afterRemove(e.target?.data);

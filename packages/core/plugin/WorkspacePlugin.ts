@@ -167,7 +167,10 @@ class WorkspacePlugin implements IPluginTempl {
     this.canvas.zoomToPoint(new fabric.Point(center.left, center.top), scale);
     if (!this.workspace) return;
     this.setCenterFromObject(this.workspace);
-    this.editor.emit('zoomChange', scale);
+    this.editor.emit('zoomChange', {
+      ...this.canvas.getCenter(),
+      zoom: scale,
+    });
     if (cb) cb(this.workspace.left, this.workspace.top);
   }
 

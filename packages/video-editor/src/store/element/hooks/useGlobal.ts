@@ -4,44 +4,42 @@ import { BackgoundType } from '@/interfaces/common';
 import { BACKGROUND_COLOR } from '@/utils/config';
 import { IMAGE_LIST, VIDEO_LIST } from '@/mocks/material';
 
+export type GlobalInfo = {
+  height: number;
+  width: number;
+  zoom: number;
+  top: number;
+  left: number;
+};
+
 export const useGlobal = (editor: EditorReturnType) => {
-  const global = ref({
+  const global = ref<GlobalInfo>({
     height: 1920,
     width: 1080,
     zoom: 1,
+    top: 0,
+    left: 0,
   });
 
-  const setGlobalWidth = (width: number) => {
-    if (global.value.width === width) {
-      return;
+  const setGlobalInfo = (data: Partial<GlobalInfo>) => {
+    if (typeof data.zoom === 'number' && global.value.zoom !== data.zoom) {
+      global.value.zoom = data.zoom;
     }
-    global.value.width = width;
-    editor.setWorkspaseSize(global.value.width, global.value.height);
+    if (typeof data.top === 'number' && global.value.top !== data.top) {
+      global.value.top = data.top;
+    }
+    if (typeof data.left === 'number' && global.value.left !== data.left) {
+      global.value.left = data.left;
+    }
+    (data.width || data.height) && setGlobalWidhtAndHeight(data.width, data.height);
   };
 
-  const setGlobalHeight = (height: number) => {
-    if (global.value.height === height) {
-      return;
+  const setGlobalWidhtAndHeight = (width?: number, height?: number) => {
+    if (global.value.height !== height || global.value.width !== width) {
+      global.value.height = height || global.value.height;
+      global.value.width = width || global.value.width;
+      editor.setWorkspaseSize(global.value.width, global.value.height);
     }
-    global.value.height = height;
-    editor.setWorkspaseSize(global.value.width, global.value.height);
-  };
-
-  const setGlobalZoom = (zoom: number) => {
-    if (global.value.zoom === zoom) {
-      return;
-    }
-    global.value.zoom = zoom;
-  };
-
-  const setGlobalWidhtAndHeight = (width: number, height: number) => {
-    if (global.value.height !== height) {
-      global.value.height = height;
-    }
-    if (global.value.width !== width) {
-      global.value.width = width;
-    }
-    editor.setWorkspaseSize(global.value.width, global.value.height);
   };
 
   nextTick(() => {
@@ -83,10 +81,8 @@ export const useGlobal = (editor: EditorReturnType) => {
 
   return {
     global,
-    setGlobalWidth,
-    setGlobalHeight,
+    setGlobalInfo,
     setGlobalWidhtAndHeight,
-    setGlobalZoom,
     background,
     setBackground,
     backgroundImageList,

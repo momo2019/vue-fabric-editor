@@ -81,6 +81,8 @@ export default defineComponent({
         borderWidth: '2px',
         width: `${scale * height}px`,
         height: `${height}px`,
+        top: `${store.global.top}px`,
+        left: `${store.global.left}px`,
       };
     };
 
