@@ -26,13 +26,14 @@ export const useTimeLine = () => {
 
   const changeDuration = (time: number) => {
     duration.value = time;
-    curTime.value = 0;
+    if (duration.value < curTime.value) {
+      curTime.value = 0;
+    }
     isPreviewing.value = false;
   };
 
   const stopPreview = () => {
     isPreviewing.value = false;
-    curTime.value = 0;
   };
 
   const next = (delta: number, lastTime: number, cb: StartCallback) => {
