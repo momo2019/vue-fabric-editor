@@ -8,8 +8,10 @@
   justify-content: center;
   gap: 16px;
   font-size: 24px;
+  pointer-events: none;
 
   .wrap_play {
+    pointer-events: all;
     color: $color-secondary;
 
     &:hover {
