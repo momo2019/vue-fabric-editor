@@ -7,7 +7,6 @@ import Editor, {
   CenterAlignPlugin,
   LayerPlugin,
   DeleteHotKeyPlugin,
-  GroupPlugin,
   DrawLinePlugin,
   WorkspacePlugin,
   RulerPlugin,
@@ -50,7 +49,6 @@ export const useEditor = <T = MaterialItem>(cb: {
     canvasEditor.use(CenterAlignPlugin);
     canvasEditor.use(LayerPlugin);
     canvasEditor.use(DeleteHotKeyPlugin);
-    canvasEditor.use(GroupPlugin);
     canvasEditor.use(DrawLinePlugin);
     canvasEditor.use(WorkspacePlugin);
     canvasEditor.use(RulerPlugin); // 移除会报错
@@ -267,10 +265,6 @@ export const useEditor = <T = MaterialItem>(cb: {
     canvasEditor.setWorkspaseBg(color);
   };
 
-  const addMediaBackground = (url: string, isVideo = false) => {
-    canvasEditor.setWorkspaseMediaBg(url, isVideo);
-  };
-
   return {
     initEditor,
     addImage,
@@ -289,7 +283,6 @@ export const useEditor = <T = MaterialItem>(cb: {
     stopSelect,
     openSelect,
     changeBackgroundColor,
-    addMediaBackground,
   };
 };
 

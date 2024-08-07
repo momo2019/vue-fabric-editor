@@ -28,14 +28,14 @@ export const BACKGROUND_TYPES = [
     value: BackgoundType.color,
     label: '颜色',
   },
-  {
-    value: BackgoundType.image,
-    label: '图片',
-  },
-  {
-    value: BackgoundType.video,
-    label: '视频',
-  },
+  // {
+  //   value: BackgoundType.image,
+  //   label: '图片',
+  // },
+  // {
+  //   value: BackgoundType.video,
+  //   label: '视频',
+  // },
 ];
 
 export const AUDIO_CONFIG = {

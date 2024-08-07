@@ -72,10 +72,7 @@ export const useGlobal = (editor: EditorReturnType) => {
     if (background.value.type === BackgoundType.color) {
       editor.changeBackgroundColor(background.value.data);
     } else {
-      editor.addMediaBackground(
-        background.value.data,
-        background.value.type === BackgoundType.video
-      );
+      // TODO
     }
   };
 
