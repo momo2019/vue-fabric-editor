@@ -86,6 +86,16 @@ export default defineComponent({
             onChange={(value) => store.setLetterSpacing(value as number)}
           ></InputNumber>
         </LabelWrap>
+
+        <LabelWrap label="文字行距">
+          <InputNumber
+            value={store.activeNodeShowValue?.lineHeight}
+            style={{ width: '100%' }}
+            step={0.1}
+            min={1}
+            onChange={(value) => store.setLineHeight(value as number)}
+          ></InputNumber>
+        </LabelWrap>
       </div>
     );
   },

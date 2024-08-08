@@ -67,6 +67,7 @@ export const useNode = (timeLine: TimeLineReturnType, editor: EditorReturnType) 
         (activeNode.value as ElementItem<TextNode>).fontSize = data.fontSize;
         (activeNode.value as ElementItem<TextNode>).fontFamily = data.fontFamily;
         (activeNode.value as ElementItem<TextNode>).color = data.fill as string;
+        (activeNode.value as ElementItem<TextNode>).lineHeight = data.lineHeight;
         (activeNode.value as ElementItem<TextNode>).textAlign = data.textAlign || 'left';
         (activeNode.value as ElementItem<TextNode>).letterSpacing = data.charSpacing || 0;
       } else if (data instanceof fabric.Image) {

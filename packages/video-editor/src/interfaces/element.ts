@@ -27,6 +27,7 @@ export type TextNode = {
   color?: string;
   textAlign?: string;
   letterSpacing?: number;
+  lineHeight?: number;
   shadowColor?: string;
   shadowOffsetX?: number;
   shadowOffsetY?: number;

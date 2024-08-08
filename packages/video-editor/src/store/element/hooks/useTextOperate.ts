@@ -57,6 +57,11 @@ export const useTextOperate = (
     editor.setFbNodeInfo('charSpacing', letterSpacing);
   };
 
+  const setLineHeight = (lineHeight: number) => {
+    activeNode.value.lineHeight = lineHeight;
+    editor.setFbNodeInfo('lineHeight', lineHeight);
+  };
+
   const setShadowColor = (color: string) => {
     activeNode.value.shadowColor = color;
     editor.setFbNodeInfo('color', color, 'shadow');
@@ -97,6 +102,7 @@ export const useTextOperate = (
     setFontColor,
     setTextAlign,
     setLetterSpacing,
+    setLineHeight,
     setShadowColor,
     setShadowOffsetX,
     setShadowOffsetY,
